@@ -14,7 +14,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
   
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #040811; color: #f1f5f9; }
+    body { font-family: 'Inter', sans-serif; background-color: #040811; color: #f1f5f9; position: relative; }
     .font-chakra { font-family: 'Chakra Petch', sans-serif; }
     .font-mono { font-family: 'JetBrains Mono', monospace; }
     .gold-glow { text-shadow: 0 0 15px rgba(245, 158, 11, 0.45); }
@@ -23,9 +23,29 @@
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: .4; transform: scale(1.15); }
     }
+
+    /* MARCA DE AGUA SUTIL DE FONDO */
+    .watermark-bg {
+      position: fixed;
+      bottom: 12px;
+      right: 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: rgba(148, 163, 184, 0.22);
+      pointer-events: none;
+      z-index: 40;
+      user-select: none;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-black">
+
+  <!-- MARCA DE AGUA SUTIL FLOTANTE -->
+  <div class="watermark-bg">
+    SISTEMA TÉCNICO • TTE COM COTERA CEDANO RENZO MAREK
+  </div>
 
   <!-- BARRA SUPERIOR -->
   <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur sticky top-0 z-50 px-4 py-3 sm:px-8 flex justify-between items-center shadow-xl">
@@ -111,7 +131,7 @@
           </div>
         </div>
 
-        <!-- Registro por dorsal (type="text" para aceptar dorsales como 75B01, 89A01, etc.) -->
+        <!-- Registro por dorsal -->
         <div class="md:col-span-7 bg-slate-950 p-4 rounded-xl border border-slate-800">
           <div class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1.5">Registro Directo por Dorsal (Números o Letras)</div>
           <form onsubmit="registrarMetaExpress(event)" class="flex gap-2">
@@ -265,6 +285,11 @@
     </div>
   </main>
 
+  <!-- PIE DE PÁGINA INSTITUCIONAL -->
+  <footer class="mt-auto border-t border-slate-900 bg-slate-950/80 py-4 px-6 text-center text-xs text-slate-500 font-mono">
+    Desarrollo y Control Técnico Oficial: <span class="text-slate-400 font-semibold">Tte Com Cotera Cedano Renzo Marek</span> • Ejército del Perú 2026
+  </footer>
+
   <!-- MODAL DE PIN -->
   <div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl max-w-sm w-full shadow-2xl space-y-4">
@@ -386,7 +411,6 @@
 
       try {
         const parsed = JSON.parse(guardados);
-        // Si el cache anterior tenía menos de 76 atletas, reemplazamos por el completo
         if (parsed.length < FULL_ROSTER.length) {
           return FULL_ROSTER.map((r, i) => {
             const encontrado = parsed.find(p => String(p.dorsal).trim().toUpperCase() === String(r.dorsal).trim().toUpperCase() && p.partida === r.partida);
@@ -778,7 +802,7 @@
       ordenados.forEach((r, idx) => {
         const puesto = r.tiempo ? idx + 1 : "";
         const estado = r.tiempo ? "En Meta" : "En Ruta";
-        csv += `"${puesto}","${r.dorsal}","${r.grado}","${r.nombres}","${r.promoAnio}","${r.partida}","${r.serie}","${r.tiempo}","${estado}"\n`;
+        csv += `"${puesto}","${r.dorsal}","${r.grado}","${r.nombres}","${r.promoAnio}","${r.partida}","${r.serie}","${r.tiempo}"\n`;
       });
 
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
