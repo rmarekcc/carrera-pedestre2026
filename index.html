@@ -7,7 +7,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Firebase SDK Oficial de Google (v9 compat para compatibilidad total con navegadores móviles y Safari) -->
+  <!-- Firebase SDK Oficial de Google -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -88,7 +88,7 @@
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             PANEL DE CONTROL ACTIVO
           </span>
-          <span class="text-xs text-slate-400">Transmisión centralizada de tiempos y control remoto de pantalla para proyector y móviles.</span>
+          <span class="text-xs text-slate-400">Control maestro: tus cambios y registros se transmiten en vivo a todos los dispositivos.</span>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="restablecerTiempos()" class="px-3 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-200 text-xs border border-rose-700/50 transition font-semibold flex items-center gap-1">
@@ -100,14 +100,14 @@
         </div>
       </div>
 
-      <!-- TRANSMISIÓN DE PARTIDA ACTIVA (CONTROL REMOTO DE PANTALLA) -->
+      <!-- TRANSMISIÓN DE PARTIDA ACTIVA (CONTROL REMOTO DE PANTALLAS) -->
       <div class="bg-slate-950 p-4 rounded-xl border-2 border-emerald-500/40 flex flex-wrap items-center justify-between gap-3 shadow-inner">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
             <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
-            CONTROL REMOTO DE PANTALLA:
+            CONTROL REMOTO DE PANTALLAS:
           </span>
-          <span class="text-xs text-slate-300 font-medium">Al pulsar aquí, cambias la vista de todos los dispositivos al instante:</span>
+          <span class="text-xs text-slate-300 font-medium">Pulsa la partida para cambiarla en el proyector y dispositivos:</span>
         </div>
         <div class="flex flex-wrap gap-2">
           <button onclick="fijarYTransmitirPartida('PARTIDA 1')" id="btnP1" class="px-4 py-2 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Partida 1</button>
@@ -425,13 +425,12 @@
     let chronoElapsedTime = 0;
     let isChronoRunning = false;
 
-    // CONFIGURACIÓN DE GOOGLE FIREBASE REALTIME DATABASE (CONEXIÓN EN LA NUBE OFICIAL)
+    // CONFIGURACIÓN DE TU BASE DE DATOS REAL DE FIREBASE
     const firebaseConfig = {
-      databaseURL: "https://carrera-pedestre-2026-default-rtdb.firebaseio.com"
+      databaseURL: "https://carrera2026-b4fb4-default-rtdb.firebaseio.com"
     };
 
     let dbRef = null;
-    let isFirebaseConnected = false;
 
     function initFirebase() {
       const syncDot = document.getElementById("syncDot");
@@ -444,21 +443,20 @@
         const db = firebase.database();
         dbRef = db.ref("carrera_estado");
 
-        // ESCUCHA EN TIEMPO REAL NATIVA DE FIREBASE
+        // Escucha en tiempo real de Firebase
         dbRef.on('value', (snapshot) => {
           const val = snapshot.val();
-          if (val) {
-            isFirebaseConnected = true;
-            syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-            syncText.textContent = isController ? "🟢 Firebase Control Activo" : "🟢 Sincronizado Firebase";
+          syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+          syncText.textContent = isController ? "🟢 Firebase Control Activo" : "🟢 Sincronizado Firebase";
 
-            // Sincronizar tiempos
+          if (val) {
+            // Sincronizar datos de meta
             if (val.data && Array.isArray(val.data)) {
               runners = val.data;
               localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
             }
 
-            // FORZAR CAMBIO DE PANTALLA EN TODOS LOS DISPOSITIVOS
+            // Forzado de pantalla enviado por el controlador
             if (val.forcePartida && (!isController || currentFilter !== val.forcePartida)) {
               aplicarFiltroVisual(val.forcePartida);
             }
@@ -466,18 +464,18 @@
             renderTable();
           }
         }, (error) => {
-          console.warn("Fallo en WebSockets de Firebase, activando polling REST de respaldo.", error);
+          console.warn("Error Firebase:", error);
           iniciarPollingDeRespaldo();
         });
 
       } catch (e) {
-        console.warn("Error inicializando Firebase SDK, usando respaldo REST.", e);
+        console.warn("Fallo SDK Firebase:", e);
         iniciarPollingDeRespaldo();
       }
     }
 
-    // RESPALDO REST AUTOMÁTICO SI LOS WEBSOCKETS ESTÁN BLOQUEADOS POR LA RED
-    const REST_URL = "https://carrera-pedestre-2026-default-rtdb.firebaseio.com/carrera_estado.json";
+    // RESPALDO DIRECTO POR REST
+    const REST_URL = "https://carrera2026-b4fb4-default-rtdb.firebaseio.com/carrera_estado.json";
 
     function iniciarPollingDeRespaldo() {
       setInterval(async () => {
@@ -502,7 +500,7 @@
       }, 1500);
     }
 
-    // EMISIÓN HACIA FIREBASE AL CAMBIAR DATOS O PARTIDA
+    // EMISIÓN A FIREBASE
     function broadcastState() {
       localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
       localStorage.setItem("carrera_active_partida", currentFilter);
@@ -514,24 +512,15 @@
         forcePartida: currentFilter
       };
 
-      // Envío vía SDK de Firebase
       if (dbRef) {
-        dbRef.set(payload).catch((e) => {
-          // Si falla SDK, enviar vía REST directo
-          fetch(REST_URL, {
-            method: 'PUT',
-            body: JSON.stringify(payload)
-          }).catch(err => console.error("Error broadcast:", err));
+        dbRef.set(payload).catch(() => {
+          fetch(REST_URL, { method: 'PUT', body: JSON.stringify(payload) });
         });
       } else {
-        fetch(REST_URL, {
-          method: 'PUT',
-          body: JSON.stringify(payload)
-        }).catch(err => console.error("Error broadcast REST:", err));
+        fetch(REST_URL, { method: 'PUT', body: JSON.stringify(payload) });
       }
     }
 
-    // SINCRONIZACIÓN ENTRE VENTANAS DE LA MISMA COMPUTADORA (HDMI AL PROYECTOR)
     window.addEventListener('storage', () => {
       const stored = localStorage.getItem("carrera_data_2026");
       if (stored) {
