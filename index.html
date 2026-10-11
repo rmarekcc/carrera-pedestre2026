@@ -6,6 +6,11 @@
   <title>Gran Carrera Pedestre 2026 - Control y Proyección Oficial</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Firebase SDK Oficial de Google (v9 compat para compatibilidad total con navegadores móviles y Safari) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,7 +69,7 @@
     <div class="flex items-center gap-3">
       <div id="syncBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-xs text-slate-300">
         <span id="syncDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 pulse-dot"></span>
-        <span id="syncText">Conectando nube...</span>
+        <span id="syncText">Conectando Firebase...</span>
       </div>
 
       <button id="btnAuth" onclick="handleAuthButtonClick()" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs sm:text-sm transition flex items-center gap-1.5 shadow">
@@ -83,7 +88,7 @@
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             PANEL DE CONTROL ACTIVO
           </span>
-          <span class="text-xs text-slate-400">Al pulsar una partida abajo, la pantalla de todos los espectadores cambia inmediatamente a esa partida.</span>
+          <span class="text-xs text-slate-400">Transmisión centralizada de tiempos y control remoto de pantalla para proyector y móviles.</span>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="restablecerTiempos()" class="px-3 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-200 text-xs border border-rose-700/50 transition font-semibold flex items-center gap-1">
@@ -95,14 +100,14 @@
         </div>
       </div>
 
-      <!-- TRANSMISIÓN DE PARTIDA ACTIVA (CONTROL REMOTO CENTRAL) -->
+      <!-- TRANSMISIÓN DE PARTIDA ACTIVA (CONTROL REMOTO DE PANTALLA) -->
       <div class="bg-slate-950 p-4 rounded-xl border-2 border-emerald-500/40 flex flex-wrap items-center justify-between gap-3 shadow-inner">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
             <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
-            CONTROL CENTRAL DE PANTALLA:
+            CONTROL REMOTO DE PANTALLA:
           </span>
-          <span class="text-xs text-slate-300 font-medium">Haz clic en la partida que deseas proyectar a todos:</span>
+          <span class="text-xs text-slate-300 font-medium">Al pulsar aquí, cambias la vista de todos los dispositivos al instante:</span>
         </div>
         <div class="flex flex-wrap gap-2">
           <button onclick="fijarYTransmitirPartida('PARTIDA 1')" id="btnP1" class="px-4 py-2 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Partida 1</button>
@@ -304,8 +309,9 @@
   </div>
 
   <script>
+    // PADRÓN OFICIAL COMPLETO (76 ATLETAS)
     const FULL_ROSTER = [
-      // PARTIDA 1 (7 atletas)
+      // PARTIDA 1 (7)
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 1", promoAnio:"1955", promo:"1955 - GRAL BELISARIO SUAREZ VARGAS", dorsal:"5501", grado:"CRL", nombres:"JORGE CARDENAS PEREZ PALMA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 1", promoAnio:"1959", promo:"1959 - TTE CRL ROQUE SAENZ PEÑA", dorsal:"5901", grado:"GRAL", nombres:"JUAN MANUEL PENDOLA ALANIA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 2", promoAnio:"1971", promo:"1971 - GRAL IGNACIO ALVAREZ THOMAS", dorsal:"7101", grado:"GRAL", nombres:"CAYO ELEN RAMOS NEYRA"},
@@ -314,7 +320,7 @@
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 2", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7203", grado:"GRAL B", nombres:"FRANCISCO DEL ALAMO SOTA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL DAMAS 2", promoAnio:"1977", promo:"1977 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7701", grado:"", nombres:"GIOVANNA ROJAS CAMPOS"},
       
-      // PARTIDA 2 (14 atletas)
+      // PARTIDA 2 (14)
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8401", grado:"", nombres:"MILUSKA VELIS ABADIE"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8402", grado:"", nombres:"JESUS AGUILAR CORDOVA"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", dorsal:"8601", grado:"", nombres:"MARIA ELENA BERNA URBANO"},
@@ -330,7 +336,7 @@
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"", nombres:"ILLIANA DA SILVA QUEREVALU"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9001", grado:"", nombres:"BERTHA ANITA PEREZ PEREZ"},
 
-      // PARTIDA 3 (7 atletas)
+      // PARTIDA 3 (7)
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7301", grado:"CRL", nombres:"HUGO ROSADO BALDEON"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7302", grado:"TTE CRL", nombres:"LUIS GRADOS BAILETTI"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7303", grado:"TTE CRL", nombres:"AURELIO POZADA GONZALES"},
@@ -339,7 +345,7 @@
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1975 B", promo:"1975 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B02", grado:"TTE CRL", nombres:"ERIC ANDRES MEJIA LUCAR"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1975 B", promo:"1975 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B03", grado:"CRL", nombres:"JUAN CARLOS VALERA RIOS"},
 
-      // PARTIDA 4 (18 atletas)
+      // PARTIDA 4 (18)
       {partida:"PARTIDA 4", serie:"SERIE \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7601", grado:"TTE CRL", nombres:"DANIEL MERA RODAS"},
       {partida:"PARTIDA 4", serie:"SERIE \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7602", grado:"MY", nombres:"C. HERNADEZ APARCANA"},
       {partida:"PARTIDA 4", serie:"SERIE \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7603", grado:"CAP", nombres:"J. FERNANDEZ ROBLES"},
@@ -359,7 +365,7 @@
       {partida:"PARTIDA 4", serie:"SERIE \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8302", grado:"", nombres:"PEDRO ANTONIO ESPINOZA ROJAS"},
       {partida:"PARTIDA 4", serie:"SERIE \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8303", grado:"CRL", nombres:"JOSE MANUEL QWISTGAARD SUAREZ"},
 
-      // PARTIDA 5 (30 atletas)
+      // PARTIDA 5 (30)
       {partida:"PARTIDA 5", serie:"SERIE \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8401", grado:"CRL", nombres:"RAUL MASIAS ARISPE"},
       {partida:"PARTIDA 5", serie:"SERIE \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8402", grado:"CRL", nombres:"DANIEL FERNANDEZ VIAÑA"},
       {partida:"PARTIDA 5", serie:"SERIE \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8403", grado:"CRL", nombres:"MARCO COLOME ELENO"},
@@ -418,83 +424,114 @@
     let chronoStartTime = 0;
     let chronoElapsedTime = 0;
     let isChronoRunning = false;
-    let lastSyncTimestamp = 0;
 
-    // CANAL HTTP EN NUBE UNIVERSAL
-    const CLOUD_ROOM = "carrera_pedestre_oficiales_2026_peru";
-    const CLOUD_ENDPOINT = `https://ntfy.sh/${CLOUD_ROOM}`;
+    // CONFIGURACIÓN DE GOOGLE FIREBASE REALTIME DATABASE (CONEXIÓN EN LA NUBE OFICIAL)
+    const firebaseConfig = {
+      databaseURL: "https://carrera-pedestre-2026-default-rtdb.firebaseio.com"
+    };
 
-    // EMITE TANTO TIEMPOS COMO LA ORDEN DE CAMBIO DE PANTALLA
-    async function broadcastToCloud() {
+    let dbRef = null;
+    let isFirebaseConnected = false;
+
+    function initFirebase() {
+      const syncDot = document.getElementById("syncDot");
+      const syncText = document.getElementById("syncText");
+
+      try {
+        if (!firebase.apps.length) {
+          firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+        dbRef = db.ref("carrera_estado");
+
+        // ESCUCHA EN TIEMPO REAL NATIVA DE FIREBASE
+        dbRef.on('value', (snapshot) => {
+          const val = snapshot.val();
+          if (val) {
+            isFirebaseConnected = true;
+            syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+            syncText.textContent = isController ? "🟢 Firebase Control Activo" : "🟢 Sincronizado Firebase";
+
+            // Sincronizar tiempos
+            if (val.data && Array.isArray(val.data)) {
+              runners = val.data;
+              localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
+            }
+
+            // FORZAR CAMBIO DE PANTALLA EN TODOS LOS DISPOSITIVOS
+            if (val.forcePartida && (!isController || currentFilter !== val.forcePartida)) {
+              aplicarFiltroVisual(val.forcePartida);
+            }
+
+            renderTable();
+          }
+        }, (error) => {
+          console.warn("Fallo en WebSockets de Firebase, activando polling REST de respaldo.", error);
+          iniciarPollingDeRespaldo();
+        });
+
+      } catch (e) {
+        console.warn("Error inicializando Firebase SDK, usando respaldo REST.", e);
+        iniciarPollingDeRespaldo();
+      }
+    }
+
+    // RESPALDO REST AUTOMÁTICO SI LOS WEBSOCKETS ESTÁN BLOQUEADOS POR LA RED
+    const REST_URL = "https://carrera-pedestre-2026-default-rtdb.firebaseio.com/carrera_estado.json";
+
+    function iniciarPollingDeRespaldo() {
+      setInterval(async () => {
+        try {
+          const res = await fetch(REST_URL);
+          if (res.ok) {
+            const val = await res.json();
+            if (val) {
+              document.getElementById("syncDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+              document.getElementById("syncText").textContent = isController ? "🟢 Nube Activa" : "🟢 Sincronizado en Vivo";
+              if (val.data) {
+                runners = val.data;
+                localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
+              }
+              if (val.forcePartida && (!isController || currentFilter !== val.forcePartida)) {
+                aplicarFiltroVisual(val.forcePartida);
+              }
+              renderTable();
+            }
+          }
+        } catch (err) {}
+      }, 1500);
+    }
+
+    // EMISIÓN HACIA FIREBASE AL CAMBIAR DATOS O PARTIDA
+    function broadcastState() {
+      localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
+      localStorage.setItem("carrera_active_partida", currentFilter);
+      window.dispatchEvent(new Event('storage'));
+
       const payload = {
         timestamp: Date.now(),
         data: runners,
         forcePartida: currentFilter
       };
 
-      try {
-        await fetch(CLOUD_ENDPOINT, {
-          method: 'POST',
-          body: JSON.stringify(payload),
-          headers: { 'Title': 'Update', 'Priority': 'high' }
+      // Envío vía SDK de Firebase
+      if (dbRef) {
+        dbRef.set(payload).catch((e) => {
+          // Si falla SDK, enviar vía REST directo
+          fetch(REST_URL, {
+            method: 'PUT',
+            body: JSON.stringify(payload)
+          }).catch(err => console.error("Error broadcast:", err));
         });
-      } catch (e) {
-        console.warn("Emisión en nube falló, usando caché local.", e);
+      } else {
+        fetch(REST_URL, {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        }).catch(err => console.error("Error broadcast REST:", err));
       }
     }
 
-    // ESCUCHA CONSTANTE EN TODOS LOS DISPOSITIVOS (IPAD / CELULARES)
-    async function pollCloudSync() {
-      try {
-        const response = await fetch(`${CLOUD_ENDPOINT}/json?poll=1&since=latest`);
-        if (response.ok) {
-          const text = await response.text();
-          const lines = text.trim().split('\n');
-          for (let line of lines) {
-            try {
-              const msg = JSON.parse(line);
-              if (msg.message) {
-                const payload = JSON.parse(msg.message);
-                if (payload.timestamp && payload.timestamp > lastSyncTimestamp) {
-                  lastSyncTimestamp = payload.timestamp;
-                  
-                  if (payload.data) {
-                    runners = payload.data;
-                  }
-
-                  // FORZADO DE PANTALLA TRANSMITIDA POR EL CONTROLADOR
-                  if (payload.forcePartida && (!isController || currentFilter !== payload.forcePartida)) {
-                    aplicarFiltroVisual(payload.forcePartida);
-                  }
-
-                  saveData(false);
-                  renderTable();
-                }
-              }
-            } catch (err) {}
-          }
-          document.getElementById("syncDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-          document.getElementById("syncText").textContent = isController ? "🟢 Emitiendo nube" : "🟢 Sincronizado nube";
-        }
-      } catch (e) {
-        document.getElementById("syncDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-        document.getElementById("syncText").textContent = "🟢 Red activa";
-      }
-    }
-
-    function initNetwork() {
-      document.getElementById("syncDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-      document.getElementById("syncText").textContent = isController ? "🟢 Emitiendo nube" : "🟢 Sincronizado nube";
-      setInterval(pollCloudSync, 1500);
-    }
-
-    function broadcastState() {
-      localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
-      localStorage.setItem("carrera_active_partida", currentFilter);
-      window.dispatchEvent(new Event('storage'));
-      broadcastToCloud();
-    }
-
+    // SINCRONIZACIÓN ENTRE VENTANAS DE LA MISMA COMPUTADORA (HDMI AL PROYECTOR)
     window.addEventListener('storage', () => {
       const stored = localStorage.getItem("carrera_data_2026");
       if (stored) {
@@ -524,7 +561,7 @@
       alert("Padrón restablecido con éxito (76 atletas listos).");
     }
 
-    // COMANDO DIRECTO DEL CONTROLADOR PARA CAMBIAR LA PANTALLA DE TODOS
+    // CONTROL REMOTO: CAMBIA LA PANTALLA EN TODOS LOS DISPOSITIVOS
     function fijarYTransmitirPartida(partida) {
       currentFilter = partida;
       aplicarFiltroVisual(partida);
@@ -661,7 +698,7 @@
         localStorage.setItem("carrera_is_admin", "true");
         cerrarAuthModal();
         updateUIMode();
-        initNetwork();
+        broadcastState();
       } else {
         document.getElementById("pinError").classList.remove("hidden");
         document.getElementById("pinInput").value = "";
@@ -901,7 +938,7 @@
     window.addEventListener("DOMContentLoaded", () => {
       aplicarFiltroVisual(currentFilter);
       updateUIMode();
-      initNetwork();
+      initFirebase();
     });
   </script>
 </body>
