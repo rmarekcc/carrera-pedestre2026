@@ -6,7 +6,7 @@
   <title>Gran Carrera Pedestre 2026 - Control y Proyección Oficial</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PeerJS para sincronización nativa en vivo (compatible con iPad/Safari y PC) -->
+  <!-- PeerJS para sincronización nativa en vivo -->
   <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,7 @@
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-black">
 
   <!-- BARRA SUPERIOR -->
-  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50 px-4 py-3 sm:px-8 flex justify-between items-center shadow-lg">
+  <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur sticky top-0 z-50 px-4 py-3 sm:px-8 flex justify-between items-center shadow-lg">
     <div class="flex items-center gap-3">
       <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-chakra font-black text-xl text-black shadow-lg shadow-emerald-500/20">
         CP
@@ -44,7 +44,8 @@
         <span id="syncText">Conectando red...</span>
       </div>
 
-      <button id="btnAuth" onclick="toggleAuthModal()" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs sm:text-sm transition flex items-center gap-1.5 shadow">
+      <!-- BOTÓN DE ACCESO PRINCIPAL -->
+      <button id="btnAuth" onclick="handleAuthButtonClick()" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs sm:text-sm transition flex items-center gap-1.5 shadow">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
         <span id="btnAuthText">Mesa Técnica</span>
       </button>
@@ -52,16 +53,19 @@
   </header>
 
   <!-- PANEL DE MESA TÉCNICA (SOLO CONTROLADOR - PIN 1095) -->
-  <section id="controlPanel" class="hidden bg-slate-900/90 border-b border-emerald-500/30 px-4 py-5 sm:px-8 transition-all">
+  <section id="controlPanel" class="hidden bg-slate-900/95 border-b-2 border-emerald-500 px-4 py-5 sm:px-8 shadow-2xl">
     <div class="max-w-7xl mx-auto">
       <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div class="flex items-center gap-3">
-          <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold">MODO CONTROLADOR ACTIVO</span>
-          <span class="text-xs text-slate-400">Tus cambios se reflejan en vivo en todos los dispositivos conectados.</span>
+          <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            PANEL DE CONTROL ACTIVO
+          </span>
+          <span class="text-xs text-slate-400">Todo lo que ingreses aquí se replica de inmediato en el proyector y dispositivos.</span>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="exportarCSV()" class="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-slate-700 transition">Descargar CSV</button>
-          <button onclick="cerrarSesion()" class="px-3 py-1 rounded bg-rose-950/60 hover:bg-rose-900 text-rose-300 text-xs border border-rose-800/40 transition">Cerrar Sesión</button>
+          <button onclick="exportarCSV()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-slate-700 transition">Descargar Excel/CSV</button>
+          <button onclick="cerrarSesion()" class="px-3 py-1.5 rounded-lg bg-rose-950 hover:bg-rose-900 text-rose-300 text-xs border border-rose-800 transition">Cerrar Sesión</button>
         </div>
       </div>
 
@@ -70,7 +74,7 @@
         <!-- Cronómetro -->
         <div class="md:col-span-5 bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
           <div>
-            <div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Cronómetro General</div>
+            <div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Cronómetro de Llegadas</div>
             <div id="chronoDisplay" class="text-3xl sm:text-4xl font-mono font-black text-emerald-400">00:00.0</div>
           </div>
           <div class="flex gap-2">
@@ -81,11 +85,11 @@
 
         <!-- Registro exprés de dorsal -->
         <div class="md:col-span-7 bg-slate-950 p-4 rounded-xl border border-slate-800">
-          <div class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1.5">Registro Rápido de Llegada en Meta</div>
+          <div class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1.5">Registro Directo por Dorsal</div>
           <form onsubmit="registrarMetaExpress(event)" class="flex gap-2">
-            <input id="inputDorsal" type="number" placeholder="Escribe dorsal (ej: 8401)" required class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white font-mono text-sm focus:outline-none focus:border-emerald-500">
+            <input id="inputDorsal" type="number" placeholder="Número de dorsal (ej: 8401)" required class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white font-mono text-base focus:outline-none focus:border-emerald-500">
             <input id="inputTiempoManual" type="text" placeholder="Tiempo opcional (ej: 24:15)" class="w-48 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono text-xs focus:outline-none focus:border-emerald-500 hidden sm:block">
-            <button type="submit" class="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition flex items-center gap-1">
+            <button type="submit" class="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition flex items-center gap-1.5">
               <span>Registrar</span>
               <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-xs bg-slate-900 text-slate-300 rounded border border-slate-700">Enter</kbd>
             </button>
@@ -216,7 +220,7 @@
         <input id="pinInput" type="password" maxlength="6" autofocus placeholder="Ingrese clave de acceso" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-center text-xl font-mono text-white tracking-widest focus:outline-none focus:border-emerald-500">
         <div id="pinError" class="text-rose-400 text-xs text-center hidden">Clave incorrecta. Intente nuevamente.</div>
         <div class="flex gap-2">
-          <button type="button" onclick="toggleAuthModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold transition">Cancelar</button>
+          <button type="button" onclick="cerrarAuthModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold transition">Cancelar</button>
           <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-sm font-bold transition">Ingresar</button>
         </div>
       </form>
@@ -291,7 +295,7 @@
       {dorsal:"9003", grado:"CRL", nombres:"RAUL VILLALTA SALAVERRY", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", serie:"Serie D", partida:"PARTIDA 5"}
     ];
 
-    // ESTADO GLOBAL
+    // ESTADO
     let runners = JSON.parse(localStorage.getItem("carrera_data_2026")) || INITIAL_RUNNERS.map((r, i) => ({...r, id: i+1, tiempo: ""}));
     let currentFilter = "ALL";
     let isController = localStorage.getItem("carrera_is_admin") === "true";
@@ -300,8 +304,8 @@
     let chronoElapsedTime = 0;
     let isChronoRunning = false;
 
-    // SALA COMPARTIDA DE TIEMPO REAL
-    const ROOM_KEY = "carrera-pedestre-2026-oficial-peru";
+    // RED EN VIVO PEER-TO-PEER
+    const ROOM_KEY = "carrera-pedestre-2026-peru-live";
     let peer = null;
     let connections = [];
 
@@ -309,65 +313,53 @@
       const syncDot = document.getElementById("syncDot");
       const syncText = document.getElementById("syncText");
 
-      if (isController) {
-        // La laptop de control actúa como servidor principal del canal
-        peer = new Peer(ROOM_KEY);
-        peer.on('open', (id) => {
-          syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-          syncText.textContent = "🟢 Emitiendo en vivo";
-        });
-        peer.on('connection', (conn) => {
-          connections.push(conn);
-          conn.on('open', () => {
-            // Envía el estado actual inmediatamente al iPad o celular que se conecte
-            conn.send({ type: "SYNC", data: runners });
-          });
-        });
-        peer.on('error', (err) => {
-          // Si el ID ya existe en otra pestaña de la misma laptop
-          syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-          syncText.textContent = "🟢 Conectado";
-        });
-      } else {
-        // El iPad o los celulares de los espectadores se conectan a la laptop
-        peer = new Peer();
-        peer.on('open', () => {
-          const conn = peer.connect(ROOM_KEY);
-          conn.on('open', () => {
+      try {
+        if (isController) {
+          peer = new Peer(ROOM_KEY);
+          peer.on('open', () => {
             syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-            syncText.textContent = "🟢 Sincronizado en vivo";
+            syncText.textContent = "🟢 Emitiendo en vivo";
           });
-          conn.on('data', (payload) => {
-            if (payload.type === "SYNC") {
-              runners = payload.data;
-              saveData(false);
-              renderTable();
-            }
+          peer.on('connection', (conn) => {
+            connections.push(conn);
+            conn.on('open', () => {
+              conn.send({ type: "SYNC", data: runners });
+            });
           });
-          conn.on('close', () => {
-            syncDot.className = "w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse";
-            syncText.textContent = "Reconectando...";
-            setTimeout(initNetwork, 3000);
+          peer.on('error', () => {
+            syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+            syncText.textContent = "🟢 Conectado (Control)";
           });
-        });
-        peer.on('error', () => {
-          syncDot.className = "w-2.5 h-2.5 rounded-full bg-slate-500";
-          syncText.textContent = "Red local activa";
-        });
+        } else {
+          peer = new Peer();
+          peer.on('open', () => {
+            const conn = peer.connect(ROOM_KEY);
+            conn.on('open', () => {
+              syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+              syncText.textContent = "🟢 Sincronizado en vivo";
+            });
+            conn.on('data', (payload) => {
+              if (payload && payload.type === "SYNC") {
+                runners = payload.data;
+                saveData(false);
+                renderTable();
+              }
+            });
+          });
+        }
+      } catch (e) {
+        console.error(e);
       }
     }
 
     function broadcastState() {
-      // 1. Emisión a todos los iPads / teléfonos conectados vía WebSockets/WebRTC
       connections.forEach(conn => {
         if (conn.open) conn.send({ type: "SYNC", data: runners });
       });
-      // 2. Emisión a otras ventanas en la misma laptop
       localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
       window.dispatchEvent(new Event('storage'));
     }
 
-    // SINCRONIZACIÓN ENTRE PESTAÑAS LOCALES
     window.addEventListener('storage', () => {
       const stored = localStorage.getItem("carrera_data_2026");
       if (stored) {
@@ -383,14 +375,37 @@
       }
     }
 
-    // MODAL DE PIN Y CONTROL DE SESIÓN
-    function toggleAuthModal() {
-      if (isController) return;
-      const modal = document.getElementById("authModal");
-      modal.classList.toggle("hidden");
-      document.getElementById("pinInput").value = "";
-      document.getElementById("pinError").classList.add("hidden");
+    // GESTIÓN DE ACCESO A MESA TÉCNICA
+    function handleAuthButtonClick() {
+      if (isController) {
+        // Si ya está activo, permite alternar la vista o cerrar sesión
+        const panel = document.getElementById("controlPanel");
+        panel.classList.toggle("hidden");
+      } else {
+        abrirAuthModal();
+      }
     }
+
+    function abrirAuthModal() {
+      const modal = document.getElementById("authModal");
+      modal.classList.remove("hidden");
+      const pin = document.getElementById("pinInput");
+      pin.value = "";
+      document.getElementById("pinError").classList.add("hidden");
+      setTimeout(() => pin.focus(), 100);
+    }
+
+    function cerrarAuthModal() {
+      document.getElementById("authModal").classList.add("hidden");
+    }
+
+    // ACCESO RÁPIDO CON TECLADO: Ctrl + M abre el login
+    window.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "m") {
+        e.preventDefault();
+        abrirAuthModal();
+      }
+    });
 
     function validarPIN(e) {
       e.preventDefault();
@@ -398,17 +413,19 @@
       if (val === "1095") {
         isController = true;
         localStorage.setItem("carrera_is_admin", "true");
-        document.getElementById("authModal").classList.add("hidden");
+        cerrarAuthModal();
         updateUIMode();
         initNetwork();
       } else {
         document.getElementById("pinError").classList.remove("hidden");
+        document.getElementById("pinInput").value = "";
       }
     }
 
     function cerrarSesion() {
       isController = false;
       localStorage.removeItem("carrera_is_admin");
+      updateUIMode();
       location.reload();
     }
 
@@ -419,7 +436,7 @@
 
       if (isController) {
         controlPanel.classList.remove("hidden");
-        btnAuthText.textContent = "Control Activo";
+        btnAuthText.textContent = "Ocultar / Ver Panel";
         thAccion.classList.remove("hidden");
       } else {
         controlPanel.classList.add("hidden");
@@ -429,7 +446,7 @@
       renderTable();
     }
 
-    // CRONÓMETRO GENERAL
+    // CRONÓMETRO
     function formatTime(ms) {
       const minutes = Math.floor(ms / 60000);
       const seconds = Math.floor((ms % 60000) / 1000);
@@ -466,7 +483,7 @@
       btn.className = "px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider";
     }
 
-    // REGISTRO DE META
+    // REGISTRO
     function registrarMetaExpress(e) {
       e.preventDefault();
       const inputD = document.getElementById("inputDorsal");
@@ -503,7 +520,7 @@
       }
     }
 
-    // RENDERIZADO Y TABLERO
+    // RENDERIZADO
     function setFilter(partida) {
       currentFilter = partida;
       document.querySelectorAll(".filter-btn").forEach(b => {
@@ -517,21 +534,17 @@
     function renderTable() {
       const search = document.getElementById("searchInput").value.toLowerCase();
       
-      // Filtrar por partida y buscador
       let filtered = runners.filter(r => {
         const matchesPartida = currentFilter === "ALL" || r.partida === currentFilter;
         const matchesSearch = r.nombres.toLowerCase().includes(search) || r.promo.toLowerCase().includes(search) || String(r.dorsal).includes(search);
         return matchesPartida && matchesSearch;
       });
 
-      // Separar los que ya tienen tiempo de los que no
       const finalizados = filtered.filter(r => r.tiempo && r.tiempo.trim() !== "").sort((a,b) => a.tiempo.localeCompare(b.tiempo));
       const enRuta = filtered.filter(r => !r.tiempo || r.tiempo.trim() === "");
 
-      // Podio (Top 3 de los finalizados)
       actualizarPodio(finalizados);
 
-      // Resumen
       const totalMeta = runners.filter(r => r.tiempo && r.tiempo.trim() !== "").length;
       document.getElementById("countSummary").textContent = `Meta: ${totalMeta} / ${runners.length}`;
 
@@ -628,7 +641,6 @@
       document.body.removeChild(link);
     }
 
-    // INICIALIZACIÓN
     window.addEventListener("DOMContentLoaded", () => {
       updateUIMode();
       renderTable();
