@@ -65,13 +65,13 @@
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             PANEL DE CONTROL ACTIVO
           </span>
-          <span class="text-xs text-slate-400">Transmisión centralizada de tiempos y estado de atletas.</span>
+          <span class="text-xs text-slate-400">Transmisión centralizada de tiempos y estado de atletas en vivo.</span>
         </div>
         <div class="flex items-center gap-2">
           <!-- BOTÓN RESTABLECER PRUEBAS -->
           <button onclick="restablecerTiempos()" class="px-3 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-200 text-xs border border-rose-700/50 transition font-semibold flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            Limpiar Datos de Prueba
+            Limpiar Tiempos de Prueba
           </button>
           <button onclick="exportarCSV()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-slate-700 transition">Descargar Excel/CSV</button>
           <button onclick="cerrarSesion()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs border border-slate-700 transition">Cerrar Sesión</button>
@@ -97,7 +97,7 @@
         </div>
       </div>
 
-      <!-- CRONÓMETRO Y REGISTRO RÁPIDO -->
+      <!-- CRONÓMETRO Y REGISTRO RÁPIDO (SOPORTA DORSALES ALFANUMÉRICOS) -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
         <!-- Cronómetro -->
         <div class="md:col-span-5 bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
@@ -111,11 +111,11 @@
           </div>
         </div>
 
-        <!-- Registro por dorsal -->
+        <!-- Registro por dorsal (type="text" para aceptar dorsales como 75B01, 89A01, etc.) -->
         <div class="md:col-span-7 bg-slate-950 p-4 rounded-xl border border-slate-800">
-          <div class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1.5">Registro Directo por Dorsal</div>
+          <div class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1.5">Registro Directo por Dorsal (Números o Letras)</div>
           <form onsubmit="registrarMetaExpress(event)" class="flex gap-2">
-            <input id="inputDorsal" type="number" placeholder="Número dorsal (ej: 8401)" required class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white font-mono text-base focus:outline-none focus:border-emerald-500">
+            <input id="inputDorsal" type="text" placeholder="Dorsal (ej: 8401, 75B01, 89A02)" required class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white font-mono text-base uppercase focus:outline-none focus:border-emerald-500">
             <input id="inputTiempoManual" type="text" placeholder="Tiempo opcional (ej: 24:15.2)" class="w-48 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono text-xs focus:outline-none focus:border-emerald-500 hidden sm:block">
             <button type="submit" class="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition flex items-center gap-1.5">
               <span>Registrar</span>
@@ -135,7 +135,7 @@
       
       <!-- Pestañas de Partida Completas -->
       <div class="flex flex-wrap gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
-        <button onclick="setFilter('ALL')" id="f-ALL" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-black">Todas las Partidas (63)</button>
+        <button onclick="setFilter('ALL')" id="f-ALL" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-black">Todas las Partidas (76)</button>
         <button onclick="setFilter('PARTIDA 1')" id="f-P1" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 1 (09:30)</button>
         <button onclick="setFilter('PARTIDA 2')" id="f-P2" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 2 (09:45)</button>
         <button onclick="setFilter('PARTIDA 3')" id="f-P3" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 3 (10:00)</button>
@@ -153,6 +153,7 @@
           <option value="1972">Promoción 1972</option>
           <option value="1973">Promoción 1973</option>
           <option value="1974">Promoción 1974</option>
+          <option value="1975 B">Promoción 1975 B</option>
           <option value="1976">Promoción 1976</option>
           <option value="1977">Promoción 1977</option>
           <option value="1979">Promoción 1979</option>
@@ -164,6 +165,8 @@
           <option value="1986">Promoción 1986</option>
           <option value="1987">Promoción 1987</option>
           <option value="1988">Promoción 1988</option>
+          <option value="1989 A">Promoción 1989 A</option>
+          <option value="1989 B">Promoción 1989 B</option>
           <option value="1990">Promoción 1990</option>
         </select>
 
@@ -180,10 +183,10 @@
         <h2 id="viewTitle" class="text-lg sm:text-xl font-chakra font-black tracking-wide text-white uppercase flex items-center gap-2">
           TODAS LAS PARTIDAS • CLASIFICACIÓN GENERAL
         </h2>
-        <p id="viewSubtitle" class="text-xs text-slate-400 mt-0.5">Viendo todos los oficiales inscritos</p>
+        <p id="viewSubtitle" class="text-xs text-slate-400 mt-0.5">Viendo los 76 oficiales en competencia</p>
       </div>
       <div id="countSummary" class="text-xs font-mono text-emerald-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800">
-        En Meta: 0 / 63
+        En Meta: 0 / 76
       </div>
     </div>
 
@@ -285,96 +288,118 @@
   </div>
 
   <script>
-    // LISTA MAESTRA OFICIAL DE LOS 63 ATLETAS CON PROMOCIONES RESUELTAS
-    const INITIAL_RUNNERS = [
-      {dorsal:"5501", grado:"Crl", nombres:"JORGE CARDENAS PEREZ PALMA", promoAnio:"1955", promo:"1955 - GRAL BELISARIO SUAREZ VARGAS", serie:"Serie Especial Varones 1", partida:"PARTIDA 1"},
-      {dorsal:"5901", grado:"Gral", nombres:"JUAN MANUEL PENDOLA ALANIA", promoAnio:"1959", promo:"1959 - TTE CRL ROQUE SAENZ PEÑA", serie:"Serie Especial Varones 1", partida:"PARTIDA 1"},
-      {dorsal:"7101", grado:"GRAL", nombres:"CAYO ELEN RAMOS NEYRA", promoAnio:"1971", promo:"1971 - GRAL IGNACIO ALVAREZ THOMAS", serie:"Serie Especial Varones 2", partida:"PARTIDA 1"},
-      {dorsal:"7201", grado:"MY", nombres:"WALTER COLINA NUNURA", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", serie:"Serie Especial Varones 2", partida:"PARTIDA 1"},
-      {dorsal:"7202", grado:"CRL", nombres:"JESUS ZAMUDIO ALIAGA", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", serie:"Serie Especial Varones 2", partida:"PARTIDA 1"},
-      {dorsal:"7203", grado:"GRAL B", nombres:"FRANCISCO DEL ALAMO SOTA", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", serie:"Serie Especial Varones 2", partida:"PARTIDA 1"},
-      {dorsal:"7701", grado:"", nombres:"Giovanna Rojas campos", promoAnio:"1977", promo:"1977 - SESQUICENTENARIO DE LA INDEPENDENCIA", serie:"Serie Especial DAMAS 2", partida:"PARTIDA 1"},
-      {dorsal:"8401", grado:"", nombres:"Miluska Velis Abadie", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"8402", grado:"", nombres:"Jesus Aguilar Cordova", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"8601", grado:"", nombres:"MARIA ELENA BERNA URBANO", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"8701", grado:"", nombres:"Rosy Mari Ruiz Bosmediano", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"8702", grado:"", nombres:"Nelly Matilde Jamjachi serrano", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"8703", grado:"", nombres:"Ketty Yepez Esquivel", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"8801", grado:"", nombres:"Maria Socorro Parra Santillan", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"8802", grado:"", nombres:"Maruja Baez Pareja", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"8803", grado:"", nombres:"Lucy Mendoza Soria", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"8804", grado:"", nombres:"Clara Vasquez Fernandez", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"9001", grado:"", nombres:"BERTHA ANITA PEREZ PEREZ", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
-      {dorsal:"7301", grado:"CRL", nombres:"HUGO ROSADO BALDEON", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", serie:"Serie Especial Varones 3", partida:"PARTIDA 3"},
-      {dorsal:"7302", grado:"TTE CRL", nombres:"LUIS GRADOS BAILETTI", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", serie:"Serie Especial Varones 3", partida:"PARTIDA 3"},
-      {dorsal:"7303", grado:"TTE CRL", nombres:"AURELIO POZADA GONZALES", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", serie:"Serie Especial Varones 3", partida:"PARTIDA 3"},
-      {dorsal:"7401", grado:"TTE", nombres:"OSCAR EDUARDO CAMPOS HOYOS", promoAnio:"1974", promo:"1974 - SGTO MAYOR FERMIN NACARINO", serie:"Serie Especial Varones 3", partida:"PARTIDA 3"},
-      {dorsal:"7601", grado:"TTE CRL", nombres:"DANIEL MERA RODAS", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", serie:"Serie A", partida:"PARTIDA 4"},
-      {dorsal:"7602", grado:"MY", nombres:"C. HERNADEZ APARCANA", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", serie:"Serie A", partida:"PARTIDA 4"},
-      {dorsal:"7603", grado:"CAP", nombres:"J. FERNANDEZ ROBLES", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", serie:"Serie A", partida:"PARTIDA 4"},
-      {dorsal:"7701", grado:"TTE CRL", nombres:"LUIS SOLIS ESCAJADILLO", promoAnio:"1977", promo:"1977 - CRL MARIANO ARAGONES QUINTANILLA", serie:"Serie A", partida:"PARTIDA 4"},
-      {dorsal:"7702", grado:"MY", nombres:"TEODORO MAURY BROMLIEN", promoAnio:"1977", promo:"1977 - CRL MARIANO ARAGONES QUINTANILLA", serie:"Serie A", partida:"PARTIDA 4"},
-      {dorsal:"7703", grado:"CRL", nombres:"ROBERTO FERNANDEZ MACEDO", promoAnio:"1977", promo:"1977 - CRL MARIANO ARAGONES QUINTANILLA", serie:"Serie A", partida:"PARTIDA 4"},
-      {dorsal:"7901", grado:"CRL", nombres:"FEDERICO CARRASCO DIAZ", promoAnio:"1979", promo:"1979 - TTE LUIS GARCIA RUIZ", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"7902", grado:"GRAL", nombres:"LUIS FLORES CORNEJO", promoAnio:"1979", promo:"1979 - TTE LUIS GARCIA RUIZ", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"7903", grado:"MY", nombres:"FERNANDO NUÑEZ ESPINOZA", promoAnio:"1979", promo:"1979 - TTE LUIS GARCIA RUIZ", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"8101", grado:"GRAL BRIG", nombres:"LUIS ERASMO LENGUA ORMEÑO", promoAnio:"1981", promo:"1981 - HÉROES DE PUCARA", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"8102", grado:"CRL", nombres:"TADEO AGATON RODRIGUEZ SOTO", promoAnio:"1981", promo:"1981 - HÉROES DE PUCARA", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"8103", grado:"CRL", nombres:"PEDRO PABLO CAIRAMPOMA MENDOZA", promoAnio:"1981", promo:"1981 - HÉROES DE PUCARA", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"8201", grado:"CRL", nombres:"CARLOS ANTONIO ARIAS HUAPAYA", promoAnio:"1982", promo:"1982 - CORONEL LEONCIO PRADO", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"8202", grado:"CRL", nombres:"MOISES ZAVALA CALDERON", promoAnio:"1982", promo:"1982 - CORONEL LEONCIO PRADO", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"8203", grado:"CRL", nombres:"FERNANDO ANGULO LADRON DE GUEVARA", promoAnio:"1982", promo:"1982 - CORONEL LEONCIO PRADO", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"8301", grado:"", nombres:"CRISOSTOMO ANDRADE OCHOA", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"8302", grado:"", nombres:"PEDRO ANTONIO ESPINOZA ROJAS", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"8303", grado:"CRL", nombres:"JOSE MANUEL QWISTGAARD SUAREZ", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", serie:"Serie B", partida:"PARTIDA 4"},
-      {dorsal:"8401", grado:"Crl", nombres:"Raul Masias Arispe", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8402", grado:"Crl", nombres:"Daniel Fernandez Viaña", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8403", grado:"Crl", nombres:"Marco Colome Eleno", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8404", grado:"Crl", nombres:"Pedro Meza Japay", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8501", grado:"CRL INF (R)", nombres:"Victor MOQUILLAZA CHIGUA", promoAnio:"1985", promo:"1985 - HEROES DE CONCEPCION", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8502", grado:"CRL INF (R)", nombres:"Cromwell Berlioz ESPINOZA SOTOMAYOR", promoAnio:"1985", promo:"1985 - HEROES DE CONCEPCION", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8503", grado:"CRL ART (R)", nombres:"Elmer Nicanor LA TORRE RAMOS", promoAnio:"1985", promo:"1985 - HEROES DE CONCEPCION", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8504", grado:"TTE CRL ING (R)", nombres:"Carlos Enrique CANELO MESIAS", promoAnio:"1985", promo:"1985 - HEROES DE CONCEPCION", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8601", grado:"GRAL", nombres:"JULIO CÉSAR GÁLVEZ CABALLERO", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8602", grado:"CRL", nombres:"FERNANDO LÓPEZ EYZAGUIRRE", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8603", grado:"MY", nombres:"LUIS VEGA TICSE", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8604", grado:"CRL", nombres:"NICOLÁS ISLA RAMIREZ", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8701", grado:"Gral Brig", nombres:"Gilberto Alvarerez Villalobos", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8702", grado:"Crl", nombres:"Carlos Balladares Villar", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8703", grado:"Crl", nombres:"Jose Tuesta Vela", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8704", grado:"Tte", nombres:"Jose Olazabal Black", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie C", partida:"PARTIDA 5"},
-      {dorsal:"8801", grado:"Crl", nombres:"Marco Antonio Mendoza Rodriguez", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie D", partida:"PARTIDA 5"},
-      {dorsal:"8802", grado:"Crl", nombres:"Samuel Rene Ontiveros Flores", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie D", partida:"PARTIDA 5"},
-      {dorsal:"8803", grado:"My", nombres:"Manuel Antonio Alfaro Juarez", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie D", partida:"PARTIDA 5"},
-      {dorsal:"8804", grado:"Gral", nombres:"Jaime Reynaldo Llanos Baron", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie D", partida:"PARTIDA 5"},
-      {dorsal:"9001", grado:"CRL", nombres:"GUILLERMO MIGUEL MENDOZA ANDRADE", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", serie:"Serie D", partida:"PARTIDA 5"},
-      {dorsal:"9002", grado:"CRL", nombres:"RAUL GUTIERREZ NEYRA", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", serie:"Serie D", partida:"PARTIDA 5"},
-      {dorsal:"9003", grado:"CRL", nombres:"RAUL VILLALTA SALAVERRY", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", serie:"Serie D", partida:"PARTIDA 5"}
+    // PADRÓN COMPLETO Y EXACTO DE LOS 76 ATLETAS (INCLUYE DORSALES ALFANUMÉRICOS)
+    const FULL_ROSTER = [
+      // PARTIDA 1 (7 atletas)
+      {partida:"PARTIDA 1", serie:"Serie Especial Varones 1", promoAnio:"1955", promo:"1955 - GRAL BELISARIO SUAREZ VARGAS", dorsal:"5501", grado:"Crl", nombres:"JORGE CARDENAS PEREZ PALMA"},
+      {partida:"PARTIDA 1", serie:"Serie Especial Varones 1", promoAnio:"1959", promo:"1959 - TTE CRL ROQUE SAENZ PEÑA", dorsal:"5901", grado:"Gral", nombres:"JUAN MANUEL PENDOLA ALANIA"},
+      {partida:"PARTIDA 1", serie:"Serie Especial Varones 2", promoAnio:"1971", promo:"1971 - GRAL IGNACIO ALVAREZ THOMAS", dorsal:"7101", grado:"GRAL", nombres:"CAYO ELEN RAMOS NEYRA"},
+      {partida:"PARTIDA 1", serie:"Serie Especial Varones 2", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7201", grado:"MY", nombres:"WALTER COLINA NUNURA"},
+      {partida:"PARTIDA 1", serie:"Serie Especial Varones 2", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7202", grado:"CRL", nombres:"JESUS ZAMUDIO ALIAGA"},
+      {partida:"PARTIDA 1", serie:"Serie Especial Varones 2", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7203", grado:"GRAL B", nombres:"FRANCISCO DEL ALAMO SOTA"},
+      {partida:"PARTIDA 1", serie:"Serie Especial DAMAS 2", promoAnio:"1977", promo:"1977 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7701", grado:"", nombres:"Giovanna Rojas campos"},
+      
+      // PARTIDA 2 (14 atletas)
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8401", grado:"", nombres:"Miluska Velis Abadie"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8402", grado:"", nombres:"Jesus Aguilar Cordova"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", dorsal:"8601", grado:"", nombres:"MARIA ELENA BERNA URBANO"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", dorsal:"8701", grado:"", nombres:"Rosy Mari Ruiz Bosmediano"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", dorsal:"8702", grado:"", nombres:"Nelly Matilde Jamjachi serrano"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", dorsal:"8703", grado:"", nombres:"Ketty Yepez Esquivel"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8801", grado:"", nombres:"Maria Socorro Parra Santillan"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8802", grado:"", nombres:"Maruja Baez Pareja"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8803", grado:"", nombres:"Lucy Mendoza Soria"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8804", grado:"", nombres:"Clara Vasquez Fernandez"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B01", grado:"", nombres:"ZULLY MILAGROS TALAVERA PRADO"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1990 B", promo:"1990 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B02", grado:"", nombres:"MELISSA GIANINA GUERRERO NAZARIO"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1991 B", promo:"1991 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"", nombres:"ILLIANA DA SILVA QUEREVALU"},
+      {partida:"PARTIDA 2", serie:"Serie \"E\" DAMAS", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9001", grado:"", nombres:"BERTHA ANITA PEREZ PEREZ"},
+
+      // PARTIDA 3 (7 atletas - INCLUYE 75B01, 75B02, 75B03)
+      {partida:"PARTIDA 3", serie:"Serie Especial Varones 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7301", grado:"CRL", nombres:"HUGO ROSADO BALDEON"},
+      {partida:"PARTIDA 3", serie:"Serie Especial Varones 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7302", grado:"TTE CRL", nombres:"LUIS GRADOS BAILETTI"},
+      {partida:"PARTIDA 3", serie:"Serie Especial Varones 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7303", grado:"TTE CRL", nombres:"AURELIO POZADA GONZALES"},
+      {partida:"PARTIDA 3", serie:"Serie Especial Varones 3", promoAnio:"1974", promo:"1974 - SGTO MAYOR FERMIN NACARINO", dorsal:"7401", grado:"TTE", nombres:"OSCAR EDUARDO CAMPOS HOYOS"},
+      {partida:"PARTIDA 3", serie:"Serie Especial Varones 3", promoAnio:"1975 B", promo:"1975 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B01", grado:"TTE CRL", nombres:"JOSE LUIS MORENO DA SILVA"},
+      {partida:"PARTIDA 3", serie:"Serie Especial Varones 3", promoAnio:"1976 B", promo:"1976 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B02", grado:"TTE CRL", nombres:"ERIC ANDRES MEJIA LUCAR"},
+      {partida:"PARTIDA 3", serie:"Serie Especial Varones 3", promoAnio:"1977 B", promo:"1977 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B03", grado:"CRL", nombres:"JUAN CARLOS VALERA RIOS"},
+
+      // PARTIDA 4 (18 atletas)
+      {partida:"PARTIDA 4", serie:"Serie \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7601", grado:"TTE CRL", nombres:"DANIEL MERA RODAS"},
+      {partida:"PARTIDA 4", serie:"Serie \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7602", grado:"MY", nombres:"C. HERNADEZ APARCANA"},
+      {partida:"PARTIDA 4", serie:"Serie \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7603", grado:"CAP", nombres:"J. FERNANDEZ ROBLES"},
+      {partida:"PARTIDA 4", serie:"Serie \"A\"", promoAnio:"1977", promo:"1977 - CRL MARIANO ARAGONES QUINTANILLA", dorsal:"7701", grado:"TTE CRL", nombres:"LUIS SOLIS ESCAJADILLO"},
+      {partida:"PARTIDA 4", serie:"Serie \"A\"", promoAnio:"1977", promo:"1977 - CRL MARIANO ARAGONES QUINTANILLA", dorsal:"7702", grado:"MY", nombres:"TEODORO MAURY BROMLIEN"},
+      {partida:"PARTIDA 4", serie:"Serie \"A\"", promoAnio:"1977", promo:"1977 - CRL MARIANO ARAGONES QUINTANILLA", dorsal:"7703", grado:"CRL", nombres:"ROBERTO FERNANDEZ MACEDO"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1979", promo:"1979 - TTE LUIS GARCIA RUIZ", dorsal:"7901", grado:"CRL", nombres:"FEDERICO CARRASCO DIAZ"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1979", promo:"1979 - TTE LUIS GARCIA RUIZ", dorsal:"7902", grado:"GRAL", nombres:"LUIS FLORES CORNEJO"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1979", promo:"1979 - TTE LUIS GARCIA RUIZ", dorsal:"7903", grado:"MY", nombres:"FERNANDO NUÑEZ ESPINOZA"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1981", promo:"1981 - HÉROES DE PUCARA", dorsal:"8101", grado:"GRAL BRIG", nombres:"LUIS ERASMO LENGUA ORMEÑO"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1981", promo:"1981 - HÉROES DE PUCARA", dorsal:"8102", grado:"CRL", nombres:"TADEO AGATON RODRIGUEZ SOTO"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1981", promo:"1981 - HÉROES DE PUCARA", dorsal:"8103", grado:"CRL", nombres:"PEDRO PABLO CAIRAMPOMA MENDOZA"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1982", promo:"1982 - CORONEL LEONCIO PRADO", dorsal:"8201", grado:"CRL", nombres:"CARLOS ANTONIO ARIAS HUAPAYA"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1982", promo:"1982 - CORONEL LEONCIO PRADO", dorsal:"8202", grado:"CRL", nombres:"MOISES ZAVALA CALDERON"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1982", promo:"1982 - CORONEL LEONCIO PRADO", dorsal:"8203", grado:"CRL", nombres:"FERNANDO ANGULO LADRON DE GUEVARA"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8301", grado:"", nombres:"CRISOSTOMO ANDRADE OCHOA"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8302", grado:"", nombres:"PEDRO ANTONIO ESPINOZA ROJAS"},
+      {partida:"PARTIDA 4", serie:"Serie \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8303", grado:"CRL", nombres:"JOSE MANUEL QWISTGAARD SUAREZ"},
+
+      // PARTIDA 5 (30 atletas - INCLUYE 89A01-04 Y 89B01-03)
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8401", grado:"Crl", nombres:"Raul Masias Arispe"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8402", grado:"Crl", nombres:"Daniel Fernandez Viaña"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8403", grado:"Crl", nombres:"Marco Colome Eleno"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8404", grado:"Crl", nombres:"Pedro Meza Japay"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1985", promo:"1985 - HEROES DE CONCEPCION", dorsal:"8501", grado:"CRL INF (R)", nombres:"Victor MOQUILLAZA CHIGUA"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1985", promo:"1985 - HEROES DE CONCEPCION", dorsal:"8502", grado:"CRL INF (R)", nombres:"Cromwell Berlioz ESPINOZA SOTOMAYOR"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1985", promo:"1985 - HEROES DE CONCEPCION", dorsal:"8503", grado:"CRL ART (R)", nombres:"Elmer Nicanor LA TORRE RAMOS"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1985", promo:"1985 - HEROES DE CONCEPCION", dorsal:"8504", grado:"TTE CRL ING (R)", nombres:"Carlos Enrique CANELO MESIAS"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", dorsal:"8601", grado:"GRAL", nombres:"JULIO CÉSAR GÁLVEZ CABALLERO"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", dorsal:"8602", grado:"CRL", nombres:"FERNANDO LÓPEZ EYZAGUIRRE"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", dorsal:"8603", grado:"MY", nombres:"LUIS VEGA TICSE"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", dorsal:"8604", grado:"CRL", nombres:"NICOLÁS ISLA RAMIREZ"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", dorsal:"8701", grado:"Gral Brig", nombres:"Gilberto Alvarerez Villalobos"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", dorsal:"8702", grado:"Crl", nombres:"Carlos Balladares Villar"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", dorsal:"8703", grado:"Crl", nombres:"Jose Tuesta Vela"},
+      {partida:"PARTIDA 5", serie:"Serie \"C\"", promoAnio:"1987", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", dorsal:"8704", grado:"Tte", nombres:"Jose Olazabal Black"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8801", grado:"Crl", nombres:"Marco Antonio Mendoza Rodriguez"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8802", grado:"Crl", nombres:"Samuel Rene Ontiveros Flores"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8803", grado:"My", nombres:"Manuel Antonio Alfaro Juarez"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8804", grado:"Gral", nombres:"Jaime Reynaldo Llanos Baron"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A01", grado:"Gral Brig", nombres:"Moises Chavez Farfan"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1990 A", promo:"1990 A - INKA PACHACUTEC", dorsal:"89A02", grado:"Gral Brig", nombres:"Fernando Portillo Romero"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1991 A", promo:"1991 A - INKA PACHACUTEC", dorsal:"89A03", grado:"Crl Inf", nombres:"Rafael Pinedo Canepa"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1992 A", promo:"1992 A - INKA PACHACUTEC", dorsal:"89A04", grado:"Tte Inf", nombres:"Victor Auza Montalvo"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B01", grado:"Crl", nombres:"LUIS GOMEZ BAUTISTA"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1990 B", promo:"1990 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B02", grado:"Crl", nombres:"OSCAR PALOMINO CHUCHON"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1991 B", promo:"1991 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"TTE", nombres:"IVAN DANTE BACIGALUPO LARREA"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9001", grado:"CRL", nombres:"GUILLERMO MIGUEL MENDOZA ANDRADE"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9002", grado:"CRL", nombres:"RAUL GUTIERREZ NEYRA"},
+      {partida:"PARTIDA 5", serie:"Serie \"D\"", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9003", grado:"CRL", nombres:"RAUL VILLALTA SALAVERRY"}
     ];
 
-    // CARGAR Y SANITIZAR DATOS (EVITA "UNDEFINED")
-    function cargarYCorregirDatos() {
-      let guardados = localStorage.getItem("carrera_data_2026");
+    // INICIALIZACIÓN Y FUSIÓN DE DATOS RESPETANDO LOS 76 CORREDORES
+    function cargarPadrónCompleto() {
+      const guardados = localStorage.getItem("carrera_data_2026");
       if (!guardados) {
-        return INITIAL_RUNNERS.map((r, i) => ({...r, id: i+1, tiempo: ""}));
+        return FULL_ROSTER.map((r, i) => ({...r, id: i+1, tiempo: ""}));
       }
 
-      let parsed = JSON.parse(guardados);
-      // Cruzamos con INITIAL_RUNNERS para asegurar promoAnio real
-      return parsed.map((item, idx) => {
-        let original = INITIAL_RUNNERS.find(o => String(o.dorsal) === String(item.dorsal) && o.partida === item.partida) || INITIAL_RUNNERS[idx] || {};
-        return {
-          ...item,
-          promoAnio: original.promoAnio || (item.dorsal ? '19' + String(item.dorsal).slice(0, 2) : ''),
-          promo: original.promo || item.promo || '',
-          serie: original.serie || item.serie || '',
-          grado: original.grado !== undefined ? original.grado : item.grado,
-          nombres: original.nombres || item.nombres
-        };
-      });
+      try {
+        const parsed = JSON.parse(guardados);
+        // Si el cache anterior tenía menos de 76 atletas, reemplazamos por el completo
+        if (parsed.length < FULL_ROSTER.length) {
+          return FULL_ROSTER.map((r, i) => {
+            const encontrado = parsed.find(p => String(p.dorsal).trim().toUpperCase() === String(r.dorsal).trim().toUpperCase() && p.partida === r.partida);
+            return {...r, id: i+1, tiempo: encontrado ? encontrado.tiempo : ""};
+          });
+        }
+        return parsed;
+      } catch (e) {
+        return FULL_ROSTER.map((r, i) => ({...r, id: i+1, tiempo: ""}));
+      }
     }
 
-    let runners = cargarYCorregirDatos();
+    let runners = cargarPadrónCompleto();
     let currentFilter = localStorage.getItem("carrera_active_partida") || "ALL";
     let selectedPromo = "ALL";
     let isController = localStorage.getItem("carrera_is_admin") === "true";
@@ -465,12 +490,12 @@
 
     // LIMPIEZA DE DATOS DE PRUEBA
     function restablecerTiempos() {
-      if (!confirm("¿Seguro que deseas limpiar todos los tiempos registrados de prueba? Esta acción dejará a todos los oficiales 'En Ruta' para empezar desde cero.")) return;
-      runners = INITIAL_RUNNERS.map((r, i) => ({...r, id: i+1, tiempo: ""}));
+      if (!confirm("¿Seguro que deseas limpiar todos los tiempos de prueba? Todos los 76 atletas volverán a 'En Ruta'.")) return;
+      runners = FULL_ROSTER.map((r, i) => ({...r, id: i+1, tiempo: ""}));
       saveData();
       renderTable();
       resetChrono();
-      alert("Se restablecieron todos los datos correctamente. La carrera está lista para iniciar.");
+      alert("Padrón restablecido con éxito (76 atletas oficiales listos).");
     }
 
     // FIJAR PARTIDA OFICIAL
@@ -503,7 +528,7 @@
       const sub = document.getElementById("viewSubtitle");
       if (partida === "ALL") {
         title.textContent = "TODAS LAS PARTIDAS • CLASIFICACIÓN GENERAL";
-        sub.textContent = "Viendo el total de los 63 oficiales inscritos";
+        sub.textContent = "Viendo el total de los 76 oficiales inscritos";
       } else {
         const horarios = {"PARTIDA 1":"09:30 AM", "PARTIDA 2":"09:45 AM", "PARTIDA 3":"10:00 AM", "PARTIDA 4":"10:15 AM", "PARTIDA 5":"10:30 AM"};
         title.textContent = `${partida} • HORA DE SALIDA: ${horarios[partida] || ''}`;
@@ -625,16 +650,16 @@
       btn.className = "px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider";
     }
 
-    // REGISTRO DE META
+    // REGISTRO DE META DIRECTO (ACEPTA 75B01, 89A02, ETC.)
     function registrarMetaExpress(e) {
       e.preventDefault();
       const inputD = document.getElementById("inputDorsal");
       const inputT = document.getElementById("inputTiempoManual");
-      const dorsalBuscado = inputD.value.trim();
+      const dorsalBuscado = inputD.value.trim().toUpperCase();
 
-      const atleta = runners.find(r => String(r.dorsal) === dorsalBuscado && (currentFilter === "ALL" || r.partida === currentFilter));
+      const atleta = runners.find(r => String(r.dorsal).trim().toUpperCase() === dorsalBuscado && (currentFilter === "ALL" || r.partida === currentFilter));
       if (!atleta) {
-        alert("Dorsal no encontrado en la partida seleccionada.");
+        alert(`Dorsal ${dorsalBuscado} no encontrado en la partida seleccionada.`);
         return;
       }
 
@@ -654,12 +679,12 @@
 
     // RENDERIZADO Y TABLERO
     function renderTable() {
-      const search = document.getElementById("searchInput").value.toLowerCase();
+      const search = document.getElementById("searchInput").value.toLowerCase().trim();
       
       let filtered = runners.filter(r => {
         const matchesPartida = currentFilter === "ALL" || r.partida === currentFilter;
-        const matchesPromo = selectedPromo === "ALL" || String(r.promoAnio) === String(selectedPromo);
-        const matchesSearch = r.nombres.toLowerCase().includes(search) || (r.promo && r.promo.toLowerCase().includes(search)) || String(r.dorsal).includes(search);
+        const matchesPromo = selectedPromo === "ALL" || String(r.promoAnio).toUpperCase().includes(String(selectedPromo).toUpperCase());
+        const matchesSearch = r.nombres.toLowerCase().includes(search) || (r.promo && r.promo.toLowerCase().includes(search)) || String(r.dorsal).toLowerCase().includes(search);
         return matchesPartida && matchesPromo && matchesSearch;
       });
 
@@ -696,24 +721,20 @@
         const tr = document.createElement("tr");
         tr.className = esMeta ? "bg-slate-900/40 hover:bg-slate-900/70 transition" : "hover:bg-slate-900/30 text-slate-400 transition";
 
-        // Año limpio
-        const anioPromo = r.promoAnio || (r.dorsal ? '19' + String(r.dorsal).slice(0, 2) : '-');
-
-        // Badge de Estado limpio
         const badgeEstado = esMeta 
           ? `<span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold">En Meta</span>` 
           : `<span class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 text-xs">En Ruta</span>`;
 
         tr.innerHTML = `
           <td class="py-3 px-4 text-center">${badgePuesto}</td>
-          <td class="py-3 px-4 text-center font-mono font-bold text-white">${r.dorsal}</td>
+          <td class="py-3 px-4 text-center font-mono font-bold text-white tracking-wider">${r.dorsal}</td>
           <td class="py-3 px-4">
             <div class="text-white font-semibold flex items-center gap-1.5">
               ${r.grado ? `<span class="text-xs text-emerald-400 font-mono font-normal">[${r.grado}]</span>` : ''}
               <span>${r.nombres}</span>
             </div>
           </td>
-          <td class="py-3 px-4 text-xs font-semibold text-amber-300/90">${anioPromo}</td>
+          <td class="py-3 px-4 text-xs font-semibold text-amber-300/90">${r.promoAnio}</td>
           <td class="py-3 px-4 text-xs text-slate-400">${r.serie}</td>
           <td class="py-3 px-4 text-center text-xs font-mono text-slate-400">${r.partida}</td>
           <td class="py-3 px-4 text-right font-mono font-bold ${esMeta ? 'text-emerald-400 text-base' : 'text-slate-600'}">
