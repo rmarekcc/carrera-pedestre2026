@@ -6,8 +6,6 @@
   <title>Gran Carrera Pedestre 2026 - Control y Proyección Oficial</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PeerJS para sincronización nativa en vivo -->
-  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,7 +64,7 @@
     <div class="flex items-center gap-3">
       <div id="syncBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-xs text-slate-300">
         <span id="syncDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 pulse-dot"></span>
-        <span id="syncText">Conectando red...</span>
+        <span id="syncText">Conectando nube...</span>
       </div>
 
       <button id="btnAuth" onclick="handleAuthButtonClick()" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs sm:text-sm transition flex items-center gap-1.5 shadow">
@@ -88,7 +86,6 @@
           <span class="text-xs text-slate-400">Transmisión centralizada de tiempos y estado de atletas en vivo.</span>
         </div>
         <div class="flex items-center gap-2">
-          <!-- BOTÓN RESTABLECER PRUEBAS -->
           <button onclick="restablecerTiempos()" class="px-3 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-200 text-xs border border-rose-700/50 transition font-semibold flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             Limpiar Tiempos de Prueba
@@ -119,7 +116,6 @@
 
       <!-- CRONÓMETRO Y REGISTRO RÁPIDO CON AUTO-STOP -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
-        <!-- Cronómetro con Botón de Cierre de Partida -->
         <div class="md:col-span-6 bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
           <div>
             <div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Cronómetro de Partida</div>
@@ -133,7 +129,6 @@
           </div>
         </div>
 
-        <!-- Registro por dorsal (Acepta números y letras) -->
         <div class="md:col-span-6 bg-slate-950 p-4 rounded-xl border border-slate-800">
           <div class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1.5">Registro Directo por Dorsal</div>
           <form onsubmit="registrarMetaExpress(event)" class="flex gap-2">
@@ -151,11 +146,7 @@
 
   <!-- CONTENIDO PRINCIPAL: VISTA DE ESPECTADORES / PROYECCIÓN -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 space-y-6">
-    
-    <!-- ENCABEZADO DE TRANSMISIÓN ACTUAL Y FILTROS -->
     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4 shadow-lg">
-      
-      <!-- Pestañas de Partida Completas -->
       <div class="flex flex-wrap gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
         <button onclick="setFilter('ALL')" id="f-ALL" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-black">Todas las Partidas (76)</button>
         <button onclick="setFilter('PARTIDA 1')" id="f-P1" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 1 (09:30)</button>
@@ -165,15 +156,11 @@
         <button onclick="setFilter('PARTIDA 5')" id="f-P5" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 5 (10:30)</button>
       </div>
 
-      <!-- Filtros: Serie Dinámica + Promoción + Buscador -->
       <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-        
-        <!-- SELECTOR DINÁMICO DE SERIE (NUEVO) -->
         <select id="serieSelect" onchange="handleSerieChange()" class="bg-slate-950 border border-emerald-500/40 rounded-xl px-3 py-2 text-xs text-emerald-400 font-semibold focus:outline-none focus:border-emerald-500 cursor-pointer">
           <option value="ALL">🏁 TODAS LAS SERIES</option>
         </select>
 
-        <!-- Selector desplegable de Promociones -->
         <select id="promoSelect" onchange="handlePromoChange()" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-amber-400 font-semibold focus:outline-none focus:border-emerald-500 cursor-pointer">
           <option value="ALL">🏛️ TODAS LAS PROMOCIONES</option>
           <option value="1955">PROMOCIÓN 1955</option>
@@ -206,7 +193,6 @@
       </div>
     </div>
 
-    <!-- TITULAR INFORMATIVO DE LA VISTA ACTUAL -->
     <div class="flex items-center justify-between px-1">
       <div>
         <h2 id="viewTitle" class="text-lg sm:text-xl font-chakra font-black tracking-wide text-white uppercase flex items-center gap-2">
@@ -219,9 +205,8 @@
       </div>
     </div>
 
-    <!-- PODIO DE LA SELECCIÓN ACTUAL (RECALCULADO POR PARTIDA O SERIE) -->
+    <!-- PODIO DE LA SELECCIÓN ACTUAL -->
     <div id="podiumSection" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <!-- 2° Lugar -->
       <div id="cardSecond" class="order-2 md:order-1 bg-slate-900/60 rounded-2xl border border-slate-800 p-5 flex flex-col justify-between relative overflow-hidden shadow-md">
         <div class="flex justify-between items-start">
           <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-mono text-xs font-bold border border-slate-700">2° LUGAR</span>
@@ -237,7 +222,6 @@
         </div>
       </div>
 
-      <!-- 1° Lugar -->
       <div id="cardFirst" class="order-1 md:order-2 bg-gradient-to-b from-amber-950/40 to-slate-900 rounded-2xl border-2 border-amber-500/50 p-6 flex flex-col justify-between relative overflow-hidden shadow-xl shadow-amber-500/10">
         <div class="flex justify-between items-start">
           <span class="px-3 py-1 rounded bg-amber-500 text-slate-950 font-mono text-xs font-black uppercase tracking-wider">CAMPEÓN</span>
@@ -253,7 +237,6 @@
         </div>
       </div>
 
-      <!-- 3° Lugar -->
       <div id="cardThird" class="order-3 md:order-3 bg-slate-900/60 rounded-2xl border border-slate-800 p-5 flex flex-col justify-between relative overflow-hidden shadow-md">
         <div class="flex justify-between items-start">
           <span class="px-2.5 py-1 rounded bg-slate-800 text-amber-700/80 font-mono text-xs font-bold border border-slate-700">3° LUGAR</span>
@@ -270,7 +253,7 @@
       </div>
     </div>
 
-    <!-- TABLERO PRINCIPAL DE CLASIFICACIÓN -->
+    <!-- TABLERO PRINCIPAL -->
     <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
       <div class="overflow-x-auto">
         <table class="w-full text-left text-sm">
@@ -287,14 +270,13 @@
             </tr>
           </thead>
           <tbody id="runnersTableBody" class="divide-y divide-slate-800/60 font-medium uppercase">
-            <!-- Render dinámico -->
           </tbody>
         </table>
       </div>
     </div>
   </main>
 
-  <!-- PIE DE PÁGINA INSTITUCIONAL CON AUTORÍA COMPLETA -->
+  <!-- PIE DE PÁGINA -->
   <footer class="mt-auto border-t border-slate-900 bg-slate-950/80 py-4 px-6 text-center text-xs text-slate-500 font-mono">
     Desarrollo y Control Técnico Oficial: <span class="text-slate-300 font-semibold">Tte Com Cotera Cedano Renzo Marek</span> • <span class="text-slate-300 font-semibold">Stte Com Avellaneda Espinoza Milte</span> • <span class="text-slate-300 font-semibold">Stte Com Almeyda Cancho Moises</span> | Ejército del Perú 2026
   </footer>
@@ -322,9 +304,7 @@
   </div>
 
   <script>
-    // PADRÓN COMPLETO DE LOS 76 ATLETAS (TODOS EN MAYÚSCULAS)
     const FULL_ROSTER = [
-      // PARTIDA 1 (7 atletas)
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 1", promoAnio:"1955", promo:"1955 - GRAL BELISARIO SUAREZ VARGAS", dorsal:"5501", grado:"CRL", nombres:"JORGE CARDENAS PEREZ PALMA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 1", promoAnio:"1959", promo:"1959 - TTE CRL ROQUE SAENZ PEÑA", dorsal:"5901", grado:"GRAL", nombres:"JUAN MANUEL PENDOLA ALANIA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 2", promoAnio:"1971", promo:"1971 - GRAL IGNACIO ALVAREZ THOMAS", dorsal:"7101", grado:"GRAL", nombres:"CAYO ELEN RAMOS NEYRA"},
@@ -332,8 +312,6 @@
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 2", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7202", grado:"CRL", nombres:"JESUS ZAMUDIO ALIAGA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 2", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7203", grado:"GRAL B", nombres:"FRANCISCO DEL ALAMO SOTA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL DAMAS 2", promoAnio:"1977", promo:"1977 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7701", grado:"", nombres:"GIOVANNA ROJAS CAMPOS"},
-      
-      // PARTIDA 2 (14 atletas)
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8401", grado:"", nombres:"MILUSKA VELIS ABADIE"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8402", grado:"", nombres:"JESUS AGUILAR CORDOVA"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", dorsal:"8601", grado:"", nombres:"MARIA ELENA BERNA URBANO"},
@@ -348,8 +326,6 @@
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1990 B", promo:"1990 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B02", grado:"", nombres:"MELISSA GIANINA GUERRERO NAZARIO"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1991 B", promo:"1991 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"", nombres:"ILLIANA DA SILVA QUEREVALU"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9001", grado:"", nombres:"BERTHA ANITA PEREZ PEREZ"},
-
-      // PARTIDA 3 (7 atletas)
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7301", grado:"CRL", nombres:"HUGO ROSADO BALDEON"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7302", grado:"TTE CRL", nombres:"LUIS GRADOS BAILETTI"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7303", grado:"TTE CRL", nombres:"AURELIO POZADA GONZALES"},
@@ -357,8 +333,6 @@
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1975 B", promo:"1975 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B01", grado:"TTE CRL", nombres:"JOSE LUIS MORENO DA SILVA"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1976 B", promo:"1976 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B02", grado:"TTE CRL", nombres:"ERIC ANDRES MEJIA LUCAR"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1977 B", promo:"1977 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B03", grado:"CRL", nombres:"JUAN CARLOS VALERA RIOS"},
-
-      // PARTIDA 4 (18 atletas: SERIE "A" y SERIE "B")
       {partida:"PARTIDA 4", serie:"SERIE \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7601", grado:"TTE CRL", nombres:"DANIEL MERA RODAS"},
       {partida:"PARTIDA 4", serie:"SERIE \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7602", grado:"MY", nombres:"C. HERNADEZ APARCANA"},
       {partida:"PARTIDA 4", serie:"SERIE \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7603", grado:"CAP", nombres:"J. FERNANDEZ ROBLES"},
@@ -377,8 +351,6 @@
       {partida:"PARTIDA 4", serie:"SERIE \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8301", grado:"", nombres:"CRISOSTOMO ANDRADE OCHOA"},
       {partida:"PARTIDA 4", serie:"SERIE \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8302", grado:"", nombres:"PEDRO ANTONIO ESPINOZA ROJAS"},
       {partida:"PARTIDA 4", serie:"SERIE \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8303", grado:"CRL", nombres:"JOSE MANUEL QWISTGAARD SUAREZ"},
-
-      // PARTIDA 5 (30 atletas: SERIE "C" y SERIE "D")
       {partida:"PARTIDA 5", serie:"SERIE \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8401", grado:"CRL", nombres:"RAUL MASIAS ARISPE"},
       {partida:"PARTIDA 5", serie:"SERIE \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8402", grado:"CRL", nombres:"DANIEL FERNANDEZ VIAÑA"},
       {partida:"PARTIDA 5", serie:"SERIE \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8403", grado:"CRL", nombres:"MARCO COLOME ELENO"},
@@ -411,7 +383,6 @@
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9003", grado:"CRL", nombres:"RAUL VILLALTA SALAVERRY"}
     ];
 
-    // CARGA DE DATOS RESPETANDO LOS 76 CORREDORES Y MAYÚSCULAS
     function cargarPadrónCompleto() {
       const guardados = localStorage.getItem("carrera_data_2026");
       if (!guardados) {
@@ -438,65 +409,73 @@
     let chronoStartTime = 0;
     let chronoElapsedTime = 0;
     let isChronoRunning = false;
+    let lastSyncTimestamp = 0;
 
-    // RED EN VIVO PEERJS
-    const ROOM_KEY = "carrera-pedestre-2026-peru-live";
-    let peer = null;
-    let connections = [];
+    // CANAL HTTP EN LA NUBE UNIVERSAL (ntfy.sh público y compatible con Safari/iPadOS)
+    const CLOUD_ROOM = "carrera_pedestre_oficiales_2026_peru";
+    const CLOUD_ENDPOINT = `https://ntfy.sh/${CLOUD_ROOM}`;
 
-    function initNetwork() {
-      const syncDot = document.getElementById("syncDot");
-      const syncText = document.getElementById("syncText");
+    async function broadcastToCloud() {
+      const payload = {
+        timestamp: Date.now(),
+        data: runners,
+        activePartida: currentFilter
+      };
 
       try {
-        if (isController) {
-          peer = new Peer(ROOM_KEY);
-          peer.on('open', () => {
-            syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-            syncText.textContent = "🟢 Emitiendo en vivo";
-          });
-          peer.on('connection', (conn) => {
-            connections.push(conn);
-            conn.on('open', () => {
-              conn.send({ type: "SYNC", data: runners, activePartida: currentFilter });
-            });
-          });
-          peer.on('error', () => {
-            syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-            syncText.textContent = "🟢 Conectado (Control)";
-          });
-        } else {
-          peer = new Peer();
-          peer.on('open', () => {
-            const conn = peer.connect(ROOM_KEY);
-            conn.on('open', () => {
-              syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
-              syncText.textContent = "🟢 Sincronizado en vivo";
-            });
-            conn.on('data', (payload) => {
-              if (payload && payload.type === "SYNC") {
-                runners = payload.data;
-                if (payload.activePartida && currentFilter !== payload.activePartida) {
-                  setFilter(payload.activePartida, false);
-                }
-                saveData(false);
-                renderTable();
-              }
-            });
-          });
-        }
+        await fetch(CLOUD_ENDPOINT, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: { 'Title': 'Update', 'Priority': 'low' }
+        });
       } catch (e) {
-        console.error(e);
+        console.warn("Emisión en nube falló, usando caché local.", e);
       }
     }
 
+    async function pollCloudSync() {
+      try {
+        const response = await fetch(`${CLOUD_ENDPOINT}/json?poll=1&since=latest`);
+        if (response.ok) {
+          const text = await response.text();
+          const lines = text.trim().split('\n');
+          for (let line of lines) {
+            try {
+              const msg = JSON.parse(line);
+              if (msg.message) {
+                const payload = JSON.parse(msg.message);
+                if (payload.timestamp && payload.timestamp > lastSyncTimestamp) {
+                  lastSyncTimestamp = payload.timestamp;
+                  runners = payload.data;
+                  if (payload.activePartida && currentFilter !== payload.activePartida) {
+                    setFilter(payload.activePartida, false);
+                  }
+                  saveData(false);
+                  renderTable();
+                }
+              }
+            } catch (err) {}
+          }
+          document.getElementById("syncDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+          document.getElementById("syncText").textContent = isController ? "🟢 Emitiendo nube" : "🟢 Sincronizado nube";
+        }
+      } catch (e) {
+        document.getElementById("syncDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+        document.getElementById("syncText").textContent = "🟢 Red activa";
+      }
+    }
+
+    function initNetwork() {
+      document.getElementById("syncDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+      document.getElementById("syncText").textContent = isController ? "🟢 Emitiendo nube" : "🟢 Sincronizado nube";
+      setInterval(pollCloudSync, 2000);
+    }
+
     function broadcastState() {
-      connections.forEach(conn => {
-        if (conn.open) conn.send({ type: "SYNC", data: runners, activePartida: currentFilter });
-      });
       localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
       localStorage.setItem("carrera_active_partida", currentFilter);
       window.dispatchEvent(new Event('storage'));
+      broadcastToCloud();
     }
 
     window.addEventListener('storage', () => {
@@ -519,7 +498,6 @@
       }
     }
 
-    // LIMPIEZA DE DATOS DE PRUEBA
     function restablecerTiempos() {
       if (!confirm("¿Seguro que deseas limpiar todos los tiempos de prueba? Los 76 oficiales volverán a 'EN RUTA'.")) return;
       runners = FULL_ROSTER.map((r, i) => ({...r, id: i+1, tiempo: ""}));
@@ -529,7 +507,6 @@
       alert("Padrón restablecido con éxito (76 atletas listos).");
     }
 
-    // FIJAR PARTIDA OFICIAL
     function fijarPartidaOficial(partida) {
       setFilter(partida, true);
     }
@@ -544,7 +521,6 @@
       if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20";
     }
 
-    // ACTUALIZA EL DESPLEGABLE DE SERIES SEGÚN LA PARTIDA SELECCIONADA
     function actualizarSelectorSeries() {
       const select = document.getElementById("serieSelect");
       select.innerHTML = "";
@@ -622,7 +598,6 @@
       renderTable();
     }
 
-    // AUTENTICACIÓN
     function handleAuthButtonClick() {
       if (isController) {
         const panel = document.getElementById("controlPanel");
@@ -689,7 +664,6 @@
       renderTable();
     }
 
-    // CRONÓMETRO CON AUTO-STOP Y CIERRE DE PARTIDA
     function formatTime(ms) {
       const minutes = Math.floor(ms / 60000);
       const seconds = Math.floor((ms % 60000) / 1000);
@@ -750,7 +724,6 @@
       btn.className = "px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider";
     }
 
-    // REGISTRO DE META DIRECTO CON COMPROBACIÓN DE ÚLTIMO ATLETA
     function registrarMetaExpress(e) {
       e.preventDefault();
       const inputD = document.getElementById("inputDorsal");
@@ -776,7 +749,6 @@
       inputT.value = "";
       inputD.focus();
 
-      // AUTO-STOP: Verificar si era el último atleta restante de la partida
       if (currentFilter !== "ALL") {
         const corredoresDePartida = runners.filter(r => r.partida === currentFilter);
         const restantes = corredoresDePartida.filter(r => !r.tiempo || r.tiempo.trim() === "");
@@ -786,7 +758,6 @@
       }
     }
 
-    // RENDERIZADO Y TABLERO CON FILTRO COMBINADO POR PARTIDA Y SERIE
     function renderTable() {
       const search = document.getElementById("searchInput").value.toUpperCase().trim();
       
