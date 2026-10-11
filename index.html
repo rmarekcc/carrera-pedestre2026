@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full bg-slate-950">
+<html lang="es" class="h-full">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gran Carrera Pedestre de Oficiales en Retiro | Control Oficial</title>
-  
-  <!-- Tailwind CSS CDN -->
+  <title>Gran Carrera Pedestre de Oficiales en Retiro | Cronometraje Oficial</title>
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Tipografías: Bebas Neue (Display deportivo), Orbitron (Cronómetro LED táctico) e Inter -->
+
+  <!-- Google Fonts: Plus Jakarta Sans (ultra legible) & JetBrains Mono (precisión cronométrica) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -22,30 +22,22 @@
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            display: ['"Bebas Neue"', 'sans-serif'],
-            led: ['Orbitron', 'monospace']
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            camo: {
-              950: '#0a120c',
-              900: '#111e15',
-              850: '#15251a',
-              800: '#1b3022',
-              700: '#26422f',
-              600: '#34573f',
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              900: '#064e3b',
             },
-            gold: {
-              300: '#fde047',
-              400: '#facc15',
-              500: '#d4af37',
-              600: '#b89025',
-              700: '#94721a',
-            },
-            crimson: {
-              700: '#991b1b',
-              800: '#7f1d1d',
-              900: '#4c0d0d',
+            military: {
+              card: '#131e1c',
+              border: '#1f332c',
+              badge: '#172e25',
             }
           }
         }
@@ -54,188 +46,208 @@
   </script>
 
   <style>
-    /* Efectos de resplandor militar y podio de honor */
-    .glow-gold {
-      box-shadow: 0 0 25px rgba(212, 175, 55, 0.28);
-      border-color: rgba(212, 175, 55, 0.85);
+    /* Estilos de barras de desplazamiento suaves */
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
     }
-    .glow-silver {
-      box-shadow: 0 0 20px rgba(203, 213, 225, 0.2);
-      border-color: rgba(203, 213, 225, 0.7);
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #0f172a;
     }
-    .glow-bronze {
-      box-shadow: 0 0 20px rgba(205, 127, 50, 0.25);
-      border-color: rgba(205, 127, 50, 0.75);
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
     }
-    .glow-led {
-      text-shadow: 0 0 16px rgba(250, 204, 21, 0.55), 0 0 32px rgba(212, 175, 55, 0.3);
-    }
-    .glass-military {
-      background: linear-gradient(135deg, rgba(21, 37, 26, 0.85) 0%, rgba(10, 18, 12, 0.95) 100%);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(212, 175, 55, 0.18);
-    }
-    /* Ribete sutil militar */
-    .military-ribbon {
-      background: repeating-linear-gradient(
-        -45deg,
-        rgba(212, 175, 55, 0.08),
-        rgba(212, 175, 55, 0.08) 12px,
-        transparent 12px,
-        transparent 24px
-      );
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: #475569;
     }
   </style>
 </head>
-<body class="bg-camo-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-gold-500 selection:text-black">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-emerald-500 selection:text-white">
 
-  <!-- BARRA DE NAVEGACIÓN SUPERIOR INSTITUCIONAL -->
-  <header class="sticky top-0 z-40 bg-camo-900/95 backdrop-blur-md border-b border-gold-500/30 px-3 sm:px-6 py-3 shadow-2xl flex items-center justify-between gap-3">
-    
-    <!-- Emblema Militar & Títulos -->
-    <div class="flex items-center gap-3">
-      <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-gold-600 via-camo-800 to-crimson-800 p-0.5 shadow-lg flex-shrink-0">
-        <div class="w-full h-full bg-camo-950 rounded-[10px] flex items-center justify-center border border-gold-500/40">
-          <i data-lucide="shield" class="w-6 h-6 text-gold-400"></i>
+  <!-- BARRA DE NAVEGACIÓN SUPERIOR -->
+  <header class="border-b border-slate-800/80 bg-slate-900/95 backdrop-blur-md sticky top-0 z-40 px-4 sm:px-6 py-3 transition-all shadow-lg shadow-black/20">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      
+      <!-- Logotipo y Nombre del Evento -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 ring-1 ring-emerald-400/30">
+          <i data-lucide="trophy" class="w-5 h-5 text-white"></i>
         </div>
-      </div>
-      <div>
-        <div class="flex items-center gap-2 flex-wrap">
-          <h1 class="text-sm sm:text-lg font-black tracking-wider text-white uppercase font-display leading-none">
-            GRAN CARRERA PEDESTRE DE OFICIALES EN RETIRO
-          </h1>
-          <span id="roleIndicatorBadge" class="text-[10px] font-extrabold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
-            PROYECCIÓN PÚBLICA
-          </span>
-        </div>
-        <p class="text-[11px] text-gold-500/90 font-semibold tracking-wide">
-          SISTEMA OFICIAL DE CRONOMETRAJE Y CONTROL DE META
-        </p>
-      </div>
-    </div>
-
-    <!-- Controles de Modo & Pantalla Completa -->
-    <div class="flex items-center gap-2">
-      <!-- Botón Pantalla Completa para Proyector -->
-      <button onclick="toggleFullscreen()" title="Pantalla Completa Proyector" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-camo-800 hover:bg-camo-700 text-gold-400 hover:text-white border border-gold-500/30 transition flex items-center gap-1.5 text-xs font-bold shadow-md">
-        <i data-lucide="maximize" class="w-4 h-4"></i>
-        <span class="hidden md:inline uppercase tracking-wider">Pantalla Completa</span>
-      </button>
-
-      <!-- Bloque de Autenticación / Acceso a Mesa de Control -->
-      <div id="authNavWrapper">
-        <button id="btnOpenAuthModal" onclick="openPinModal()" class="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-camo-950 shadow-lg shadow-gold-500/20 transition active:scale-95">
-          <i data-lucide="lock" class="w-3.5 h-3.5 text-camo-950"></i>
-          <span>Mesa Técnica</span>
-        </button>
-
-        <div id="adminNavActions" class="hidden flex items-center gap-2">
-          <button id="btnToggleViews" onclick="toggleActiveView()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-black tracking-wider uppercase bg-gold-400 hover:bg-gold-300 text-camo-950 transition shadow">
-            <i data-lucide="tv" class="w-3.5 h-3.5"></i>
-            <span id="labelToggleViews">Ver Proyector</span>
-          </button>
-          <button onclick="logoutAdmin()" title="Bloquear / Cerrar Mesa" class="p-2 rounded-xl text-xs font-bold bg-crimson-800/80 hover:bg-crimson-700 text-red-200 border border-red-700/50 transition">
-            <i data-lucide="log-out" class="w-4 h-4"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-  </header>
-
-  <!-- CONTENIDO PRINCIPAL -->
-  <main class="flex-1 flex flex-col p-3 sm:p-6 lg:p-8 max-w-[1720px] w-full mx-auto gap-6">
-
-    <!-- ========================================================================= -->
-    <!-- VISTA 1: MODO ESPECTADOR / PROYECCIÓN OFICIAL (PÚBLICO Y SOLO LECTURA)    -->
-    <!-- ========================================================================= -->
-    <section id="spectatorViewSection" class="flex flex-col gap-6">
-
-      <!-- BANNER DE ESTADO MILITAR & CRONOGRAMA DE PARTIDAS -->
-      <div class="glass-military p-5 sm:p-7 rounded-3xl shadow-2xl border border-gold-500/30 relative overflow-hidden military-ribbon flex flex-wrap items-center justify-between gap-4">
         <div>
           <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-widest bg-gold-500/20 text-gold-400 border border-gold-500/50 uppercase">
-              COMPETENCIA EN CURSO
-            </span>
-            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> CONTROL ACTIVO
+            <h1 class="text-sm sm:text-base font-bold tracking-tight text-white">
+              Gran Carrera Pedestre <span class="text-emerald-400 font-extrabold">2026</span>
+            </h1>
+            <span id="roleBadge" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700/80">
+              Espectador
             </span>
           </div>
-          <h2 id="spectatorSectionTitle" class="text-3xl sm:text-5xl font-black text-white font-display tracking-wider uppercase mt-1">
-            CLASIFICACIÓN GENERAL DE HONOR
-          </h2>
-          <p id="spectatorSectionSubtitle" class="text-xs sm:text-sm text-slate-300 font-medium">
-            Tiempos oficiales y podio de arribo actualizados en tiempo real al cruce de meta.
-          </p>
+          <p class="text-xs text-slate-400 font-medium">Oficiales del Ejército en Retiro • Control Oficial en Vivo</p>
         </div>
+      </div>
 
-        <!-- Filtros Rápidos de Partidas para el Proyector -->
-        <div class="flex flex-col sm:items-end gap-2 w-full sm:w-auto">
-          <span class="text-[11px] font-extrabold uppercase text-gold-400 tracking-wider">Filtrar por Partida Oficial:</span>
-          <div class="flex flex-wrap items-center gap-1.5">
-            <button onclick="setSpectatorFilter('ALL')" data-sfilter="ALL" class="s-filter-btn px-3 py-1.5 rounded-xl text-xs font-black bg-gold-500 text-camo-950 shadow-md">
-              General
+      <!-- Acciones de Cabecera -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Modo Pantalla Completa / Proyector -->
+        <button onclick="toggleFullscreen()" title="Pantalla Completa para Proyector" class="h-9 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition flex items-center gap-1.5 shadow-sm active:scale-95">
+          <i data-lucide="maximize" class="w-3.5 h-3.5 text-emerald-400"></i>
+          <span class="hidden md:inline">Modo Proyector</span>
+        </button>
+
+        <!-- Botón Acceso Mesa Técnica (Invitados) -->
+        <div id="authActionsContainer">
+          <button id="btnOpenPinModal" onclick="openPinModal()" class="h-9 px-3.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-emerald-600/25 active:scale-95">
+            <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
+            <span>Mesa Técnica</span>
+          </button>
+
+          <!-- Botones cuando está autenticado -->
+          <div id="adminTopBar" class="hidden items-center gap-2">
+            <button id="btnToggleView" onclick="toggleActiveView()" class="h-9 px-3.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold transition flex items-center gap-1.5 shadow-md shadow-amber-500/20 active:scale-95">
+              <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
+              <span id="viewModeText">Mesa de Control</span>
             </button>
-            <button onclick="setSpectatorFilter('1')" data-sfilter="1" class="s-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-gold-500/20">
-              P1 (09:30)
-            </button>
-            <button onclick="setSpectatorFilter('2')" data-sfilter="2" class="s-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-gold-500/20">
-              P2 (09:45)
-            </button>
-            <button onclick="setSpectatorFilter('3')" data-sfilter="3" class="s-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-gold-500/20">
-              P3 (10:00)
-            </button>
-            <button onclick="setSpectatorFilter('4')" data-sfilter="4" class="s-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-gold-500/20">
-              P4 (10:15)
-            </button>
-            <button onclick="setSpectatorFilter('5')" data-sfilter="5" class="s-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-gold-500/20">
-              P5 (10:30)
+            <button onclick="logoutAdmin()" title="Cerrar Mesa Técnica" class="h-9 px-3 rounded-lg bg-slate-800 hover:bg-rose-950/50 border border-slate-700 hover:border-rose-700/50 text-slate-300 hover:text-rose-300 text-xs font-semibold transition flex items-center gap-1.5">
+              <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
+              <span class="hidden sm:inline">Salir</span>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- PODIO DE HONOR: ORO, PLATA Y BRONCE -->
-      <div id="podiumContainer" class="grid grid-cols-1 md:grid-cols-3 gap-5 items-end">
-        <!-- Renderizado dinámicamente con laureles y tiempos -->
+    </div>
+  </header>
+
+  <!-- CONTENEDOR PRINCIPAL -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col gap-6">
+
+    <!-- RESUMEN EN VIVO Y CARDS DE ESTADO -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <!-- Total Corredores -->
+      <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-sm flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+          <i data-lucide="users" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Atletas Inscritos</p>
+          <p class="text-xl sm:text-2xl font-black text-white font-mono">63</p>
+        </div>
       </div>
 
-      <!-- TABLA GENERAL DE POSICIONES EN VIVO -->
-      <div class="glass-military rounded-3xl overflow-hidden border border-gold-500/30 shadow-2xl flex flex-col">
-        <div class="bg-camo-900 px-6 py-4 border-b border-gold-500/20 flex flex-wrap items-center justify-between gap-3">
-          <div class="flex items-center gap-2 text-gold-400 font-display text-xl sm:text-2xl tracking-wider uppercase">
-            <i data-lucide="award" class="w-6 h-6 text-gold-400"></i>
-            <span>TABLA DE POSICIONES Y ARRIBOS OFICIALES</span>
-          </div>
+      <!-- En Meta -->
+      <div class="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-800/40 shadow-sm flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+          <i data-lucide="check-check" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">En Meta</p>
+          <p id="statArrived" class="text-xl sm:text-2xl font-black text-emerald-300 font-mono">0</p>
+        </div>
+      </div>
 
-          <div class="flex items-center gap-4 text-xs font-bold">
-            <span class="flex items-center gap-1.5 text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-500/30">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              En Meta: <b id="specFinishedCount" class="text-white ml-1">0</b>
-            </span>
-            <span class="flex items-center gap-1.5 text-slate-400 bg-camo-950 px-3 py-1 rounded-full border border-slate-700">
-              En Ruta: <b id="specPendingCount" class="text-white ml-1">63</b>
-            </span>
-          </div>
+      <!-- En Ruta -->
+      <div class="p-4 rounded-2xl bg-amber-950/20 border border-amber-800/30 shadow-sm flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+          <i data-lucide="activity" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold text-amber-400 uppercase tracking-wider">En Ruta</p>
+          <p id="statPending" class="text-xl sm:text-2xl font-black text-amber-300 font-mono">63</p>
+        </div>
+      </div>
+
+      <!-- Mejor Tiempo Oficial -->
+      <div class="p-4 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-sm flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+          <i data-lucide="medal" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Mejor Tiempo</p>
+          <p id="statBestTime" class="text-lg sm:text-xl font-black text-amber-400 font-mono">--:--:--</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- VISTA 1: ESPECTADORES / PROYECCIÓN EN VIVO              -->
+    <!-- ======================================================= -->
+    <section id="spectatorSection" class="flex flex-col gap-6">
+
+      <!-- BARRA DE FILTROS POR PARTIDA -->
+      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 bg-slate-900/80 border border-slate-800 p-2 sm:p-2.5 rounded-2xl">
+        
+        <!-- Pestañas de Partida -->
+        <div class="flex items-center overflow-x-auto custom-scroll gap-1.5 p-0.5">
+          <button onclick="setFilter('ALL')" data-filter="ALL" class="filter-btn px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white shadow-sm">
+            Todas (63)
+          </button>
+          <button onclick="setFilter('1')" data-filter="1" class="filter-btn px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white">
+            Partida 1 • 09:30
+          </button>
+          <button onclick="setFilter('2')" data-filter="2" class="filter-btn px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white">
+            Partida 2 • 09:45 (Damas)
+          </button>
+          <button onclick="setFilter('3')" data-filter="3" class="filter-btn px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white">
+            Partida 3 • 10:00
+          </button>
+          <button onclick="setFilter('4')" data-filter="4" class="filter-btn px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white">
+            Partida 4 • 10:15
+          </button>
+          <button onclick="setFilter('5')" data-filter="5" class="filter-btn px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white">
+            Partida 5 • 10:30
+          </button>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <thead class="bg-camo-950 text-gold-400 uppercase text-xs tracking-wider border-b border-gold-500/20 font-extrabold">
-              <tr>
-                <th class="py-4 px-6 text-center w-28">Puesto</th>
-                <th class="py-4 px-6 text-center w-32">Dorsal</th>
-                <th class="py-4 px-6 text-base">Oficial / Atleta</th>
-                <th class="py-4 px-6 text-sm">Promoción Histórica</th>
-                <th class="py-4 px-6 text-sm">Serie & Partida</th>
-                <th class="py-4 px-6 text-center w-48 text-base">Tiempo Oficial</th>
+        <!-- Buscador en Espectador -->
+        <div class="relative min-w-[240px]">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+          <input type="text" id="spectatorSearchInput" oninput="renderSpectatorView()" placeholder="Buscar atleta, dorsal o promoción..." class="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition" />
+        </div>
+
+      </div>
+
+      <!-- PODIO DE HONOR (Top 3 en Vivo) -->
+      <div>
+        <div class="flex items-center justify-between mb-3 px-1">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+            <h2 id="currentViewTitle" class="text-base sm:text-lg font-extrabold text-white">Podio Oficial • Clasificación General</h2>
+          </div>
+          <span class="text-xs text-emerald-400 font-semibold flex items-center gap-1">
+            <i data-lucide="radio" class="w-3.5 h-3.5"></i> En Vivo
+          </span>
+        </div>
+
+        <div id="podiumContainer" class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+          <!-- Generado dinámicamente con JS -->
+        </div>
+      </div>
+
+      <!-- TABLA DE RESULTADOS Y LLEGADAS -->
+      <div class="rounded-2xl border border-slate-800 bg-slate-900/90 shadow-xl overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-slate-800 bg-slate-900/95 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i data-lucide="list-ordered" class="w-4 h-4 text-emerald-400"></i>
+            <h3 class="text-sm font-bold text-white">Tabla de Posiciones y Tiempos</h3>
+          </div>
+          <span class="text-xs font-mono font-medium text-slate-400">Actualización en tiempo real</span>
+        </div>
+
+        <div class="overflow-x-auto custom-scroll">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 bg-slate-950/70 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                <th class="py-3.5 px-4 text-center w-16">Puesto</th>
+                <th class="py-3.5 px-4 text-center w-24">Dorsal</th>
+                <th class="py-3.5 px-4 font-bold text-slate-200">Oficial / Atleta</th>
+                <th class="py-3.5 px-4 hidden md:table-cell text-slate-300">Promoción</th>
+                <th class="py-3.5 px-4 hidden sm:table-cell text-slate-400">Serie & Partida</th>
+                <th class="py-3.5 px-4 text-right w-36 font-bold text-slate-200">Tiempo Oficial</th>
               </tr>
             </thead>
-            <tbody id="spectatorTableBody" class="divide-y divide-camo-800 text-white font-medium">
-              <!-- Renderizado dinámicamente -->
+            <tbody id="spectatorTableBody" class="divide-y divide-slate-800/60 font-medium">
+              <!-- Registros dinámicos -->
             </tbody>
           </table>
         </div>
@@ -243,192 +255,159 @@
 
     </section>
 
-    <!-- ========================================================================= -->
-    <!-- VISTA 2: MESA TÉCNICA Y CONTROL DE META (SOLO AUTORIZADO CON PIN 1095)    -->
-    <!-- ========================================================================= -->
-    <section id="adminViewSection" class="hidden flex-col gap-6">
+    <!-- ======================================================= -->
+    <!-- VISTA 2: MESA DE CONTROL TÉCNICO (Desbloqueado con PIN)  -->
+    <!-- ======================================================= -->
+    <section id="adminSection" class="hidden flex-col gap-6">
 
-      <!-- BANNER DE AVISO DE SEGURIDAD -->
-      <div class="bg-gold-500/10 border-2 border-gold-500/40 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-3 text-gold-300">
-        <div class="flex items-center gap-2.5 font-bold text-sm">
-          <i data-lucide="shield-alert" class="w-5 h-5 text-gold-400"></i>
-          <span>MESA TÉCNICA ACTIVA: Registra dorsales por teclado. Cada arribo se transmite de inmediato al proyector.</span>
-        </div>
-        <div class="text-xs bg-gold-500/20 text-gold-300 px-3 py-1 rounded-lg border border-gold-500/40 font-mono font-bold">
-          CONEXIÓN MULTI-PANTALLA: SINCRONIZADA
-        </div>
-      </div>
-
-      <!-- CRONÓMETRO MAESTRO & REGISTRO ULTRA-RÁPIDO POR DORSAL -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
+      <!-- BANNER DE MESA DE CONTROL + CRONÓMETRO + ENTRADA RÁPIDA -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        
         <!-- Panel del Cronómetro Táctico -->
-        <div class="lg:col-span-5 glass-military p-6 rounded-3xl border border-gold-500/30 shadow-2xl flex flex-col justify-between">
-          <div class="flex items-center justify-between border-b border-gold-500/20 pb-3">
-            <div class="flex items-center gap-2 text-gold-400 font-bold text-sm tracking-wider uppercase">
-              <i data-lucide="timer" class="w-4 h-4"></i>
-              <span>Cronómetro Oficial de Partida</span>
-            </div>
-            
-            <div class="flex items-center gap-1.5">
-              <label class="text-[11px] text-slate-400 font-bold uppercase">Partida:</label>
-              <select id="activePartidaSelect" onchange="changeActivePartida()" class="bg-camo-950 text-gold-400 text-xs font-bold px-2 py-1 rounded-lg border border-gold-500/40 outline-none">
-                <option value="1">P1 (09:30)</option>
-                <option value="2">P2 (09:45)</option>
-                <option value="3">P3 (10:00)</option>
-                <option value="4">P4 (10:15)</option>
-                <option value="5">P5 (10:30)</option>
-                <option value="G">General</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="text-center my-4">
-            <div id="chronoDisplay" class="font-led text-5xl sm:text-6xl font-black text-gold-400 tracking-wider glow-led">
-              00:00:00.0
-            </div>
-            <div id="chronoStatusBadge" class="inline-block mt-2 text-[11px] font-extrabold uppercase px-3 py-0.5 rounded-full bg-camo-950 text-slate-400 border border-slate-700">
-              DETENIDO
-            </div>
-          </div>
-
-          <div class="grid grid-cols-3 gap-2">
-            <button id="btnChronoToggle" onclick="toggleChrono()" class="py-3 px-3 rounded-xl font-black text-xs uppercase bg-emerald-600 hover:bg-emerald-500 text-white transition active:scale-95 flex items-center justify-center gap-1.5 shadow-lg">
-              <i data-lucide="play" class="w-4 h-4" id="iconChronoToggle"></i>
-              <span id="labelChronoToggle">Iniciar</span>
-            </button>
-            <button onclick="resetChrono()" class="py-3 px-3 rounded-xl font-bold text-xs uppercase bg-camo-800 hover:bg-camo-700 text-slate-300 border border-slate-600 transition flex items-center justify-center gap-1.5">
-              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-              <span>Reiniciar</span>
-            </button>
-            <button onclick="captureCurrentChronoToInput()" class="py-3 px-3 rounded-xl font-bold text-xs uppercase bg-gold-500/20 hover:bg-gold-500/30 text-gold-300 border border-gold-500/40 transition flex items-center justify-center gap-1.5">
-              <i data-lucide="clock" class="w-4 h-4"></i>
-              <span>Capturar</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Registro Rápido en Línea de Meta -->
-        <div class="lg:col-span-7 glass-military p-6 rounded-3xl border border-gold-500/30 shadow-2xl flex flex-col justify-between">
-          <div class="flex items-center justify-between border-b border-gold-500/20 pb-3">
-            <div class="flex items-center gap-2 text-gold-400 font-bold text-sm tracking-wider uppercase">
-              <i data-lucide="flag" class="w-4 h-4 text-gold-400"></i>
-              <span>Registro de Llegada en Meta (Dorsal + Enter)</span>
-            </div>
-            <span class="text-[11px] text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-bold">
-              Modo Automático Activo
+        <div class="lg:col-span-5 p-5 rounded-2xl border border-slate-800 bg-slate-900 shadow-md flex flex-col justify-between">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
+              <i data-lucide="timer" class="w-4 h-4 text-emerald-400"></i>
+              Cronómetro de Salida
+            </span>
+            <span id="chronoStatusBadge" class="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
+              Detenido
             </span>
           </div>
 
-          <form onsubmit="handleQuickBibSubmit(event)" class="space-y-4 my-2">
+          <div class="text-center my-6">
+            <div id="chronoDisplay" class="font-mono text-4xl sm:text-5xl font-black tracking-tight text-white drop-shadow">
+              00:00:00.0
+            </div>
+            <p class="text-[11px] text-slate-400 mt-1">Tiempo de partida oficial</p>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <button id="btnChronoToggle" onclick="toggleChronometer()" class="py-2.5 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center justify-center gap-1.5 shadow-md shadow-emerald-600/30 active:scale-95">
+              <i data-lucide="play" class="w-4 h-4" id="chronoToggleIcon"></i>
+              <span id="chronoToggleLabel">Iniciar</span>
+            </button>
+            <button onclick="resetChronometer()" class="py-2.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition active:scale-95">
+              Reiniciar
+            </button>
+            <button onclick="pasteChronoToInput()" class="py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center justify-center gap-1 shadow-sm active:scale-95">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              Copiar
+            </button>
+          </div>
+        </div>
+
+        <!-- Entrada Ultra-Rápida de Arribos por Dorsal -->
+        <div class="lg:col-span-7 p-5 rounded-2xl border border-slate-800 bg-slate-900 shadow-md flex flex-col justify-between">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
+              Registro Inmediato en Meta
+            </span>
+            <span class="text-xs text-emerald-400 font-semibold">Tipea dorsal + pulsa Enter</span>
+          </div>
+
+          <form onsubmit="handleQuickFinish(event)" class="my-4">
             <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end">
-              
-              <!-- Input de Dorsal Gigante -->
               <div class="sm:col-span-5">
-                <label class="block text-xs font-bold text-gold-400 uppercase mb-1">Dorsal del Corredor:</label>
+                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Número de Dorsal</label>
                 <div class="relative">
-                  <input type="text" id="inputBib" placeholder="Ej: 8401" autofocus class="w-full bg-camo-950 border-2 border-gold-500/50 focus:border-gold-400 text-white font-led text-3xl font-bold px-4 py-2 rounded-2xl outline-none tracking-widest placeholder:text-slate-700" />
-                  <span class="absolute right-3 top-3 text-[10px] font-black text-gold-600/70 font-mono">DORSAL</span>
+                  <span class="absolute left-3 top-2.5 text-slate-500 font-mono font-bold">#</span>
+                  <input type="text" id="quickDorsalInput" placeholder="Ej. 8401" autofocus class="w-full bg-slate-950 border border-slate-700 focus:border-emerald-500 rounded-xl pl-7 pr-3 py-2 text-xl font-mono font-black text-white outline-none transition placeholder:text-slate-600" />
                 </div>
               </div>
 
-              <!-- Input de Tiempo (opcional o automático) -->
               <div class="sm:col-span-4">
-                <label class="block text-xs font-bold text-slate-300 uppercase mb-1">Tiempo (Vacío = Cronómetro):</label>
-                <input type="text" id="inputManualTime" placeholder="mm:ss o hh:mm:ss" class="w-full bg-camo-950 border border-slate-700 focus:border-gold-400 text-white font-led text-lg px-3 py-3 rounded-2xl outline-none placeholder:text-slate-600" />
+                <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Tiempo (Opcional)</label>
+                <input type="text" id="quickTimeManualInput" placeholder="Vacío = Cronómetro" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-emerald-300 outline-none transition placeholder:text-slate-600" />
               </div>
 
-              <!-- Botón Registrar -->
               <div class="sm:col-span-3">
-                <button type="submit" class="w-full bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-camo-950 font-black text-sm uppercase py-3.5 px-3 rounded-2xl shadow-xl shadow-gold-500/25 transition active:scale-95 flex items-center justify-center gap-1.5 tracking-wider">
-                  <i data-lucide="check-circle" class="w-5 h-5"></i>
-                  <span>Registrar</span>
+                <button type="submit" class="w-full h-[44px] rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold uppercase tracking-wider transition shadow-md shadow-emerald-600/25 active:scale-95 flex items-center justify-center gap-1.5">
+                  <i data-lucide="check" class="w-4 h-4"></i>
+                  Registrar
                 </button>
               </div>
-
             </div>
           </form>
 
-          <!-- Tarjeta de Último Registro -->
-          <div class="p-3.5 rounded-2xl bg-camo-950 border border-gold-500/20 flex items-center justify-between text-xs">
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-              <span class="text-slate-400 font-medium">Último cruce registrado:</span>
-              <span id="lastRegisteredAthleteInfo" class="font-bold text-gold-400">Sin arribos registrados aún</span>
+          <!-- Resumen del último atleta registrado -->
+          <div class="p-3 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2 truncate">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span class="text-slate-400 text-[11px] font-medium">Última llegada:</span>
+              <span id="recentArrivalLabel" class="text-white font-bold truncate">Aún sin registros en esta sesión</span>
             </div>
-            <span id="lastRegisteredAthleteTime" class="font-led text-emerald-400 font-bold text-base">--:--:--</span>
+            <span id="recentArrivalTime" class="font-mono text-emerald-400 font-extrabold ml-2 text-sm">--:--:--</span>
           </div>
         </div>
 
       </div>
 
-      <!-- BARRA DE GESTIÓN: BUSCADOR, FILTROS Y EXPORTACIÓN -->
-      <div class="glass-military p-4 rounded-2xl border border-gold-500/20 flex flex-wrap items-center justify-between gap-4">
+      <!-- BARRA DE GESTIÓN, BÚSQUEDA Y EXPORTACIÓN -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 rounded-2xl border border-slate-800 bg-slate-900">
         
-        <!-- Filtros por Partida para el Controlador -->
-        <div class="flex flex-wrap items-center gap-1.5">
-          <span class="text-xs font-extrabold text-gold-400 uppercase mr-1">Partida:</span>
-          <button onclick="setAdminFilter('ALL')" data-afilter="ALL" class="a-filter-btn px-3 py-1.5 rounded-xl text-xs font-black bg-gold-500 text-camo-950 shadow">
+        <!-- Pestañas Partida en Mesa Técnica -->
+        <div class="flex items-center gap-1.5 overflow-x-auto custom-scroll p-0.5">
+          <button onclick="setAdminFilter('ALL')" data-adminfilter="ALL" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white">
             Todas (63)
           </button>
-          <button onclick="setAdminFilter('1')" data-afilter="1" class="a-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-slate-700">
-            P1 (09:30)
+          <button onclick="setAdminFilter('1')" data-adminfilter="1" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+            P1
           </button>
-          <button onclick="setAdminFilter('2')" data-afilter="2" class="a-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-slate-700">
-            P2 (09:45)
+          <button onclick="setAdminFilter('2')" data-adminfilter="2" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+            P2 (Damas)
           </button>
-          <button onclick="setAdminFilter('3')" data-afilter="3" class="a-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-slate-700">
-            P3 (10:00)
+          <button onclick="setAdminFilter('3')" data-adminfilter="3" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+            P3
           </button>
-          <button onclick="setAdminFilter('4')" data-afilter="4" class="a-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-slate-700">
-            P4 (10:15)
+          <button onclick="setAdminFilter('4')" data-adminfilter="4" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+            P4
           </button>
-          <button onclick="setAdminFilter('5')" data-afilter="5" class="a-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-slate-700">
-            P5 (10:30)
+          <button onclick="setAdminFilter('5')" data-adminfilter="5" class="admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
+            P5
           </button>
         </div>
 
-        <!-- Buscador Rápido -->
-        <div class="relative flex-1 min-w-[240px] max-w-md">
-          <input type="text" id="adminSearchInput" oninput="renderAdminTable()" placeholder="Buscar por dorsal, oficial o promoción..." class="w-full bg-camo-950 border border-slate-700 focus:border-gold-500 text-xs text-white rounded-xl pl-9 pr-3 py-2.5 outline-none font-medium placeholder:text-slate-500" />
-          <i data-lucide="search" class="w-4 h-4 text-gold-500/60 absolute left-3 top-3"></i>
-        </div>
-
-        <!-- Herramientas de Exportación y Limpieza -->
+        <!-- Búsqueda y Botones de Acción -->
         <div class="flex items-center gap-2">
-          <button onclick="exportToCSV()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-700 hover:bg-emerald-600 text-white transition shadow">
-            <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-            <span>Exportar CSV / Excel</span>
+          <div class="relative w-44 sm:w-60">
+            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5"></i>
+            <input type="text" id="adminSearchInput" oninput="renderAdminTable()" placeholder="Buscar atleta..." class="w-full bg-slate-950 border border-slate-700/80 rounded-lg pl-8 pr-2.5 py-1.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500" />
+          </div>
+
+          <!-- Exportar Excel/CSV -->
+          <button onclick="exportToCSV()" class="h-8 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Exportar CSV</span>
           </button>
-          <button onclick="copyPodiumSummary()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold bg-camo-800 hover:bg-camo-700 text-gold-300 border border-gold-500/30 transition">
-            <i data-lucide="copy" class="w-3.5 h-3.5"></i>
-            <span>Copiar Podio</span>
-          </button>
-          <button onclick="promptResetTimes()" title="Reiniciar todos los tiempos" class="p-2 rounded-xl text-xs font-bold bg-crimson-800/80 hover:bg-crimson-700 text-red-200 border border-red-700/50 transition">
-            <i data-lucide="trash-2" class="w-4 h-4"></i>
+
+          <!-- Vaciar Resultados con Confirmación -->
+          <button onclick="resetAllTimes()" title="Reiniciar todos los tiempos" class="h-8 px-2.5 rounded-lg bg-slate-800 hover:bg-rose-900/50 border border-slate-700 hover:border-rose-700/50 text-slate-400 hover:text-rose-300 transition flex items-center justify-center">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
           </button>
         </div>
 
       </div>
 
-      <!-- TABLA DE GESTIÓN TÉCNICA Y EDICIÓN -->
-      <div class="glass-military rounded-3xl overflow-hidden border border-gold-500/30 shadow-2xl">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm">
-            <thead class="bg-camo-950 text-gold-400 uppercase text-xs tracking-wider font-extrabold border-b border-gold-500/20">
-              <tr>
-                <th class="py-3 px-4 text-center w-20">Puesto</th>
-                <th class="py-3 px-4 text-center w-28">Dorsal</th>
-                <th class="py-3 px-4">Oficial (Grado y Nombres)</th>
-                <th class="py-3 px-4">Promoción</th>
-                <th class="py-3 px-4">Serie / Partida</th>
-                <th class="py-3 px-4 text-center w-36">Tiempo Registrado</th>
-                <th class="py-3 px-4 text-center w-28">Estado</th>
-                <th class="py-3 px-4 text-center w-24">Acciones</th>
+      <!-- TABLA EDITABLE DE LA MESA TÉCNICA -->
+      <div class="rounded-2xl border border-slate-800 bg-slate-900 shadow-xl overflow-hidden">
+        <div class="overflow-x-auto custom-scroll">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 bg-slate-950/70 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                <th class="py-3 px-3.5 text-center w-14">Lugar</th>
+                <th class="py-3 px-3.5 text-center w-24">Dorsal</th>
+                <th class="py-3 px-3.5 font-bold text-slate-200">Oficial / Atleta</th>
+                <th class="py-3 px-3.5 text-slate-300">Promoción</th>
+                <th class="py-3 px-3.5 text-center w-20">Partida</th>
+                <th class="py-3 px-3.5 text-center w-36 font-bold text-slate-200">Tiempo Oficial</th>
+                <th class="py-3 px-3.5 text-center w-24">Estado</th>
+                <th class="py-3 px-3.5 text-center w-16">Acción</th>
               </tr>
             </thead>
-            <tbody id="adminTableBody" class="divide-y divide-camo-800 text-slate-200 font-medium">
-              <!-- Renderizado dinámicamente -->
+            <tbody id="adminTableBody" class="divide-y divide-slate-800/60 font-medium">
+              <!-- Renderizado dinámico -->
             </tbody>
           </table>
         </div>
@@ -438,46 +417,43 @@
 
   </main>
 
-  <!-- MODAL DE ACCESO A MESA TÉCNICA (PIN 1095) -->
-  <div id="pinModalWrapper" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="bg-camo-900 border-2 border-gold-500/40 max-w-sm w-full rounded-3xl p-6 shadow-2xl relative text-center">
-      <button onclick="closePinModal()" class="absolute right-4 top-4 text-slate-400 hover:text-white p-1">
+  <!-- MODAL DE ACCESO SEGURO (PIN: 1095, SIN PISTAS NI SUGERENCIAS) -->
+  <div id="pinModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="w-full max-w-sm rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl relative text-center">
+      <button onclick="closePinModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
-      <div class="w-14 h-14 rounded-2xl bg-gold-500/15 text-gold-400 border border-gold-500/30 flex items-center justify-center mx-auto mb-3 shadow-lg">
-        <i data-lucide="lock" class="w-7 h-7"></i>
+      <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 shadow-inner">
+        <i data-lucide="lock" class="w-6 h-6"></i>
       </div>
+      <h3 class="text-base font-bold text-white">Mesa Técnica de Control</h3>
+      <p class="text-xs text-slate-400 mt-1">Ingrese su clave de acceso para autorizar el registro y cronometraje oficial.</p>
 
-      <h3 class="text-xl font-black text-white font-display tracking-wider uppercase">ACCESO A MESA TÉCNICA</h3>
-      <p class="text-xs text-slate-300 mt-1 mb-5">
-        Ingresa el PIN de seguridad militar para registrar metas y operar el cronómetro oficial.
-      </p>
-
-      <form onsubmit="handlePinAuthentication(event)" class="space-y-4">
+      <form onsubmit="handlePinSubmit(event)" class="mt-5 space-y-4">
         <div>
-          <input type="password" id="inputPinCode" maxlength="8" placeholder="••••" class="w-full text-center tracking-[0.6em] font-led text-3xl bg-camo-950 border-2 border-gold-500/40 focus:border-gold-400 text-white py-3 rounded-2xl outline-none" autofocus />
-          <p class="text-[11px] text-gold-500/70 mt-2 font-mono">PIN autorizado: <b>1095</b></p>
+          <input type="password" id="inputPinCode" maxlength="8" placeholder="Ingrese clave de acceso" autofocus class="w-full text-center tracking-widest font-mono text-xl bg-slate-950 border border-slate-700 focus:border-emerald-500 rounded-xl py-2.5 text-white outline-none shadow-inner transition" />
+          <p id="pinErrorMessage" class="hidden text-xs text-rose-400 font-semibold mt-1.5 flex items-center justify-center gap-1">
+            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> Clave incorrecta
+          </p>
         </div>
 
-        <button type="submit" class="w-full bg-gradient-to-r from-gold-600 to-gold-500 hover:from-gold-500 hover:to-gold-400 text-camo-950 font-black text-sm uppercase py-3.5 rounded-xl transition active:scale-95 shadow-lg tracking-wider">
-          Acceder al Panel
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider transition shadow-md shadow-emerald-600/25 active:scale-95">
+          Verificar y Acceder
         </button>
       </form>
     </div>
   </div>
 
-  <!-- TOAST DE NOTIFICACIONES TÁCTICAS -->
-  <div id="toastNotification" class="fixed bottom-6 right-6 z-50 transform translate-y-28 opacity-0 transition-all duration-300 flex items-center gap-3 bg-camo-900 border border-gold-500/50 text-white px-5 py-3.5 rounded-2xl shadow-2xl max-w-md">
-    <div id="toastIconWrap" class="text-gold-400 flex-shrink-0">
-      <i data-lucide="check-circle" class="w-5 h-5"></i>
-    </div>
-    <span id="toastMessageText" class="text-xs font-semibold">Notificación</span>
+  <!-- TOAST DE NOTIFICACIÓN FLOTANTE -->
+  <div id="notificationToast" class="fixed bottom-5 right-5 z-50 transform translate-y-16 opacity-0 transition-all duration-200 pointer-events-none flex items-center gap-2.5 px-4 py-3 rounded-xl bg-slate-850 border border-slate-700 text-slate-100 text-xs shadow-2xl">
+    <i data-lucide="info" class="w-4 h-4 text-emerald-400" id="toastIcon"></i>
+    <span id="toastMessage" class="font-semibold">Mensaje</span>
   </div>
 
   <script>
-    // LISTA COMPLETA DE LOS 63 OFICIALES Y ATLETAS DE LA CARRERA
-    const INITIAL_ATHLETES_DATA = [
+    // LISTA COMPLETA OFICIAL DE LOS 63 ATLETAS
+    const OFFICIAL_ATHLETES = [
       // PARTIDA 1 (09:30)
       { dorsal: "5501", nombre: "Crl JORGE CARDENAS PEREZ PALMA", promo: "1955 GRAL BELISARIO SUAREZ VARGAS", serie: "Serie Especial Varones 1", partida: 1, horaPartida: "09:30" },
       { dorsal: "5901", nombre: "Gral JUAN MANUEL PENDOLA ALANIA", promo: "1959 TTE CRL ROQUE SAENZ PEÑA", serie: "Serie Especial Varones 1", partida: 1, horaPartida: "09:30" },
@@ -552,11 +528,10 @@
       { dorsal: "9003", nombre: "CRL RAUL VILLALTA SALAVERRY", promo: "1990 HÉROES DE CHAVIN DE HUANTAR", serie: "Serie D", partida: 5, horaPartida: "10:30" }
     ];
 
-    const STORAGE_KEY = "MILITAR_CARRERA_DATA_2026";
-    const SESSION_AUTH_KEY = "MILITAR_AUTH_STATUS";
-    const CONTROLLER_PIN = "1095";
+    const STORAGE_KEY = "CARRERA_PEDESTRE_OFICIALES_DATA";
+    const SESSION_AUTH_KEY = "CARRERA_ADMIN_AUTH";
+    const ADMIN_PIN = "1095"; // Clave segura requerida
 
-    // Variables de Estado
     let athletes = [];
     let isAuthorized = false;
     let spectatorFilter = 'ALL';
@@ -564,17 +539,17 @@
     let currentView = 'spectator';
 
     // Estado del Cronómetro
+    let chronoInterval = null;
     let chronoRunning = false;
     let chronoStartTime = 0;
     let chronoElapsedTime = 0;
-    let chronoInterval = null;
 
-    // Sincronizador de pestañas
-    const syncChannel = new BroadcastChannel('militar_carrera_channel');
-    syncChannel.onmessage = (msg) => {
-      if (msg.data && msg.data.type === 'DATA_CHANGED') {
+    // Sincronización Inmediata entre Pestañas/Ventanas
+    const syncChannel = new BroadcastChannel('carrera_realtime_sync');
+    syncChannel.onmessage = (event) => {
+      if (event.data && event.data.type === 'DATA_UPDATED') {
         loadDataFromStorage();
-        renderSpectator();
+        renderSpectatorView();
         if (isAuthorized) renderAdminTable();
       }
     };
@@ -582,73 +557,57 @@
     window.addEventListener('storage', (e) => {
       if (e.key === STORAGE_KEY) {
         loadDataFromStorage();
-        renderSpectator();
+        renderSpectatorView();
         if (isAuthorized) renderAdminTable();
       }
     });
 
-    function parseTimeStringToMs(str) {
-      if (!str || typeof str !== 'string') return Infinity;
-      const clean = str.trim().replace(/,/g, '.');
-      const parts = clean.split(':');
-      let totalMs = 0;
-
+    function parseTimeToMs(timeStr) {
+      if (!timeStr || typeof timeStr !== 'string') return Infinity;
+      const parts = timeStr.trim().replace(/,/g, '.').split(':');
+      let ms = 0;
       if (parts.length === 3) {
-        const h = parseFloat(parts[0]) || 0;
-        const m = parseFloat(parts[1]) || 0;
-        const s = parseFloat(parts[2]) || 0;
-        totalMs = (h * 3600 + m * 60 + s) * 1000;
+        ms = ((parseFloat(parts[0]) || 0) * 3600 + (parseFloat(parts[1]) || 0) * 60 + (parseFloat(parts[2]) || 0)) * 1000;
       } else if (parts.length === 2) {
-        const m = parseFloat(parts[0]) || 0;
-        const s = parseFloat(parts[1]) || 0;
-        totalMs = (m * 60 + s) * 1000;
+        ms = ((parseFloat(parts[0]) || 0) * 60 + (parseFloat(parts[1]) || 0)) * 1000;
       } else if (parts.length === 1 && !isNaN(parseFloat(parts[0]))) {
-        totalMs = (parseFloat(parts[0]) || 0) * 1000;
+        ms = (parseFloat(parts[0]) || 0) * 1000;
       } else {
         return Infinity;
       }
-      return totalMs > 0 ? totalMs : Infinity;
+      return ms > 0 ? ms : Infinity;
     }
 
-    function formatMsToDisplay(ms, withDecimals = false) {
+    function formatMsToTime(ms, includeDecimals = false) {
       if (ms === Infinity || isNaN(ms) || ms < 0) return "--:--:--";
-      const totalSeconds = Math.floor(ms / 1000);
-      const hours = Math.floor(totalSeconds / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
+      const totalSec = Math.floor(ms / 1000);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
       const tenths = Math.floor((ms % 1000) / 100);
 
-      const hh = hours > 0 ? String(hours).padStart(2, '0') + ':' : '';
-      const mm = String(minutes).padStart(2, '0');
-      const ss = String(seconds).padStart(2, '0');
-
-      return withDecimals ? `${hh}${mm}:${ss}.${tenths}` : `${hh}${mm}:${ss}`;
+      const hh = h > 0 ? String(h).padStart(2, '0') + ':' : '';
+      const mm = String(m).padStart(2, '0');
+      const ss = String(s).padStart(2, '0');
+      return includeDecimals ? `${hh}${mm}:${ss}.${tenths}` : `${hh}${mm}:${ss}`;
     }
 
     function calculateRankings() {
-      // 1. Puestos por Partida
-      [1, 2, 3, 4, 5].forEach(partidaNum => {
-        const group = athletes.filter(a => a.partida === partidaNum);
-        group.sort((a, b) => parseTimeStringToMs(a.tiempo) - parseTimeStringToMs(b.tiempo));
-        let pos = 1;
+      // Cálculo de puesto por partida
+      [1, 2, 3, 4, 5].forEach(p => {
+        const group = athletes.filter(a => a.partida === p);
+        group.sort((a, b) => parseTimeToMs(a.tiempo) - parseTimeToMs(b.tiempo));
+        let rank = 1;
         group.forEach(a => {
-          if (a.tiempo && parseTimeStringToMs(a.tiempo) !== Infinity) {
-            a.puestoPartida = pos++;
-          } else {
-            a.puestoPartida = null;
-          }
+          a.puestoPartida = (a.tiempo && parseTimeToMs(a.tiempo) !== Infinity) ? rank++ : null;
         });
       });
 
-      // 2. Puestos Generales
-      const allSorted = [...athletes].sort((a, b) => parseTimeStringToMs(a.tiempo) - parseTimeStringToMs(b.tiempo));
-      let generalPos = 1;
+      // Cálculo de puesto general
+      const allSorted = [...athletes].sort((a, b) => parseTimeToMs(a.tiempo) - parseTimeToMs(b.tiempo));
+      let genRank = 1;
       allSorted.forEach(a => {
-        if (a.tiempo && parseTimeStringToMs(a.tiempo) !== Infinity) {
-          a.puestoGeneral = generalPos++;
-        } else {
-          a.puestoGeneral = null;
-        }
+        a.puestoGeneral = (a.tiempo && parseTimeToMs(a.tiempo) !== Infinity) ? genRank++ : null;
       });
     }
 
@@ -657,186 +616,188 @@
       if (saved) {
         try {
           athletes = JSON.parse(saved);
-        } catch (e) {
-          athletes = JSON.parse(JSON.stringify(INITIAL_ATHLETES_DATA));
+        } catch {
+          athletes = JSON.parse(JSON.stringify(OFFICIAL_ATHLETES));
         }
       } else {
-        athletes = JSON.parse(JSON.stringify(INITIAL_ATHLETES_DATA));
+        athletes = JSON.parse(JSON.stringify(OFFICIAL_ATHLETES));
       }
 
       athletes.forEach(a => {
         if (!a.tiempo) a.tiempo = "";
       });
-
       calculateRankings();
+      updateGlobalStats();
     }
 
     function persistData() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(athletes));
-      syncChannel.postMessage({ type: 'DATA_CHANGED' });
+      syncChannel.postMessage({ type: 'DATA_UPDATED' });
+      updateGlobalStats();
     }
 
-    function renderSpectator() {
+    function updateGlobalStats() {
+      const finished = athletes.filter(a => a.tiempo && a.tiempo.trim() !== "");
+      document.getElementById('statArrived').textContent = finished.length;
+      document.getElementById('statPending').textContent = athletes.length - finished.length;
+
+      if (finished.length > 0) {
+        const sorted = [...finished].sort((a, b) => parseTimeToMs(a.tiempo) - parseTimeToMs(b.tiempo));
+        document.getElementById('statBestTime').textContent = sorted[0].tiempo;
+      } else {
+        document.getElementById('statBestTime').textContent = "--:--:--";
+      }
+    }
+
+    function renderSpectatorView() {
       calculateRankings();
+      const search = document.getElementById('spectatorSearchInput')?.value.toLowerCase().trim() || "";
 
-      const filtered = spectatorFilter === 'ALL'
-        ? athletes
-        : athletes.filter(a => a.partida.toString() === spectatorFilter);
+      let list = athletes.filter(a => {
+        const matchesPartida = (spectatorFilter === 'ALL' || a.partida.toString() === spectatorFilter);
+        const matchesSearch = !search ||
+          a.dorsal.toLowerCase().includes(search) ||
+          a.nombre.toLowerCase().includes(search) ||
+          a.promo.toLowerCase().includes(search);
+        return matchesPartida && matchesSearch;
+      });
 
-      const finished = filtered.filter(a => a.tiempo && a.tiempo.trim() !== "");
-      finished.sort((a, b) => parseTimeStringToMs(a.tiempo) - parseTimeStringToMs(b.tiempo));
+      const finished = list.filter(a => a.tiempo && a.tiempo.trim() !== "");
+      finished.sort((a, b) => parseTimeToMs(a.tiempo) - parseTimeToMs(b.tiempo));
 
-      // Contadores
-      const finishedCountEl = document.getElementById('specFinishedCount');
-      const pendingCountEl = document.getElementById('specPendingCount');
-      if (finishedCountEl) finishedCountEl.textContent = finished.length;
-      if (pendingCountEl) pendingCountEl.textContent = filtered.length - finished.length;
+      // Renderizar Podio (Top 3)
+      const podium = document.getElementById('podiumContainer');
+      const top1 = finished[0] || null;
+      const top2 = finished[1] || null;
+      const top3 = finished[2] || null;
 
-      // Subtítulo y títulos dinámicos
-      const titleEl = document.getElementById('spectatorSectionTitle');
-      const titles = {
-        'ALL': 'CLASIFICACIÓN GENERAL DE HONOR',
-        '1': 'PARTIDA 1 (09:30) - ESPECIALES V1, V2 Y D2',
-        '2': 'PARTIDA 2 (09:45) - SERIE E DAMAS',
-        '3': 'PARTIDA 3 (10:00) - ESPECIALES VARONES 3',
-        '4': 'PARTIDA 4 (10:15) - SERIE A Y SERIE B',
-        '5': 'PARTIDA 5 (10:30) - SERIE C Y SERIE D'
-      };
-      if (titleEl) titleEl.textContent = titles[spectatorFilter] || 'RESULTADOS OFICIALES';
-
-      // 1. RENDERIZADO DEL PODIO (Top 3)
-      const podiumContainer = document.getElementById('podiumContainer');
-      const first = finished[0] || null;
-      const second = finished[1] || null;
-      const third = finished[2] || null;
-
-      if (!first && !second && !third) {
-        podiumContainer.innerHTML = `
-          <div class="md:col-span-3 text-center py-12 glass-military rounded-3xl border border-gold-500/30">
-            <i data-lucide="award" class="w-14 h-14 text-gold-500/40 mx-auto mb-3 animate-pulse"></i>
-            <h3 class="text-2xl font-black text-white font-display tracking-wider">ESPERANDO PRIMEROS ARRIBOS A LA META</h3>
-            <p class="text-xs text-slate-400 mt-1">Conforme los señores oficiales crucen la línea de llegada, el podio de honor se proclamará aquí automáticamente.</p>
+      if (!top1 && !top2 && !top3) {
+        podium.innerHTML = `
+          <div class="md:col-span-3 text-center py-10 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-400">
+            <i data-lucide="flag" class="w-8 h-8 mx-auto mb-2 text-slate-500 opacity-60"></i>
+            <p class="text-xs font-semibold text-slate-300">Esperando primeros arribos a la meta oficial.</p>
+            <p class="text-[11px] text-slate-500 mt-0.5">Los puestos de honor aparecerán automáticamente aquí al cruzar la cinta.</p>
           </div>
         `;
       } else {
-        podiumContainer.innerHTML = `
-          <!-- 2° LUGAR (PLATA) -->
-          <div class="order-2 md:order-1 glass-military rounded-3xl p-5 glow-silver bg-gradient-to-t from-camo-950 via-camo-900 to-slate-800/80 text-center flex flex-col justify-between h-80">
-            <div class="flex items-center justify-between border-b border-slate-700/60 pb-2">
-              <span class="px-3 py-1 rounded-full text-xs font-black bg-slate-500/20 text-slate-300 border border-slate-400 uppercase tracking-wider">2° LUGAR</span>
-              <span class="text-3xl">🥈</span>
-            </div>
-            ${second ? `
-              <div class="my-auto py-2">
-                <span class="inline-block px-3.5 py-1 rounded-xl bg-camo-950 font-led font-black text-slate-200 border border-slate-600 text-lg mb-2">#${second.dorsal}</span>
-                <h4 class="text-lg sm:text-xl font-black text-white leading-tight">${second.nombre}</h4>
-                <p class="text-xs text-slate-300 mt-1">${second.promo}</p>
-                <span class="text-[11px] text-gold-400 font-bold uppercase mt-1 inline-block">${second.serie} (P${second.partida})</span>
-              </div>
-              <div class="bg-camo-950/90 py-2.5 rounded-2xl border border-slate-600">
-                <div class="font-led text-2xl sm:text-3xl font-black text-slate-200">${second.tiempo}</div>
-                <div class="text-[10px] uppercase font-bold text-slate-400">Tiempo Oficial</div>
-              </div>
-            ` : `
-              <div class="my-auto text-slate-500 text-xs italic">Pendiente de arribo</div>
-              <div class="bg-camo-950/50 py-3 rounded-2xl text-slate-600 font-led text-xl">--:--:--</div>
-            `}
-          </div>
-
-          <!-- 1° LUGAR (ORO CON LAURELES) -->
-          <div class="order-1 md:order-2 glass-military rounded-3xl p-6 glow-gold bg-gradient-to-t from-camo-950 via-camo-900 to-gold-900/30 text-center flex flex-col justify-between h-96 transform md:-translate-y-3 border-2">
-            <div class="flex items-center justify-between border-b border-gold-500/30 pb-2">
-              <span class="px-3.5 py-1 rounded-full text-xs font-black bg-gold-500/25 text-gold-300 border border-gold-400 uppercase tracking-widest flex items-center gap-1">
-                <i data-lucide="crown" class="w-3.5 h-3.5 text-gold-400"></i> CAMPEÓN OFICIAL
+        podium.innerHTML = `
+          <!-- 2do Lugar (Plata) -->
+          <div class="rounded-2xl border border-slate-700/80 bg-gradient-to-b from-slate-900 to-slate-950 p-4.5 flex flex-col justify-between shadow-lg relative overflow-hidden">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 text-[11px] font-bold border border-slate-700">
+                🥈 2° Lugar • Plata
               </span>
-              <span class="text-4xl">🥇</span>
+              <span class="text-[11px] font-mono text-slate-400 font-bold">#2</span>
             </div>
-            ${first ? `
-              <div class="my-auto py-2">
-                <span class="inline-block px-4 py-1.5 rounded-xl bg-gold-950 font-led font-black text-gold-400 border border-gold-500 text-2xl mb-2">#${first.dorsal}</span>
-                <h3 class="text-xl sm:text-2xl font-black text-white leading-tight">${first.nombre}</h3>
-                <p class="text-xs text-gold-200/90 mt-1 font-medium">${first.promo}</p>
-                <span class="text-xs text-gold-400 font-extrabold uppercase px-2.5 py-0.5 rounded bg-camo-950 border border-gold-500/40 mt-1.5 inline-block">${first.serie} (P${first.partida})</span>
-              </div>
-              <div class="bg-camo-950/95 py-3 rounded-2xl border border-gold-500/60 shadow-lg">
-                <div class="font-led text-3xl sm:text-4xl font-black text-gold-400 glow-led">${first.tiempo}</div>
-                <div class="text-[11px] uppercase font-bold text-gold-300">Tiempo de Victoria</div>
-              </div>
-            ` : `
-              <div class="my-auto text-slate-500 text-xs italic">Esperando al vencedor de la prueba</div>
-              <div class="bg-camo-950/50 py-4 rounded-2xl text-slate-600 font-led text-2xl">--:--:--</div>
-            `}
+            <div class="my-4">
+              ${top2 ? `
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs font-mono font-extrabold px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">#${top2.dorsal}</span>
+                  <span class="text-[10px] text-slate-400 font-semibold uppercase">P${top2.partida}</span>
+                </div>
+                <h4 class="text-sm font-extrabold text-white leading-snug truncate">${top2.nombre}</h4>
+                <p class="text-[11px] text-slate-400 truncate mt-0.5">${top2.promo}</p>
+                <div class="mt-3 font-mono text-2xl font-black text-slate-200">${top2.tiempo}</div>
+              ` : `
+                <div class="text-xs text-slate-500 py-6 italic text-center">Esperando arribo</div>
+              `}
+            </div>
           </div>
 
-          <!-- 3° LUGAR (BRONCE) -->
-          <div class="order-3 md:order-3 glass-military rounded-3xl p-5 glow-bronze bg-gradient-to-t from-camo-950 via-camo-900 to-amber-950/40 text-center flex flex-col justify-between h-80">
-            <div class="flex items-center justify-between border-b border-amber-800/60 pb-2">
-              <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-900/30 text-amber-400 border border-amber-700 uppercase tracking-wider">3° LUGAR</span>
-              <span class="text-3xl">🥉</span>
+          <!-- 1er Lugar (Oro - Protagonista) -->
+          <div class="rounded-2xl border-2 border-amber-500/60 bg-gradient-to-b from-amber-950/25 via-slate-900 to-slate-950 p-4.5 flex flex-col justify-between shadow-xl shadow-amber-500/10 relative overflow-hidden ring-1 ring-amber-400/20">
+            <div class="flex items-center justify-between pb-2 border-b border-amber-500/20">
+              <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[11px] font-black uppercase tracking-wider">
+                🥇 1° Lugar • Campeón
+              </span>
+              <span class="text-xs font-mono text-amber-400 font-extrabold">Oficial</span>
             </div>
-            ${third ? `
-              <div class="my-auto py-2">
-                <span class="inline-block px-3.5 py-1 rounded-xl bg-camo-950 font-led font-black text-amber-500 border border-amber-700 text-lg mb-2">#${third.dorsal}</span>
-                <h4 class="text-lg sm:text-xl font-black text-white leading-tight">${third.nombre}</h4>
-                <p class="text-xs text-slate-300 mt-1">${third.promo}</p>
-                <span class="text-[11px] text-amber-400 font-bold uppercase mt-1 inline-block">${third.serie} (P${third.partida})</span>
-              </div>
-              <div class="bg-camo-950/90 py-2.5 rounded-2xl border border-amber-800/60">
-                <div class="font-led text-2xl sm:text-3xl font-black text-amber-400">${third.tiempo}</div>
-                <div class="text-[10px] uppercase font-bold text-slate-400">Tiempo Oficial</div>
-              </div>
-            ` : `
-              <div class="my-auto text-slate-500 text-xs italic">Pendiente de arribo</div>
-              <div class="bg-camo-950/50 py-3 rounded-2xl text-slate-600 font-led text-xl">--:--:--</div>
-            `}
+            <div class="my-4">
+              ${top1 ? `
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs font-mono font-black px-2.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-bold shadow-sm">#${top1.dorsal}</span>
+                  <span class="text-[10px] text-amber-300/80 font-bold uppercase">P${top1.partida}</span>
+                </div>
+                <h4 class="text-base font-black text-white leading-tight truncate">${top1.nombre}</h4>
+                <p class="text-[11px] text-amber-200/70 truncate mt-0.5 font-medium">${top1.promo}</p>
+                <div class="mt-3 font-mono text-3xl font-black text-amber-300 tracking-tight drop-shadow-sm">${top1.tiempo}</div>
+              ` : `
+                <div class="text-xs text-slate-500 py-6 italic text-center">Esperando arribo</div>
+              `}
+            </div>
+          </div>
+
+          <!-- 3er Lugar (Bronce) -->
+          <div class="rounded-2xl border border-slate-700/80 bg-gradient-to-b from-slate-900 to-slate-950 p-4.5 flex flex-col justify-between shadow-lg relative overflow-hidden">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800 text-amber-200/90 text-[11px] font-bold border border-slate-700">
+                🥉 3° Lugar • Bronce
+              </span>
+              <span class="text-[11px] font-mono text-slate-400 font-bold">#3</span>
+            </div>
+            <div class="my-4">
+              ${top3 ? `
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs font-mono font-extrabold px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">#${top3.dorsal}</span>
+                  <span class="text-[10px] text-slate-400 font-semibold uppercase">P${top3.partida}</span>
+                </div>
+                <h4 class="text-sm font-extrabold text-white leading-snug truncate">${top3.nombre}</h4>
+                <p class="text-[11px] text-slate-400 truncate mt-0.5">${top3.promo}</p>
+                <div class="mt-3 font-mono text-2xl font-black text-slate-200">${top3.tiempo}</div>
+              ` : `
+                <div class="text-xs text-slate-500 py-6 italic text-center">Esperando arribo</div>
+              `}
+            </div>
           </div>
         `;
       }
 
-      // 2. TABLA GENERAL
+      // Renderizar Tabla
       const tbody = document.getElementById('spectatorTableBody');
       if (finished.length === 0) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="6" class="text-center py-12 text-slate-500 text-sm">
-              No hay arribos registrados aún en esta categoría.
+            <td colspan="6" class="py-12 text-center text-slate-400 text-xs font-medium">
+              Aún no hay arribos en esta selección. El panel se actualizará en cuanto los atletas crucen la meta.
             </td>
           </tr>
         `;
       } else {
-        tbody.innerHTML = finished.map((a, idx) => {
-          const rank = idx + 1;
-          let medalIcon = "";
-          let rowHighlight = "hover:bg-camo-800/40";
-          if (rank === 1) { medalIcon = "🥇 "; rowHighlight = "bg-gold-500/10 hover:bg-gold-500/20"; }
-          else if (rank === 2) { medalIcon = "🥈 "; rowHighlight = "bg-slate-400/10 hover:bg-slate-400/20"; }
-          else if (rank === 3) { medalIcon = "🥉 "; rowHighlight = "bg-amber-900/15 hover:bg-amber-900/25"; }
+        tbody.innerHTML = finished.map((a, index) => {
+          const pos = index + 1;
+          let posBadge = '';
+
+          if (pos === 1) {
+            posBadge = '<span class="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-amber-400 text-slate-950 font-black text-xs shadow-sm">1°</span>';
+          } else if (pos === 2) {
+            posBadge = '<span class="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-slate-300 text-slate-900 font-black text-xs shadow-sm">2°</span>';
+          } else if (pos === 3) {
+            posBadge = '<span class="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-amber-700/80 text-white font-black text-xs shadow-sm">3°</span>';
+          } else {
+            posBadge = `<span class="font-mono font-bold text-slate-400">${pos}°</span>`;
+          }
 
           return `
-            <tr class="transition ${rowHighlight} border-b border-camo-800">
-              <td class="py-4 px-6 text-center">
-                <span class="font-led text-base sm:text-xl font-black ${rank <= 3 ? 'text-gold-400' : 'text-slate-300'}">
-                  ${medalIcon}${rank}°
-                </span>
-              </td>
-              <td class="py-4 px-6 text-center">
-                <span class="inline-block px-3 py-1 rounded-xl bg-camo-950 border border-gold-500/40 text-gold-300 font-led font-black text-sm sm:text-base">
+            <tr class="hover:bg-slate-800/40 transition">
+              <td class="py-3 px-4 text-center">${posBadge}</td>
+              <td class="py-3 px-4 text-center">
+                <span class="font-mono font-extrabold px-2.5 py-1 rounded-lg bg-slate-800 text-emerald-400 border border-slate-700 text-xs">
                   #${a.dorsal}
                 </span>
               </td>
-              <td class="py-4 px-6">
-                <div class="text-sm sm:text-base font-bold text-white tracking-wide">${a.nombre}</div>
+              <td class="py-3 px-4">
+                <span class="text-white font-bold text-sm block">${a.nombre}</span>
               </td>
-              <td class="py-4 px-6 text-xs sm:text-sm text-slate-300">
+              <td class="py-3 px-4 hidden md:table-cell text-slate-300 text-xs">
                 ${a.promo}
               </td>
-              <td class="py-4 px-6 text-xs sm:text-sm">
-                <span class="px-2.5 py-1 rounded-lg bg-camo-800 text-gold-400 font-bold border border-gold-500/20">
-                  ${a.serie} (P${a.partida})
+              <td class="py-3 px-4 hidden sm:table-cell">
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-slate-800 text-slate-300 border border-slate-700/70">
+                  P${a.partida} • ${a.horaPartida}
                 </span>
               </td>
-              <td class="py-4 px-6 text-center">
-                <span class="font-led text-lg sm:text-2xl font-black text-emerald-400 tracking-wider">
+              <td class="py-3 px-4 text-right">
+                <span class="font-mono font-extrabold text-emerald-400 text-base">
                   ${a.tiempo}
                 </span>
               </td>
@@ -852,79 +813,62 @@
       if (!isAuthorized) return;
       calculateRankings();
 
-      const tbody = document.getElementById('adminTableBody');
-      const searchVal = document.getElementById('adminSearchInput')?.value.toLowerCase().trim() || "";
-
-      let filtered = athletes.filter(a => {
+      const search = document.getElementById('adminSearchInput')?.value.toLowerCase().trim() || "";
+      let list = athletes.filter(a => {
         const matchesPartida = (adminFilter === 'ALL' || a.partida.toString() === adminFilter);
-        const matchesSearch = !searchVal ||
-          a.dorsal.toLowerCase().includes(searchVal) ||
-          a.nombre.toLowerCase().includes(searchVal) ||
-          a.promo.toLowerCase().includes(searchVal) ||
-          a.serie.toLowerCase().includes(searchVal);
+        const matchesSearch = !search ||
+          a.dorsal.toLowerCase().includes(search) ||
+          a.nombre.toLowerCase().includes(search) ||
+          a.promo.toLowerCase().includes(search);
         return matchesPartida && matchesSearch;
       });
 
-      // Ordenar: Los que ya tienen tiempo primero, luego por partida y dorsal
-      filtered.sort((a, b) => {
-        const timeA = parseTimeStringToMs(a.tiempo);
-        const timeB = parseTimeStringToMs(b.tiempo);
-        if (timeA !== Infinity && timeB !== Infinity) return timeA - timeB;
-        if (timeA !== Infinity) return -1;
-        if (timeB !== Infinity) return 1;
+      list.sort((a, b) => {
+        const ta = parseTimeToMs(a.tiempo);
+        const tb = parseTimeToMs(b.tiempo);
+        if (ta !== Infinity && tb !== Infinity) return ta - tb;
+        if (ta !== Infinity) return -1;
+        if (tb !== Infinity) return 1;
         return a.partida - b.partida || a.dorsal.localeCompare(b.dorsal);
       });
 
-      tbody.innerHTML = filtered.map(a => {
+      const tbody = document.getElementById('adminTableBody');
+      tbody.innerHTML = list.map(a => {
         const hasTime = a.tiempo && a.tiempo.trim() !== "";
-        const rank = a.puestoPartida || a.puestoGeneral || "-";
-
-        let rankBadge = `<span class="font-led text-slate-600 text-xs">-</span>`;
-        if (hasTime) {
-          if (rank === 1) rankBadge = `<span class="px-2 py-0.5 rounded bg-gold-500/20 text-gold-300 border border-gold-500/50 font-bold text-xs">🥇 1°</span>`;
-          else if (rank === 2) rankBadge = `<span class="px-2 py-0.5 rounded bg-slate-400/20 text-slate-300 border border-slate-400 font-bold text-xs">🥈 2°</span>`;
-          else if (rank === 3) rankBadge = `<span class="px-2 py-0.5 rounded bg-amber-700/20 text-amber-400 border border-amber-700 font-bold text-xs">🥉 3°</span>`;
-          else rankBadge = `<span class="px-2 py-0.5 rounded bg-camo-800 text-slate-300 font-bold text-xs">${rank}°</span>`;
-        }
+        const pos = a.puestoPartida || a.puestoGeneral || "-";
 
         return `
-          <tr class="hover:bg-camo-800/50 transition">
-            <td class="py-3 px-4 text-center">${rankBadge}</td>
-            <td class="py-3 px-4 text-center">
-              <span class="inline-block px-2.5 py-1 rounded-lg bg-camo-950 text-gold-300 border border-gold-500/30 font-led font-black text-xs">
-                #${a.dorsal}
-              </span>
+          <tr class="hover:bg-slate-800/40 transition">
+            <td class="py-2.5 px-3.5 text-center font-mono font-bold text-slate-400">${pos !== '-' ? pos + '°' : '-'}</td>
+            <td class="py-2.5 px-3.5 text-center">
+              <span class="font-mono font-extrabold text-white">#${a.dorsal}</span>
             </td>
-            <td class="py-3 px-4">
-              <div class="font-bold text-white text-xs sm:text-sm">${a.nombre}</div>
+            <td class="py-2.5 px-3.5 text-white font-bold">${a.nombre}</td>
+            <td class="py-2.5 px-3.5 text-slate-300 text-xs truncate max-w-[200px]">${a.promo}</td>
+            <td class="py-2.5 px-3.5 text-center">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300">P${a.partida}</span>
             </td>
-            <td class="py-3 px-4 text-xs text-slate-300">${a.promo}</td>
-            <td class="py-3 px-4">
-              <span class="text-xs px-2 py-0.5 rounded bg-camo-800 text-gold-400 border border-gold-500/20">
-                ${a.serie} (P${a.partida})
-              </span>
-            </td>
-            <td class="py-3 px-4 text-center">
+            <td class="py-2.5 px-3.5 text-center">
               <input type="text"
                 value="${a.tiempo || ''}"
                 placeholder="--:--:--"
-                onchange="updateAthleteTime('${a.dorsal}', this.value)"
-                class="w-28 text-center bg-camo-950 border ${hasTime ? 'border-emerald-500/70 text-emerald-300 font-bold' : 'border-slate-700 text-slate-400'} font-led text-xs py-1 px-2 rounded-lg outline-none focus:border-gold-400" />
+                onchange="handleTimeChange('${a.dorsal}', this.value)"
+                class="w-28 text-center bg-slate-950 border ${hasTime ? 'border-emerald-500 text-emerald-300 font-extrabold' : 'border-slate-800 text-slate-400 font-medium'} font-mono text-xs py-1.5 px-2 rounded-lg outline-none focus:border-amber-400" />
             </td>
-            <td class="py-3 px-4 text-center">
+            <td class="py-2.5 px-3.5 text-center">
               ${hasTime 
-                ? '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"><i data-lucide="check" class="w-3 h-3"></i> META</span>'
-                : '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-camo-800 text-slate-400"><i data-lucide="clock" class="w-3 h-3"></i> EN RUTA</span>'
+                ? '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold">Meta</span>'
+                : '<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[11px] font-bold">Ruta</span>'
               }
             </td>
-            <td class="py-3 px-4 text-center">
+            <td class="py-2.5 px-3.5 text-center">
               ${hasTime ? `
-                <button onclick="clearAthleteTime('${a.dorsal}')" class="text-slate-500 hover:text-red-400 p-1 transition" title="Borrar tiempo">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                <button onclick="clearAthleteTime('${a.dorsal}')" class="text-slate-400 hover:text-rose-400 p-1.5 transition" title="Borrar tiempo">
+                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                 </button>
               ` : `
-                <button onclick="loadToQuickInput('${a.dorsal}')" class="text-slate-500 hover:text-gold-400 p-1 transition" title="Cargar a registro rápido">
-                  <i data-lucide="corner-down-left" class="w-4 h-4"></i>
+                <button onclick="copyToQuickEntry('${a.dorsal}')" class="text-slate-400 hover:text-emerald-400 p-1.5 transition" title="Seleccionar para meta">
+                  <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
                 </button>
               `}
             </td>
@@ -935,396 +879,327 @@
       lucide.createIcons();
     }
 
-    // Manejo de Registro Rápido
-    function handleQuickBibSubmit(e) {
-      e.preventDefault();
+    function handleQuickFinish(event) {
+      event.preventDefault();
       if (!isAuthorized) return;
 
-      const bibInput = document.getElementById('inputBib');
-      const timeInput = document.getElementById('inputManualTime');
-      const rawBib = bibInput.value.trim().toUpperCase();
+      const dorsalInput = document.getElementById('quickDorsalInput');
+      const manualTimeInput = document.getElementById('quickTimeManualInput');
+      const dorsalVal = dorsalInput.value.trim().toUpperCase();
 
-      if (!rawBib) {
-        showToast("Por favor digita un número de dorsal", "error");
+      if (!dorsalVal) {
+        showNotification("Ingrese el número de dorsal");
         return;
       }
 
-      // Buscar atleta por dorsal (permite escribir 8401 o 8401-D)
+      // Buscar coincidencia exacta o sin guion D
       const athlete = athletes.find(a => 
-        a.dorsal.toUpperCase() === rawBib ||
-        a.dorsal.replace('-D', '').toUpperCase() === rawBib
+        a.dorsal.toUpperCase() === dorsalVal ||
+        a.dorsal.replace('-D', '').toUpperCase() === dorsalVal
       );
 
       if (!athlete) {
-        showToast(`Dorsal #${rawBib} no está registrado en la lista oficial`, "error");
+        showNotification(`Dorsal #${dorsalVal} no encontrado en la lista`);
         return;
       }
 
-      let timeToRecord = timeInput.value.trim();
-      if (!timeToRecord) {
+      let finalTime = manualTimeInput.value.trim();
+      if (!finalTime) {
         const curMs = chronoRunning ? (Date.now() - chronoStartTime) : chronoElapsedTime;
-        if (curMs <= 500) {
-          showToast("El cronómetro está en cero. Inicia el cronómetro o digita el tiempo manual.", "error");
+        if (curMs <= 300) {
+          showNotification("El cronómetro no ha sido iniciado aún");
           return;
         }
-        timeToRecord = formatMsToDisplay(curMs, false);
+        finalTime = formatMsToTime(curMs, false);
       }
 
-      athlete.tiempo = timeToRecord;
+      athlete.tiempo = finalTime;
       persistData();
       renderAdminTable();
-      renderSpectator();
+      renderSpectatorView();
 
-      // Actualizar tarjeta del último atleta registrado
-      const lastInfoEl = document.getElementById('lastRegisteredAthleteInfo');
-      const lastTimeEl = document.getElementById('lastRegisteredAthleteTime');
-      if (lastInfoEl) lastInfoEl.innerHTML = `<span class="text-gold-400 font-led">#${athlete.dorsal}</span> ${athlete.nombre} (P${athlete.partida})`;
-      if (lastTimeEl) lastTimeEl.textContent = timeToRecord;
+      // Actualizar tarjeta reciente
+      document.getElementById('recentArrivalLabel').textContent = `#${athlete.dorsal} - ${athlete.nombre}`;
+      document.getElementById('recentArrivalTime').textContent = finalTime;
 
-      showToast(`¡Arribo registrado! #${athlete.dorsal} - ${timeToRecord}`, "success");
+      showNotification(`Llegada registrada: #${athlete.dorsal} (${finalTime})`);
 
-      bibInput.value = "";
-      timeInput.value = "";
-      bibInput.focus();
+      dorsalInput.value = "";
+      manualTimeInput.value = "";
+      dorsalInput.focus();
     }
 
-    function updateAthleteTime(dorsal, newTime) {
-      const athlete = athletes.find(a => a.dorsal === dorsal);
-      if (athlete) {
-        athlete.tiempo = newTime.trim();
+    function handleTimeChange(dorsal, newTime) {
+      const a = athletes.find(x => x.dorsal === dorsal);
+      if (a) {
+        a.tiempo = newTime.trim();
         persistData();
         renderAdminTable();
-        renderSpectator();
-        showToast(`Tiempo modificado: #${dorsal}`, "info");
+        renderSpectatorView();
       }
     }
 
     function clearAthleteTime(dorsal) {
-      const athlete = athletes.find(a => a.dorsal === dorsal);
-      if (athlete) {
-        athlete.tiempo = "";
+      const a = athletes.find(x => x.dorsal === dorsal);
+      if (a) {
+        a.tiempo = "";
         persistData();
         renderAdminTable();
-        renderSpectator();
-        showToast(`Tiempo eliminado para #${dorsal}`, "info");
+        renderSpectatorView();
+        showNotification(`Tiempo borrado para dorsal #${dorsal}`);
       }
     }
 
-    function loadToQuickInput(dorsal) {
-      const input = document.getElementById('inputBib');
-      if (input) {
-        input.value = dorsal;
-        input.focus();
+    function copyToQuickEntry(dorsal) {
+      const el = document.getElementById('quickDorsalInput');
+      if (el) {
+        el.value = dorsal;
+        el.focus();
       }
     }
 
     // Cronómetro
     function updateChronoDisplay() {
-      const disp = document.getElementById('chronoDisplay');
-      const cur = chronoRunning ? (Date.now() - chronoStartTime) : chronoElapsedTime;
-      if (disp) disp.textContent = formatMsToDisplay(cur, true);
+      const current = chronoRunning ? (Date.now() - chronoStartTime) : chronoElapsedTime;
+      const display = document.getElementById('chronoDisplay');
+      if (display) display.textContent = formatMsToTime(current, true);
     }
 
-    function toggleChrono() {
+    function toggleChronometer() {
       const btn = document.getElementById('btnChronoToggle');
-      const icon = document.getElementById('iconChronoToggle');
-      const label = document.getElementById('labelChronoToggle');
+      const icon = document.getElementById('chronoToggleIcon');
+      const label = document.getElementById('chronoToggleLabel');
       const badge = document.getElementById('chronoStatusBadge');
 
       if (!chronoRunning) {
         chronoStartTime = Date.now() - chronoElapsedTime;
-        chronoInterval = setInterval(updateChronoDisplay, 70);
+        chronoInterval = setInterval(updateChronoDisplay, 60);
         chronoRunning = true;
-
-        if (label) label.textContent = "Pausar";
-        if (btn) {
-          btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
-          btn.classList.add('bg-amber-600', 'hover:bg-amber-500');
-        }
-        if (icon) icon.setAttribute('data-lucide', 'pause');
-        if (badge) {
-          badge.textContent = "CRONOMETRANDO";
-          badge.className = "inline-block mt-2 text-[11px] font-black uppercase px-3 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 animate-pulse";
-        }
+        label.textContent = "Pausar";
+        btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+        btn.classList.add('bg-amber-600', 'hover:bg-amber-500');
+        icon.setAttribute('data-lucide', 'pause');
+        badge.textContent = "En Curso";
+        badge.className = "text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
       } else {
         clearInterval(chronoInterval);
         chronoElapsedTime = Date.now() - chronoStartTime;
         chronoRunning = false;
-
-        if (label) label.textContent = "Reanudar";
-        if (btn) {
-          btn.classList.remove('bg-amber-600', 'hover:bg-amber-500');
-          btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
-        }
-        if (icon) icon.setAttribute('data-lucide', 'play');
-        if (badge) {
-          badge.textContent = "PAUSADO";
-          badge.className = "inline-block mt-2 text-[11px] font-black uppercase px-3 py-0.5 rounded-full bg-amber-500/20 text-amber-400 border border-amber-500/40";
-        }
+        label.textContent = "Reanudar";
+        btn.classList.remove('bg-amber-600', 'hover:bg-amber-500');
+        btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+        icon.setAttribute('data-lucide', 'play');
+        badge.textContent = "Pausado";
+        badge.className = "text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30";
       }
       lucide.createIcons();
     }
 
-    function resetChrono() {
-      if (confirm("¿Reiniciar el cronómetro de partida a cero? (Los tiempos ya guardados en meta no se borrarán)")) {
-        clearInterval(chronoInterval);
-        chronoRunning = false;
-        chronoElapsedTime = 0;
-        updateChronoDisplay();
+    function resetChronometer() {
+      clearInterval(chronoInterval);
+      chronoRunning = false;
+      chronoElapsedTime = 0;
+      updateChronoDisplay();
 
-        const btn = document.getElementById('btnChronoToggle');
-        const icon = document.getElementById('iconChronoToggle');
-        const label = document.getElementById('labelChronoToggle');
-        const badge = document.getElementById('chronoStatusBadge');
+      const btn = document.getElementById('btnChronoToggle');
+      const icon = document.getElementById('chronoToggleIcon');
+      const label = document.getElementById('chronoToggleLabel');
+      const badge = document.getElementById('chronoStatusBadge');
 
-        if (label) label.textContent = "Iniciar";
-        if (btn) {
-          btn.classList.remove('bg-amber-600', 'hover:bg-amber-500');
-          btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
-        }
-        if (icon) icon.setAttribute('data-lucide', 'play');
-        if (badge) {
-          badge.textContent = "DETENIDO";
-          badge.className = "inline-block mt-2 text-[11px] font-extrabold uppercase px-3 py-0.5 rounded-full bg-camo-950 text-slate-400 border border-slate-700";
-        }
-        lucide.createIcons();
-      }
+      label.textContent = "Iniciar";
+      btn.classList.remove('bg-amber-600', 'hover:bg-amber-500');
+      btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
+      icon.setAttribute('data-lucide', 'play');
+      badge.textContent = "Detenido";
+      badge.className = "text-[11px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700";
+      lucide.createIcons();
     }
 
-    function captureCurrentChronoToInput() {
+    function pasteChronoToInput() {
       const cur = chronoRunning ? (Date.now() - chronoStartTime) : chronoElapsedTime;
-      const formatted = formatMsToDisplay(cur, false);
-      const input = document.getElementById('inputManualTime');
+      const formatted = formatMsToTime(cur, false);
+      const input = document.getElementById('quickTimeManualInput');
       if (input) input.value = formatted;
-      showToast(`Tiempo capturado: ${formatted}`, "info");
-    }
-
-    function changeActivePartida() {
-      const p = document.getElementById('activePartidaSelect').value;
-      showToast(`Partida seleccionada para control: ${p === 'G' ? 'General' : 'P' + p}`, "info");
-    }
-
-    // Modal de Seguridad & PIN
-    function openPinModal() {
-      const modal = document.getElementById('pinModalWrapper');
-      modal.classList.remove('hidden');
-      const pinInput = document.getElementById('inputPinCode');
-      pinInput.value = "";
-      setTimeout(() => pinInput.focus(), 100);
-    }
-
-    function closePinModal() {
-      document.getElementById('pinModalWrapper').classList.add('hidden');
-    }
-
-    function handlePinAuthentication(e) {
-      e.preventDefault();
-      const entered = document.getElementById('inputPinCode').value.trim();
-
-      if (entered === CONTROLLER_PIN) {
-        isAuthorized = true;
-        sessionStorage.setItem(SESSION_AUTH_KEY, "true");
-        closePinModal();
-        refreshAuthUI();
-        switchViewTo('admin');
-        showToast("Mesa Técnica desbloqueada con éxito", "success");
-      } else {
-        showToast("PIN militar incorrecto. Reintente.", "error");
-      }
-    }
-
-    function logoutAdmin() {
-      if (confirm("¿Cerrar la sesión de la Mesa Técnica?")) {
-        isAuthorized = false;
-        sessionStorage.removeItem(SESSION_AUTH_KEY);
-        refreshAuthUI();
-        switchViewTo('spectator');
-        showToast("Mesa bloqueada. Ahora en modo público.", "info");
-      }
-    }
-
-    function refreshAuthUI() {
-      const btnOpen = document.getElementById('btnOpenAuthModal');
-      const actions = document.getElementById('adminNavActions');
-      const roleBadge = document.getElementById('roleIndicatorBadge');
-
-      if (isAuthorized) {
-        btnOpen.classList.add('hidden');
-        actions.classList.remove('hidden');
-        roleBadge.className = "text-[10px] font-extrabold tracking-wider px-2.5 py-0.5 rounded-full bg-gold-500/20 text-gold-300 border border-gold-500/40 flex items-center gap-1";
-        roleBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-gold-400"></span> MESA TÉCNICA (OFICIAL)`;
-      } else {
-        btnOpen.classList.remove('hidden');
-        actions.classList.add('hidden');
-        roleBadge.className = "text-[10px] font-extrabold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center gap-1";
-        roleBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> PROYECCIÓN PÚBLICA`;
-      }
-    }
-
-    function toggleActiveView() {
-      if (currentView === 'admin') {
-        switchViewTo('spectator');
-      } else {
-        switchViewTo('admin');
-      }
-    }
-
-    function switchViewTo(view) {
-      currentView = view;
-      const specSec = document.getElementById('spectatorViewSection');
-      const adminSec = document.getElementById('adminViewSection');
-      const labelToggle = document.getElementById('labelToggleViews');
-
-      if (view === 'admin' && isAuthorized) {
-        specSec.classList.add('hidden');
-        adminSec.classList.remove('hidden');
-        if (labelToggle) labelToggle.textContent = "Ver Proyector";
-        renderAdminTable();
-      } else {
-        specSec.classList.remove('hidden');
-        adminSec.classList.add('hidden');
-        if (labelToggle) labelToggle.textContent = "Mesa Técnica";
-        renderSpectator();
-      }
+      showNotification(`Tiempo copiado: ${formatted}`);
     }
 
     // Filtros de Partida
-    function setSpectatorFilter(key) {
-      spectatorFilter = key;
-      document.querySelectorAll('.s-filter-btn').forEach(b => {
-        if (b.getAttribute('data-sfilter') === key) {
-          b.className = "s-filter-btn px-3 py-1.5 rounded-xl text-xs font-black bg-gold-500 text-camo-950 shadow-md";
+    function setFilter(partidaKey) {
+      spectatorFilter = partidaKey;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-filter') === partidaKey) {
+          btn.className = "filter-btn px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white shadow-sm";
         } else {
-          b.className = "s-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-gold-500/20";
+          btn.className = "filter-btn px-3 py-2 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white";
         }
       });
-      renderSpectator();
+
+      const titles = {
+        'ALL': 'Podio Oficial • Clasificación General',
+        '1': 'Podio Oficial • Partida 1 (09:30)',
+        '2': 'Podio Oficial • Partida 2 (09:45 Damas)',
+        '3': 'Podio Oficial • Partida 3 (10:00)',
+        '4': 'Podio Oficial • Partida 4 (10:15)',
+        '5': 'Podio Oficial • Partida 5 (10:30)'
+      };
+      document.getElementById('currentViewTitle').textContent = titles[partidaKey] || 'Podio Oficial';
+      renderSpectatorView();
     }
 
-    function setAdminFilter(key) {
-      adminFilter = key;
-      document.querySelectorAll('.a-filter-btn').forEach(b => {
-        if (b.getAttribute('data-afilter') === key) {
-          b.className = "a-filter-btn px-3 py-1.5 rounded-xl text-xs font-black bg-gold-500 text-camo-950 shadow";
+    function setAdminFilter(partidaKey) {
+      adminFilter = partidaKey;
+      document.querySelectorAll('.admin-filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-adminfilter') === partidaKey) {
+          btn.className = "admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white";
         } else {
-          b.className = "a-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-camo-800 text-slate-300 hover:text-white border border-slate-700";
+          btn.className = "admin-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700";
         }
       });
       renderAdminTable();
     }
 
-    // Utilidades de Pantalla y Exportación
+    function openPinModal() {
+      const modal = document.getElementById('pinModal');
+      const err = document.getElementById('pinErrorMessage');
+      const input = document.getElementById('inputPinCode');
+      err.classList.add('hidden');
+      input.value = "";
+      modal.classList.remove('hidden');
+      setTimeout(() => input.focus(), 80);
+    }
+
+    function closePinModal() {
+      document.getElementById('pinModal').classList.add('hidden');
+    }
+
+    function handlePinSubmit(e) {
+      e.preventDefault();
+      const enteredPin = document.getElementById('inputPinCode').value.trim();
+      const err = document.getElementById('pinErrorMessage');
+
+      if (enteredPin === ADMIN_PIN) {
+        isAuthorized = true;
+        sessionStorage.setItem(SESSION_AUTH_KEY, "true");
+        closePinModal();
+        updateAuthInterface();
+        switchViewMode('admin');
+        showNotification("Mesa técnica desbloqueada con éxito");
+      } else {
+        err.classList.remove('hidden');
+      }
+    }
+
+    function logoutAdmin() {
+      isAuthorized = false;
+      sessionStorage.removeItem(SESSION_AUTH_KEY);
+      updateAuthInterface();
+      switchViewMode('spectator');
+      showNotification("Sesión técnica cerrada. Modo espectador activo.");
+    }
+
+    function updateAuthInterface() {
+      const btnOpen = document.getElementById('btnOpenPinModal');
+      const adminBar = document.getElementById('adminTopBar');
+      const roleBadge = document.getElementById('roleBadge');
+
+      if (isAuthorized) {
+        btnOpen.classList.add('hidden');
+        adminBar.classList.remove('hidden');
+        adminBar.classList.add('flex');
+        roleBadge.textContent = "Controlador Autorizado";
+        roleBadge.className = "text-[11px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
+      } else {
+        btnOpen.classList.remove('hidden');
+        adminBar.classList.add('hidden');
+        adminBar.classList.remove('flex');
+        roleBadge.textContent = "Espectador";
+        roleBadge.className = "text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700/80";
+      }
+    }
+
+    function toggleActiveView() {
+      switchViewMode(currentView === 'admin' ? 'spectator' : 'admin');
+    }
+
+    function switchViewMode(mode) {
+      currentView = mode;
+      const specSec = document.getElementById('spectatorSection');
+      const adminSec = document.getElementById('adminSection');
+      const btnText = document.getElementById('viewModeText');
+
+      if (mode === 'admin' && isAuthorized) {
+        specSec.classList.add('hidden');
+        adminSec.classList.remove('hidden');
+        adminSec.classList.add('flex');
+        btnText.textContent = "Ver Proyector";
+        renderAdminTable();
+      } else {
+        specSec.classList.remove('hidden');
+        adminSec.classList.add('hidden');
+        adminSec.classList.remove('flex');
+        btnText.textContent = "Mesa de Control";
+        renderSpectatorView();
+      }
+    }
+
     function toggleFullscreen() {
       if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        if (document.exitFullscreen) document.exitFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
       }
     }
 
     function exportToCSV() {
       calculateRankings();
-      let csv = "\uFEFFPuesto General,Puesto Partida,Dorsal,Oficial / Atleta,Promoción,Serie,Partida,Hora Partida,Tiempo Oficial\n";
-
+      let csvContent = "\uFEFFPuesto General,Puesto Partida,Dorsal,Atleta,Promoción,Serie,Partida,Hora Partida,Tiempo Oficial\n";
       athletes.forEach(a => {
-        csv += [
-          a.puestoGeneral || "",
-          a.puestoPartida || "",
-          `"${a.dorsal}"`,
-          `"${a.nombre}"`,
-          `"${a.promo}"`,
-          `"${a.serie}"`,
-          a.partida,
-          a.horaPartida,
-          `"${a.tiempo || ''}"`
-        ].join(",") + "\n";
+        csvContent += `${a.puestoGeneral || ""},${a.puestoPartida || ""},"${a.dorsal}","${a.nombre}","${a.promo}","${a.serie}",${a.partida},${a.horaPartida},"${a.tiempo || ""}"\n`;
       });
 
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.setAttribute("href", url);
-      link.setAttribute("download", `RESULTADOS_OFICIALES_CARRERA_PEDESTRE_${new Date().toISOString().slice(0, 10)}.csv`);
+      link.href = url;
+      link.download = `carrera_pedestre_oficiales_resultados_${new Date().toISOString().slice(0, 10)}.csv`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
-      showToast("Planilla oficial exportada en CSV / Excel", "success");
+      showNotification("Resultados descargados en formato CSV");
     }
 
-    function copyPodiumSummary() {
-      calculateRankings();
-      const finished = athletes.filter(a => a.tiempo && a.tiempo.trim() !== "");
-      finished.sort((a, b) => parseTimeStringToMs(a.tiempo) - parseTimeStringToMs(b.tiempo));
-
-      if (finished.length === 0) {
-        showToast("No hay oficiales con tiempos en meta para copiar", "error");
-        return;
-      }
-
-      let summary = "🎖️ RESULTADOS OFICIALES - GRAN CARRERA PEDESTRE DE OFICIALES EN RETIRO 🎖️\n\n";
-      finished.forEach((a, i) => {
-        summary += `${i + 1}° | #${a.dorsal} - ${a.nombre} | ${a.promo} | Tiempo: ${a.tiempo}\n`;
-      });
-
-      const ta = document.createElement("textarea");
-      ta.value = summary;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-
-      showToast("Resumen de podio copiado al portapapeles", "success");
-    }
-
-    function promptResetTimes() {
-      if (confirm("⚠️ ATENCIÓN: ¿Deseas reiniciar TODOS LOS TIEMPOS registrados en la competencia? Esta acción no se puede deshacer.")) {
+    function resetAllTimes() {
+      const ok = window.confirm("¿Está seguro de reiniciar los tiempos de todos los 63 atletas?");
+      if (ok) {
         athletes.forEach(a => a.tiempo = "");
         persistData();
         renderAdminTable();
-        renderSpectator();
-        showToast("Se han reiniciado los tiempos de carrera", "info");
+        renderSpectatorView();
+        showNotification("Se han reiniciado los tiempos de llegada");
       }
     }
 
-    function showToast(msg, type = "success") {
-      const toast = document.getElementById('toastNotification');
-      const text = document.getElementById('toastMessageText');
-      const icon = document.getElementById('toastIconWrap');
-
-      text.textContent = msg;
-      if (type === "error") {
-        icon.innerHTML = `<i data-lucide="alert-circle" class="w-5 h-5 text-red-400"></i>`;
-      } else if (type === "info") {
-        icon.innerHTML = `<i data-lucide="info" class="w-5 h-5 text-gold-400"></i>`;
-      } else {
-        icon.innerHTML = `<i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>`;
-      }
-      lucide.createIcons();
-
-      toast.classList.remove('translate-y-28', 'opacity-0');
+    function showNotification(msg) {
+      const toast = document.getElementById('notificationToast');
+      const label = document.getElementById('toastMessage');
+      label.textContent = msg;
+      toast.classList.remove('translate-y-16', 'opacity-0');
       toast.classList.add('translate-y-0', 'opacity-100');
-
       setTimeout(() => {
         toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-28', 'opacity-0');
-      }, 3200);
+        toast.classList.add('translate-y-16', 'opacity-0');
+      }, 2500);
     }
 
-    // Arranque
+    // Inicialización al cargar la página
     window.addEventListener('DOMContentLoaded', () => {
       if (sessionStorage.getItem(SESSION_AUTH_KEY) === "true") {
         isAuthorized = true;
       }
-
       loadDataFromStorage();
-      refreshAuthUI();
-      renderSpectator();
-
-      if (isAuthorized) {
-        renderAdminTable();
-      }
-
+      updateAuthInterface();
+      renderSpectatorView();
+      if (isAuthorized) renderAdminTable();
       lucide.createIcons();
     });
   </script>
