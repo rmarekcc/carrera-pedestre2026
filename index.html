@@ -40,7 +40,7 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-black">
 
-  <!-- MARCA DE ÁGUA SUTIL -->
+  <!-- MARCA DE AGUA SUTIL -->
   <div class="watermark-bg">
     SISTEMA TÉCNICO • TTE COM COTERA C. / STTE COM AVELLANEDA E. / STTE COM ALMEYDA C.
   </div>
@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <!-- ESTADO DE CONEXÃO E ACESSO -->
+    <!-- ESTADO DE CONEXIÓN Y ACCESO -->
     <div class="flex items-center gap-3">
       <div id="syncBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-xs text-slate-300">
         <span id="syncDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 pulse-dot"></span>
@@ -74,7 +74,7 @@
     </div>
   </header>
 
-  <!-- PAINEL DE CONTROLO (PIN 1095) -->
+  <!-- PANEL DE CONTROLADOR (PIN 1095) -->
   <section id="controlPanel" class="hidden bg-slate-900/95 border-b-2 border-emerald-500 px-4 py-5 sm:px-8 shadow-2xl">
     <div class="max-w-7xl mx-auto space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-slate-800">
@@ -83,7 +83,7 @@
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             PANEL DE CONTROL ACTIVO
           </span>
-          <span class="text-xs text-slate-400">Transmisión centralizada de tiempos y estado de atletas en vivo.</span>
+          <span class="text-xs text-slate-400">Al pulsar una partida abajo, la pantalla de todos los espectadores cambia inmediatamente a esa partida.</span>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="restablecerTiempos()" class="px-3 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-200 text-xs border border-rose-700/50 transition font-semibold flex items-center gap-1">
@@ -95,26 +95,26 @@
         </div>
       </div>
 
-      <!-- TRANSMISSÃO DE PARTIDA EM CURSO -->
-      <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-wrap items-center justify-between gap-3">
+      <!-- TRANSMISIÓN DE PARTIDA ACTIVA (CONTROL REMOTO CENTRAL) -->
+      <div class="bg-slate-950 p-4 rounded-xl border-2 border-emerald-500/40 flex flex-wrap items-center justify-between gap-3 shadow-inner">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
-            Transmitir Partida en Curso:
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+            CONTROL CENTRAL DE PANTALLA:
           </span>
-          <span class="text-xs text-slate-400">(Fija la pantalla del proyector e invitados automáticamente)</span>
+          <span class="text-xs text-slate-300 font-medium">Haz clic en la partida que deseas proyectar a todos:</span>
         </div>
         <div class="flex flex-wrap gap-2">
-          <button onclick="fijarPartidaOficial('PARTIDA 1')" id="btnP1" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Partida 1</button>
-          <button onclick="fijarPartidaOficial('PARTIDA 2')" id="btnP2" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Partida 2</button>
-          <button onclick="fijarPartidaOficial('PARTIDA 3')" id="btnP3" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Partida 3</button>
-          <button onclick="fijarPartidaOficial('PARTIDA 4')" id="btnP4" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Partida 4</button>
-          <button onclick="fijarPartidaOficial('PARTIDA 5')" id="btnP5" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Partida 5</button>
-          <button onclick="fijarPartidaOficial('ALL')" id="btnALL" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Todas / General</button>
+          <button onclick="fijarYTransmitirPartida('PARTIDA 1')" id="btnP1" class="px-4 py-2 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Partida 1</button>
+          <button onclick="fijarYTransmitirPartida('PARTIDA 2')" id="btnP2" class="px-4 py-2 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Partida 2</button>
+          <button onclick="fijarYTransmitirPartida('PARTIDA 3')" id="btnP3" class="px-4 py-2 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Partida 3</button>
+          <button onclick="fijarYTransmitirPartida('PARTIDA 4')" id="btnP4" class="px-4 py-2 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Partida 4</button>
+          <button onclick="fijarYTransmitirPartida('PARTIDA 5')" id="btnP5" class="px-4 py-2 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Partida 5</button>
+          <button onclick="fijarYTransmitirPartida('ALL')" id="btnALL" class="px-4 py-2 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Todas / General</button>
         </div>
       </div>
 
-      <!-- CRONÓMETRO E REGISTO RÁPIDO COM AUTO-STOP -->
+      <!-- CRONÓMETRO Y REGISTRO RÁPIDO CON AUTO-STOP -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
         <div class="md:col-span-6 bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
           <div>
@@ -144,16 +144,16 @@
     </div>
   </section>
 
-  <!-- CONTEÚDO PRINCIPAL: VISTA DE ESPECTADORES / PROJEÇÃO -->
+  <!-- CONTENIDO PRINCIPAL: VISTA DE ESPECTADORES / PROYECCIÓN -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 space-y-6">
     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4 shadow-lg">
       <div class="flex flex-wrap gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
-        <button onclick="setFilter('ALL')" id="f-ALL" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-black">Todas las Partidas (76)</button>
-        <button onclick="setFilter('PARTIDA 1')" id="f-P1" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 1 (09:30)</button>
-        <button onclick="setFilter('PARTIDA 2')" id="f-P2" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 2 (09:45)</button>
-        <button onclick="setFilter('PARTIDA 3')" id="f-P3" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 3 (10:00)</button>
-        <button onclick="setFilter('PARTIDA 4')" id="f-P4" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 4 (10:15)</button>
-        <button onclick="setFilter('PARTIDA 5')" id="f-P5" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 5 (10:30)</button>
+        <button onclick="usuarioCambiaFiltro('ALL')" id="f-ALL" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-black">Todas las Partidas (76)</button>
+        <button onclick="usuarioCambiaFiltro('PARTIDA 1')" id="f-P1" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 1 (09:30)</button>
+        <button onclick="usuarioCambiaFiltro('PARTIDA 2')" id="f-P2" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 2 (09:45)</button>
+        <button onclick="usuarioCambiaFiltro('PARTIDA 3')" id="f-P3" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 3 (10:00)</button>
+        <button onclick="usuarioCambiaFiltro('PARTIDA 4')" id="f-P4" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 4 (10:15)</button>
+        <button onclick="usuarioCambiaFiltro('PARTIDA 5')" id="f-P5" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">Partida 5 (10:30)</button>
       </div>
 
       <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
@@ -205,7 +205,7 @@
       </div>
     </div>
 
-    <!-- PÓDIO DA SELEÇÃO ATUAL -->
+    <!-- PODIO DE LA SELECCIÓN ACTUAL -->
     <div id="podiumSection" class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div id="cardSecond" class="order-2 md:order-1 bg-slate-900/60 rounded-2xl border border-slate-800 p-5 flex flex-col justify-between relative overflow-hidden shadow-md">
         <div class="flex justify-between items-start">
@@ -253,7 +253,7 @@
       </div>
     </div>
 
-    <!-- TABELA PRINCIPAL -->
+    <!-- TABLERO PRINCIPAL -->
     <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
       <div class="overflow-x-auto">
         <table class="w-full text-left text-sm">
@@ -276,7 +276,7 @@
     </div>
   </main>
 
-  <!-- RODAPÉ INSTITUCIONAL -->
+  <!-- PIE DE PÁGINA -->
   <footer class="mt-auto border-t border-slate-900 bg-slate-950/80 py-4 px-6 text-center text-xs text-slate-500 font-mono">
     Desarrollo y Control Técnico Oficial: <span class="text-slate-300 font-semibold">Tte Com Cotera Cedano Renzo Marek</span> • <span class="text-slate-300 font-semibold">Stte Com Avellaneda Espinoza Milte</span> • <span class="text-slate-300 font-semibold">Stte Com Almeyda Cancho Moises</span> | Ejército del Perú 2026
   </footer>
@@ -304,7 +304,6 @@
   </div>
 
   <script>
-    // PADRÃO COMPLETO COM CORREÇÕES DE PROMOÇÃO CONFORME SOLICITADO
     const FULL_ROSTER = [
       // PARTIDA 1 (7 atletas)
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 1", promoAnio:"1955", promo:"1955 - GRAL BELISARIO SUAREZ VARGAS", dorsal:"5501", grado:"CRL", nombres:"JORGE CARDENAS PEREZ PALMA"},
@@ -326,13 +325,12 @@
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8802", grado:"", nombres:"MARUJA BAEZ PAREJA"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8803", grado:"", nombres:"LUCY MENDOZA SORIA"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8804", grado:"", nombres:"CLARA VASQUEZ FERNANDEZ"},
-      // Corrigidos para 1989 B:
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B01", grado:"", nombres:"ZULLY MILAGROS TALAVERA PRADO"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B02", grado:"", nombres:"MELISSA GIANINA GUERRERO NAZARIO"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"", nombres:"ILLIANA DA SILVA QUEREVALU"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9001", grado:"", nombres:"BERTHA ANITA PEREZ PEREZ"},
 
-      // PARTIDA 3 (7 atletas) - Corrigidos todos para 1975 B na promoção Juan Bautista Zubiaga
+      // PARTIDA 3 (7 atletas)
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7301", grado:"CRL", nombres:"HUGO ROSADO BALDEON"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7302", grado:"TTE CRL", nombres:"LUIS GRADOS BAILETTI"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7303", grado:"TTE CRL", nombres:"AURELIO POZADA GONZALES"},
@@ -382,12 +380,10 @@
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8802", grado:"CRL", nombres:"SAMUEL RENE ONTIVEROS FLORES"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8803", grado:"MY", nombres:"MANUEL ANTONIO ALFARO JUAREZ"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8804", grado:"GRAL", nombres:"JAIME REYNALDO LLANOS BARON"},
-      // Corrigidos todos para 1989 A na promoção Inka Pachacutec:
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A01", grado:"GRAL BRIG", nombres:"MOISES CHAVEZ FARFAN"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A02", grado:"GRAL BRIG", nombres:"FERNANDO PORTILLO ROMERO"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A03", grado:"CRL INF", nombres:"RAFAEL PINEDO CANEPA"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A04", grado:"TTE INF", nombres:"VICTOR AUZA MONTALVO"},
-      // Corrigidos todos para 1989 B na promoção Justiniano Borgoño:
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B01", grado:"CRL", nombres:"LUIS GOMEZ BAUTISTA"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B02", grado:"CRL", nombres:"OSCAR PALOMINO CHUCHON"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"TTE", nombres:"IVAN DANTE BACIGALUPO LARREA"},
@@ -404,7 +400,6 @@
 
       try {
         const parsed = JSON.parse(guardados);
-        // Atualiza garantindo as correções oficiais
         return FULL_ROSTER.map((r, i) => {
           const encontrado = parsed.find(p => String(p.dorsal).trim().toUpperCase() === String(r.dorsal).trim().toUpperCase() && p.partida === r.partida);
           return {...r, id: i+1, tiempo: encontrado ? encontrado.tiempo : ""};
@@ -425,28 +420,30 @@
     let isChronoRunning = false;
     let lastSyncTimestamp = 0;
 
-    // CANAL HTTP EM NUVEM UNIVERSAL
+    // CANAL HTTP EN NUBE UNIVERSAL
     const CLOUD_ROOM = "carrera_pedestre_oficiales_2026_peru";
     const CLOUD_ENDPOINT = `https://ntfy.sh/${CLOUD_ROOM}`;
 
+    // EMITE TANTO TIEMPOS COMO LA ORDEN DE CAMBIO DE PANTALLA
     async function broadcastToCloud() {
       const payload = {
         timestamp: Date.now(),
         data: runners,
-        activePartida: currentFilter
+        forcePartida: currentFilter
       };
 
       try {
         await fetch(CLOUD_ENDPOINT, {
           method: 'POST',
           body: JSON.stringify(payload),
-          headers: { 'Title': 'Update', 'Priority': 'low' }
+          headers: { 'Title': 'Update', 'Priority': 'high' }
         });
       } catch (e) {
-        console.warn("Emissão em nuvem falhou, utilizando cache local.", e);
+        console.warn("Emisión en nube falló, usando caché local.", e);
       }
     }
 
+    // ESCUCHA CONSTANTE EN TODOS LOS DISPOSITIVOS (IPAD / CELULARES)
     async function pollCloudSync() {
       try {
         const response = await fetch(`${CLOUD_ENDPOINT}/json?poll=1&since=latest`);
@@ -460,10 +457,16 @@
                 const payload = JSON.parse(msg.message);
                 if (payload.timestamp && payload.timestamp > lastSyncTimestamp) {
                   lastSyncTimestamp = payload.timestamp;
-                  runners = payload.data;
-                  if (payload.activePartida && currentFilter !== payload.activePartida) {
-                    setFilter(payload.activePartida, false);
+                  
+                  if (payload.data) {
+                    runners = payload.data;
                   }
+
+                  // FORZADO DE PANTALLA TRANSMITIDA POR EL CONTROLADOR
+                  if (payload.forcePartida && (!isController || currentFilter !== payload.forcePartida)) {
+                    aplicarFiltroVisual(payload.forcePartida);
+                  }
+
                   saveData(false);
                   renderTable();
                 }
@@ -482,7 +485,7 @@
     function initNetwork() {
       document.getElementById("syncDot").className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
       document.getElementById("syncText").textContent = isController ? "🟢 Emitiendo nube" : "🟢 Sincronizado nube";
-      setInterval(pollCloudSync, 2000);
+      setInterval(pollCloudSync, 1500);
     }
 
     function broadcastState() {
@@ -498,7 +501,7 @@
         runners = JSON.parse(stored);
         const storedPartida = localStorage.getItem("carrera_active_partida");
         if (storedPartida && storedPartida !== currentFilter) {
-          setFilter(storedPartida, false);
+          aplicarFiltroVisual(storedPartida);
         } else {
           renderTable();
         }
@@ -521,18 +524,46 @@
       alert("Padrón restablecido con éxito (76 atletas listos).");
     }
 
-    function fijarPartidaOficial(partida) {
-      setFilter(partida, true);
+    // COMANDO DIRECTO DEL CONTROLADOR PARA CAMBIAR LA PANTALLA DE TODOS
+    function fijarYTransmitirPartida(partida) {
+      currentFilter = partida;
+      aplicarFiltroVisual(partida);
+      broadcastState();
+    }
+
+    function usuarioCambiaFiltro(partida) {
+      currentFilter = partida;
+      aplicarFiltroVisual(partida);
+      if (isController) {
+        broadcastState();
+      } else {
+        renderTable();
+      }
+    }
+
+    function aplicarFiltroVisual(partida) {
+      currentFilter = partida;
+      document.querySelectorAll(".filter-btn").forEach(b => {
+        b.className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900";
+      });
+      const activeBtn = partida === "ALL" ? "f-ALL" : `f-P${partida.replace("PARTIDA ", "")}`;
+      const el = document.getElementById(activeBtn);
+      if (el) el.className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-black";
+
+      updateControlButtons(partida);
+      actualizarSelectorSeries();
+      actualizarTitulos();
+      renderTable();
     }
 
     function updateControlButtons(partida) {
       ['P1', 'P2', 'P3', 'P4', 'P5', 'ALL'].forEach(p => {
         const btn = document.getElementById(`btn${p}`);
-        if (btn) btn.className = "px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700";
+        if (btn) btn.className = "px-4 py-2 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
       });
       const activeId = partida === "ALL" ? "btnALL" : `btnP${partida.replace("PARTIDA ", "")}`;
       const activeBtn = document.getElementById(activeId);
-      if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20";
+      if (activeBtn) activeBtn.className = "px-4 py-2 rounded-lg text-xs font-mono font-bold bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/30 scale-105 transition";
     }
 
     function actualizarSelectorSeries() {
@@ -564,25 +595,6 @@
     function handleSerieChange() {
       selectedSerie = document.getElementById("serieSelect").value;
       actualizarTitulos();
-      renderTable();
-    }
-
-    function setFilter(partida, doBroadcast = false) {
-      currentFilter = partida;
-      document.querySelectorAll(".filter-btn").forEach(b => {
-        b.className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900";
-      });
-      const activeBtn = partida === "ALL" ? "f-ALL" : `f-P${partida.replace("PARTIDA ", "")}`;
-      const el = document.getElementById(activeBtn);
-      if (el) el.className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-black";
-
-      updateControlButtons(partida);
-      actualizarSelectorSeries();
-      actualizarTitulos();
-
-      if (doBroadcast && isController) {
-        broadcastState();
-      }
       renderTable();
     }
 
@@ -887,7 +899,7 @@
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-      setFilter(currentFilter, false);
+      aplicarFiltroVisual(currentFilter);
       updateUIMode();
       initNetwork();
     });
