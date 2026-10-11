@@ -40,7 +40,7 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-black">
 
-  <!-- MARCA DE AGUA SUTIL -->
+  <!-- MARCA DE ÁGUA SUTIL -->
   <div class="watermark-bg">
     SISTEMA TÉCNICO • TTE COM COTERA C. / STTE COM AVELLANEDA E. / STTE COM ALMEYDA C.
   </div>
@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <!-- ESTADO DE CONEXIÓN Y ACCESO -->
+    <!-- ESTADO DE CONEXÃO E ACESSO -->
     <div class="flex items-center gap-3">
       <div id="syncBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-xs text-slate-300">
         <span id="syncDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 pulse-dot"></span>
@@ -74,7 +74,7 @@
     </div>
   </header>
 
-  <!-- PANEL DE CONTROLADOR (PIN 1095) -->
+  <!-- PAINEL DE CONTROLO (PIN 1095) -->
   <section id="controlPanel" class="hidden bg-slate-900/95 border-b-2 border-emerald-500 px-4 py-5 sm:px-8 shadow-2xl">
     <div class="max-w-7xl mx-auto space-y-4">
       <div class="flex flex-wrap items-center justify-between gap-4 pb-3 border-b border-slate-800">
@@ -95,7 +95,7 @@
         </div>
       </div>
 
-      <!-- TRANSMISIÓN DE PARTIDA ACTIVA -->
+      <!-- TRANSMISSÃO DE PARTIDA EM CURSO -->
       <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
@@ -114,7 +114,7 @@
         </div>
       </div>
 
-      <!-- CRONÓMETRO Y REGISTRO RÁPIDO CON AUTO-STOP -->
+      <!-- CRONÓMETRO E REGISTO RÁPIDO COM AUTO-STOP -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
         <div class="md:col-span-6 bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
           <div>
@@ -144,7 +144,7 @@
     </div>
   </section>
 
-  <!-- CONTENIDO PRINCIPAL: VISTA DE ESPECTADORES / PROYECCIÓN -->
+  <!-- CONTEÚDO PRINCIPAL: VISTA DE ESPECTADORES / PROJEÇÃO -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 space-y-6">
     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4 shadow-lg">
       <div class="flex flex-wrap gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
@@ -205,7 +205,7 @@
       </div>
     </div>
 
-    <!-- PODIO DE LA SELECCIÓN ACTUAL -->
+    <!-- PÓDIO DA SELEÇÃO ATUAL -->
     <div id="podiumSection" class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <div id="cardSecond" class="order-2 md:order-1 bg-slate-900/60 rounded-2xl border border-slate-800 p-5 flex flex-col justify-between relative overflow-hidden shadow-md">
         <div class="flex justify-between items-start">
@@ -253,7 +253,7 @@
       </div>
     </div>
 
-    <!-- TABLERO PRINCIPAL -->
+    <!-- TABELA PRINCIPAL -->
     <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
       <div class="overflow-x-auto">
         <table class="w-full text-left text-sm">
@@ -276,7 +276,7 @@
     </div>
   </main>
 
-  <!-- PIE DE PÁGINA -->
+  <!-- RODAPÉ INSTITUCIONAL -->
   <footer class="mt-auto border-t border-slate-900 bg-slate-950/80 py-4 px-6 text-center text-xs text-slate-500 font-mono">
     Desarrollo y Control Técnico Oficial: <span class="text-slate-300 font-semibold">Tte Com Cotera Cedano Renzo Marek</span> • <span class="text-slate-300 font-semibold">Stte Com Avellaneda Espinoza Milte</span> • <span class="text-slate-300 font-semibold">Stte Com Almeyda Cancho Moises</span> | Ejército del Perú 2026
   </footer>
@@ -304,7 +304,9 @@
   </div>
 
   <script>
+    // PADRÃO COMPLETO COM CORREÇÕES DE PROMOÇÃO CONFORME SOLICITADO
     const FULL_ROSTER = [
+      // PARTIDA 1 (7 atletas)
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 1", promoAnio:"1955", promo:"1955 - GRAL BELISARIO SUAREZ VARGAS", dorsal:"5501", grado:"CRL", nombres:"JORGE CARDENAS PEREZ PALMA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 1", promoAnio:"1959", promo:"1959 - TTE CRL ROQUE SAENZ PEÑA", dorsal:"5901", grado:"GRAL", nombres:"JUAN MANUEL PENDOLA ALANIA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 2", promoAnio:"1971", promo:"1971 - GRAL IGNACIO ALVAREZ THOMAS", dorsal:"7101", grado:"GRAL", nombres:"CAYO ELEN RAMOS NEYRA"},
@@ -312,6 +314,8 @@
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 2", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7202", grado:"CRL", nombres:"JESUS ZAMUDIO ALIAGA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL VARONES 2", promoAnio:"1972", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7203", grado:"GRAL B", nombres:"FRANCISCO DEL ALAMO SOTA"},
       {partida:"PARTIDA 1", serie:"SERIE ESPECIAL DAMAS 2", promoAnio:"1977", promo:"1977 - SESQUICENTENARIO DE LA INDEPENDENCIA", dorsal:"7701", grado:"", nombres:"GIOVANNA ROJAS CAMPOS"},
+      
+      // PARTIDA 2 (14 atletas)
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8401", grado:"", nombres:"MILUSKA VELIS ABADIE"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8402", grado:"", nombres:"JESUS AGUILAR CORDOVA"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1986", promo:"1986 - HÉROES DE SAN PABLO", dorsal:"8601", grado:"", nombres:"MARIA ELENA BERNA URBANO"},
@@ -322,17 +326,22 @@
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8802", grado:"", nombres:"MARUJA BAEZ PAREJA"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8803", grado:"", nombres:"LUCY MENDOZA SORIA"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8804", grado:"", nombres:"CLARA VASQUEZ FERNANDEZ"},
+      // Corrigidos para 1989 B:
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B01", grado:"", nombres:"ZULLY MILAGROS TALAVERA PRADO"},
-      {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1990 B", promo:"1990 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B02", grado:"", nombres:"MELISSA GIANINA GUERRERO NAZARIO"},
-      {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1991 B", promo:"1991 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"", nombres:"ILLIANA DA SILVA QUEREVALU"},
+      {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B02", grado:"", nombres:"MELISSA GIANINA GUERRERO NAZARIO"},
+      {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"", nombres:"ILLIANA DA SILVA QUEREVALU"},
       {partida:"PARTIDA 2", serie:"SERIE \"E\" DAMAS", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9001", grado:"", nombres:"BERTHA ANITA PEREZ PEREZ"},
+
+      // PARTIDA 3 (7 atletas) - Corrigidos todos para 1975 B na promoção Juan Bautista Zubiaga
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7301", grado:"CRL", nombres:"HUGO ROSADO BALDEON"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7302", grado:"TTE CRL", nombres:"LUIS GRADOS BAILETTI"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1973", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", dorsal:"7303", grado:"TTE CRL", nombres:"AURELIO POZADA GONZALES"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1974", promo:"1974 - SGTO MAYOR FERMIN NACARINO", dorsal:"7401", grado:"TTE", nombres:"OSCAR EDUARDO CAMPOS HOYOS"},
       {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1975 B", promo:"1975 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B01", grado:"TTE CRL", nombres:"JOSE LUIS MORENO DA SILVA"},
-      {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1976 B", promo:"1976 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B02", grado:"TTE CRL", nombres:"ERIC ANDRES MEJIA LUCAR"},
-      {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1977 B", promo:"1977 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B03", grado:"CRL", nombres:"JUAN CARLOS VALERA RIOS"},
+      {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1975 B", promo:"1975 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B02", grado:"TTE CRL", nombres:"ERIC ANDRES MEJIA LUCAR"},
+      {partida:"PARTIDA 3", serie:"SERIE ESPECIAL VARONES 3", promoAnio:"1975 B", promo:"1975 B - TTE CRL JUAN BAUTISTA ZUBIAGA", dorsal:"75B03", grado:"CRL", nombres:"JUAN CARLOS VALERA RIOS"},
+
+      // PARTIDA 4 (18 atletas)
       {partida:"PARTIDA 4", serie:"SERIE \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7601", grado:"TTE CRL", nombres:"DANIEL MERA RODAS"},
       {partida:"PARTIDA 4", serie:"SERIE \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7602", grado:"MY", nombres:"C. HERNADEZ APARCANA"},
       {partida:"PARTIDA 4", serie:"SERIE \"A\"", promoAnio:"1976", promo:"1976 - GREGORIO ALBARRACIN", dorsal:"7603", grado:"CAP", nombres:"J. FERNANDEZ ROBLES"},
@@ -351,6 +360,8 @@
       {partida:"PARTIDA 4", serie:"SERIE \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8301", grado:"", nombres:"CRISOSTOMO ANDRADE OCHOA"},
       {partida:"PARTIDA 4", serie:"SERIE \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8302", grado:"", nombres:"PEDRO ANTONIO ESPINOZA ROJAS"},
       {partida:"PARTIDA 4", serie:"SERIE \"B\"", promoAnio:"1983", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", dorsal:"8303", grado:"CRL", nombres:"JOSE MANUEL QWISTGAARD SUAREZ"},
+
+      // PARTIDA 5 (30 atletas)
       {partida:"PARTIDA 5", serie:"SERIE \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8401", grado:"CRL", nombres:"RAUL MASIAS ARISPE"},
       {partida:"PARTIDA 5", serie:"SERIE \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8402", grado:"CRL", nombres:"DANIEL FERNANDEZ VIAÑA"},
       {partida:"PARTIDA 5", serie:"SERIE \"C\"", promoAnio:"1984", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", dorsal:"8403", grado:"CRL", nombres:"MARCO COLOME ELENO"},
@@ -371,13 +382,15 @@
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8802", grado:"CRL", nombres:"SAMUEL RENE ONTIVEROS FLORES"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8803", grado:"MY", nombres:"MANUEL ANTONIO ALFARO JUAREZ"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8804", grado:"GRAL", nombres:"JAIME REYNALDO LLANOS BARON"},
+      // Corrigidos todos para 1989 A na promoção Inka Pachacutec:
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A01", grado:"GRAL BRIG", nombres:"MOISES CHAVEZ FARFAN"},
-      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1990 A", promo:"1990 A - INKA PACHACUTEC", dorsal:"89A02", grado:"GRAL BRIG", nombres:"FERNANDO PORTILLO ROMERO"},
-      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1991 A", promo:"1991 A - INKA PACHACUTEC", dorsal:"89A03", grado:"CRL INF", nombres:"RAFAEL PINEDO CANEPA"},
-      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1992 A", promo:"1992 A - INKA PACHACUTEC", dorsal:"89A04", grado:"TTE INF", nombres:"VICTOR AUZA MONTALVO"},
+      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A02", grado:"GRAL BRIG", nombres:"FERNANDO PORTILLO ROMERO"},
+      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A03", grado:"CRL INF", nombres:"RAFAEL PINEDO CANEPA"},
+      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A04", grado:"TTE INF", nombres:"VICTOR AUZA MONTALVO"},
+      // Corrigidos todos para 1989 B na promoção Justiniano Borgoño:
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B01", grado:"CRL", nombres:"LUIS GOMEZ BAUTISTA"},
-      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1990 B", promo:"1990 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B02", grado:"CRL", nombres:"OSCAR PALOMINO CHUCHON"},
-      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1991 B", promo:"1991 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"TTE", nombres:"IVAN DANTE BACIGALUPO LARREA"},
+      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B02", grado:"CRL", nombres:"OSCAR PALOMINO CHUCHON"},
+      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"TTE", nombres:"IVAN DANTE BACIGALUPO LARREA"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9001", grado:"CRL", nombres:"GUILLERMO MIGUEL MENDOZA ANDRADE"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9002", grado:"CRL", nombres:"RAUL GUTIERREZ NEYRA"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", dorsal:"9003", grado:"CRL", nombres:"RAUL VILLALTA SALAVERRY"}
@@ -391,6 +404,7 @@
 
       try {
         const parsed = JSON.parse(guardados);
+        // Atualiza garantindo as correções oficiais
         return FULL_ROSTER.map((r, i) => {
           const encontrado = parsed.find(p => String(p.dorsal).trim().toUpperCase() === String(r.dorsal).trim().toUpperCase() && p.partida === r.partida);
           return {...r, id: i+1, tiempo: encontrado ? encontrado.tiempo : ""};
@@ -411,7 +425,7 @@
     let isChronoRunning = false;
     let lastSyncTimestamp = 0;
 
-    // CANAL HTTP EN LA NUBE UNIVERSAL (ntfy.sh público y compatible con Safari/iPadOS)
+    // CANAL HTTP EM NUVEM UNIVERSAL
     const CLOUD_ROOM = "carrera_pedestre_oficiales_2026_peru";
     const CLOUD_ENDPOINT = `https://ntfy.sh/${CLOUD_ROOM}`;
 
@@ -429,7 +443,7 @@
           headers: { 'Title': 'Update', 'Priority': 'low' }
         });
       } catch (e) {
-        console.warn("Emisión en nube falló, usando caché local.", e);
+        console.warn("Emissão em nuvem falhou, utilizando cache local.", e);
       }
     }
 
@@ -859,7 +873,7 @@
       ordenados.forEach((r, idx) => {
         const puesto = r.tiempo ? idx + 1 : "";
         const estado = r.tiempo ? "EN META" : "EN RUTA";
-        csv += `"${puesto}","${r.dorsal}","${r.grado}","${r.nombres}","${r.promoAnio}","${r.partida}","${r.serie}","${r.tiempo}","${estado}"\n`;
+        csv += `"${puesto}","${r.dorsal}","${r.grado}","${r.nombres}","${r.promoAnio}","${r.partida}","${r.serie}","${r.tiempo}"\n`;
       });
 
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
