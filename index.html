@@ -1,1321 +1,638 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gran Carrera Pedestre Oficiales en Retiro 2026 | Cronometraje en Vivo</title>
-
+  <title>Gran Carrera Pedestre 2026 - Control y Proyección Oficial</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <!-- PeerJS para sincronización nativa en vivo (compatible con iPad/Safari y PC) -->
+  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+  <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
-          colors: {
-            brand: {
-              50: '#ecfdf5',
-              100: '#d1fae5',
-              500: '#10b981',
-              600: '#059669',
-              700: '#047857',
-              900: '#064e3b',
-            }
-          }
-        }
-      }
-    }
-  </script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  
   <style>
-    .custom-scroll::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    .custom-scroll::-webkit-scrollbar-track {
-      background: #0f172a;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb {
-      background: #334155;
-      border-radius: 9999px;
-    }
-    .custom-scroll::-webkit-scrollbar-thumb:hover {
-      background: #475569;
-    }
-    @keyframes pulse-ring {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.15); opacity: 0.3; }
-      100% { transform: scale(0.95); opacity: 0.8; }
-    }
-    .live-pulse {
-      animation: pulse-ring 2s infinite ease-in-out;
-    }
+    body { font-family: 'Inter', sans-serif; background-color: #050b14; color: #f1f5f9; }
+    .font-chakra { font-family: 'Chakra Petch', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .gold-glow { text-shadow: 0 0 15px rgba(245, 158, 11, 0.4); }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-emerald-500 selection:text-white">
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-500 selection:text-black">
 
-  <header class="border-b border-slate-800/80 bg-slate-900/95 backdrop-blur-md sticky top-0 z-40 px-3 sm:px-6 py-2.5 transition-all shadow-lg shadow-black/20">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
-      
-      <!-- Titular e Icono -->
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 ring-1 ring-emerald-400/30 flex-shrink-0">
-          <i data-lucide="trophy" class="w-5 h-5"></i>
-        </div>
-        <div>
-          <div class="flex items-center gap-2 flex-wrap">
-            <h1 class="text-sm sm:text-base font-bold tracking-tight text-white">
-              Gran Carrera Pedestre <span class="text-emerald-400 font-extrabold">2026</span>
-            </h1>
-            <span id="roleBadge" class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700/80">
-              Espectador
-            </span>
-          </div>
-          <p class="text-xs text-slate-400 font-medium hidden sm:block">Oficiales del Ejército en Retiro • Clasificación Oficial</p>
-        </div>
+  <!-- BARRA SUPERIOR -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50 px-4 py-3 sm:px-8 flex justify-between items-center shadow-lg">
+    <div class="flex items-center gap-3">
+      <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center font-chakra font-black text-xl text-black shadow-lg shadow-emerald-500/20">
+        CP
+      </div>
+      <div>
+        <h1 class="text-base sm:text-lg font-bold text-white tracking-wide flex items-center gap-2">
+          CARRERA PEDESTRE 2026
+          <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">OFICIAL</span>
+        </h1>
+        <p class="text-xs text-slate-400">Oficiales del Ejército en Retiro • Sistema de Cronometraje</p>
+      </div>
+    </div>
+
+    <!-- ESTADO DE CONEXIÓN Y ACCESO -->
+    <div class="flex items-center gap-3">
+      <div id="syncBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-xs text-slate-300">
+        <span id="syncDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+        <span id="syncText">Conectando red...</span>
       </div>
 
-      <!-- Estado de Sincronización y Acciones -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Indicador de Nube en Vivo -->
-        <div id="cloudStatusBadge" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-[11px] font-medium text-slate-300">
-          <span id="cloudStatusDot" class="w-2 h-2 rounded-full bg-amber-400 live-pulse"></span>
-          <span id="cloudStatusText" class="hidden xs:inline">Conectando...</span>
-        </div>
-
-        <!-- Modo Pantalla Completa / Proyector -->
-        <button onclick="toggleFullscreen()" title="Pantalla Completa" class="h-8 sm:h-9 px-2.5 sm:px-3 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 text-xs font-semibold transition flex items-center gap-1.5 shadow-sm active:scale-95">
-          <i data-lucide="maximize" class="w-3.5 h-3.5 text-emerald-400"></i>
-          <span class="hidden md:inline">Proyector</span>
-        </button>
-
-        <!-- Botón Mesa Técnica (PIN) -->
-        <div id="authActionsContainer">
-          <button id="btnOpenPinModal" onclick="openPinModal()" class="h-8 sm:h-9 px-3 sm:px-3.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-md shadow-emerald-600/25 active:scale-95">
-            <i data-lucide="key-round" class="w-3.5 h-3.5"></i>
-            <span>Mesa Técnica</span>
-          </button>
-
-          <!-- Menú del Controlador Autenticado -->
-          <div id="adminTopBar" class="hidden items-center gap-2">
-            <button id="btnToggleView" onclick="toggleActiveView()" class="h-8 sm:h-9 px-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-extrabold transition flex items-center gap-1.5 shadow-md shadow-amber-500/20 active:scale-95">
-              <i data-lucide="layout-grid" class="w-3.5 h-3.5"></i>
-              <span id="viewModeText">Mesa de Control</span>
-            </button>
-            <button onclick="logoutAdmin()" title="Cerrar Mesa" class="h-8 sm:h-9 px-2.5 rounded-lg bg-slate-800 hover:bg-rose-950/50 border border-slate-700 hover:border-rose-700 text-slate-300 hover:text-rose-300 text-xs font-semibold transition flex items-center gap-1">
-              <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
-              <span class="hidden sm:inline">Salir</span>
-            </button>
-          </div>
-        </div>
-
-      </div>
-
+      <button id="btnAuth" onclick="toggleAuthModal()" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs sm:text-sm transition flex items-center gap-1.5 shadow">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <span id="btnAuthText">Mesa Técnica</span>
+      </button>
     </div>
   </header>
 
-  <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8 flex flex-col gap-5 sm:gap-6">
-
-    <!-- RESUMEN DE CARRERA -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
-      <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center gap-3 shadow-sm">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 flex-shrink-0">
-          <i data-lucide="users" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+  <!-- PANEL DE MESA TÉCNICA (SOLO CONTROLADOR - PIN 1095) -->
+  <section id="controlPanel" class="hidden bg-slate-900/90 border-b border-emerald-500/30 px-4 py-5 sm:px-8 transition-all">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-slate-800">
+        <div class="flex items-center gap-3">
+          <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-mono font-bold">MODO CONTROLADOR ACTIVO</span>
+          <span class="text-xs text-slate-400">Tus cambios se reflejan en vivo en todos los dispositivos conectados.</span>
         </div>
-        <div>
-          <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">Atletas</p>
-          <p class="text-lg sm:text-2xl font-black text-white font-mono">63</p>
-        </div>
-      </div>
-
-      <div class="p-3.5 sm:p-4 rounded-2xl bg-emerald-950/20 border border-emerald-800/30 flex items-center gap-3 shadow-sm">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400 flex-shrink-0">
-          <i data-lucide="check-check" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-        </div>
-        <div>
-          <p class="text-[10px] sm:text-[11px] font-bold text-emerald-400 uppercase tracking-wider">En Meta</p>
-          <p id="statArrived" class="text-lg sm:text-2xl font-black text-emerald-300 font-mono">0</p>
+        <div class="flex items-center gap-2">
+          <button onclick="exportarCSV()" class="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-slate-700 transition">Descargar CSV</button>
+          <button onclick="cerrarSesion()" class="px-3 py-1 rounded bg-rose-950/60 hover:bg-rose-900 text-rose-300 text-xs border border-rose-800/40 transition">Cerrar Sesión</button>
         </div>
       </div>
 
-      <div class="p-3.5 sm:p-4 rounded-2xl bg-amber-950/20 border border-amber-800/30 flex items-center gap-3 shadow-sm">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
-          <i data-lucide="activity" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+      <!-- CRONÓMETRO Y REGISTRO RÁPIDO -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-4 items-center">
+        <!-- Cronómetro -->
+        <div class="md:col-span-5 bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+          <div>
+            <div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Cronómetro General</div>
+            <div id="chronoDisplay" class="text-3xl sm:text-4xl font-mono font-black text-emerald-400">00:00.0</div>
+          </div>
+          <div class="flex gap-2">
+            <button id="btnStartChrono" onclick="toggleChrono()" class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider">Iniciar</button>
+            <button onclick="resetChrono()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs uppercase font-bold">Reset</button>
+          </div>
         </div>
-        <div>
-          <p class="text-[10px] sm:text-[11px] font-bold text-amber-400 uppercase tracking-wider">En Carrera</p>
-          <p id="statPending" class="text-lg sm:text-2xl font-black text-amber-300 font-mono">63</p>
+
+        <!-- Registro exprés de dorsal -->
+        <div class="md:col-span-7 bg-slate-950 p-4 rounded-xl border border-slate-800">
+          <div class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1.5">Registro Rápido de Llegada en Meta</div>
+          <form onsubmit="registrarMetaExpress(event)" class="flex gap-2">
+            <input id="inputDorsal" type="number" placeholder="Escribe dorsal (ej: 8401)" required class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white font-mono text-sm focus:outline-none focus:border-emerald-500">
+            <input id="inputTiempoManual" type="text" placeholder="Tiempo opcional (ej: 24:15)" class="w-48 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono text-xs focus:outline-none focus:border-emerald-500 hidden sm:block">
+            <button type="submit" class="px-5 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition flex items-center gap-1">
+              <span>Registrar</span>
+              <kbd class="hidden sm:inline-block px-1.5 py-0.5 text-xs bg-slate-900 text-slate-300 rounded border border-slate-700">Enter</kbd>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTENIDO PRINCIPAL: VISTA DE ESPECTADORES / PROYECCIÓN -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 space-y-8">
+    
+    <!-- TARJETAS DE RESUMEN Y FILTRO DE PARTIDAS -->
+    <div class="flex flex-wrap items-center justify-between gap-4">
+      <!-- Filtros por partida -->
+      <div class="flex flex-wrap gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+        <button onclick="setFilter('ALL')" id="f-ALL" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-black">Todas (63)</button>
+        <button onclick="setFilter('PARTIDA 1')" id="f-P1" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">P1 (09:30)</button>
+        <button onclick="setFilter('PARTIDA 2')" id="f-P2" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">P2 (09:45)</button>
+        <button onclick="setFilter('PARTIDA 3')" id="f-P3" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">P3 (10:00)</button>
+        <button onclick="setFilter('PARTIDA 4')" id="f-P4" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">P4 (10:15)</button>
+        <button onclick="setFilter('PARTIDA 5')" id="f-P5" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900">P5 (10:30)</button>
+      </div>
+
+      <!-- Buscador -->
+      <div class="relative w-full sm:w-64">
+        <input id="searchInput" oninput="renderTable()" type="text" placeholder="Buscar por atleta o promoción..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+        <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      </div>
+    </div>
+
+    <!-- PODIO DESTACADO DE LA SERIE SELECCIONADA -->
+    <div id="podiumSection" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- 2° Lugar -->
+      <div id="cardSecond" class="order-2 md:order-1 bg-slate-900/60 rounded-2xl border border-slate-800 p-5 flex flex-col justify-between relative overflow-hidden">
+        <div class="flex justify-between items-start">
+          <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-mono text-xs font-bold border border-slate-700">2° LUGAR</span>
+          <span class="text-3xl">🥈</span>
+        </div>
+        <div class="my-3">
+          <div id="podium2-name" class="text-base font-bold text-slate-200 truncate">Esperando llegada...</div>
+          <div id="podium2-promo" class="text-xs text-slate-400 truncate">-</div>
+        </div>
+        <div class="flex justify-between items-center pt-2 border-t border-slate-800/80">
+          <span id="podium2-dorsal" class="font-mono text-xs text-slate-500">DORSAL: ---</span>
+          <span id="podium2-time" class="font-mono text-lg font-bold text-slate-300">--:--.-</span>
         </div>
       </div>
 
-      <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center gap-3 shadow-sm">
-        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 flex-shrink-0">
-          <i data-lucide="medal" class="w-4 h-4 sm:w-5 sm:h-5"></i>
+      <!-- 1° Lugar -->
+      <div id="cardFirst" class="order-1 md:order-2 bg-gradient-to-b from-amber-950/40 to-slate-900 rounded-2xl border-2 border-amber-500/50 p-6 flex flex-col justify-between relative overflow-hidden shadow-xl shadow-amber-500/10">
+        <div class="flex justify-between items-start">
+          <span class="px-3 py-1 rounded bg-amber-500 text-slate-950 font-mono text-xs font-black uppercase tracking-wider">CAMPEÓN</span>
+          <span class="text-4xl">👑</span>
         </div>
-        <div>
-          <p class="text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">Mejor Tiempo</p>
-          <p id="statBestTime" class="text-base sm:text-xl font-black text-amber-400 font-mono">--:--:--</p>
+        <div class="my-4">
+          <div id="podium1-name" class="text-xl font-black text-amber-300 truncate tracking-wide">Esperando llegada...</div>
+          <div id="podium1-promo" class="text-xs text-amber-200/80 truncate">-</div>
+        </div>
+        <div class="flex justify-between items-center pt-3 border-t border-amber-500/20">
+          <span id="podium1-dorsal" class="font-mono text-xs text-amber-400">DORSAL: ---</span>
+          <span id="podium1-time" class="font-mono text-2xl font-black text-amber-400 gold-glow">--:--.-</span>
+        </div>
+      </div>
+
+      <!-- 3° Lugar -->
+      <div id="cardThird" class="order-3 md:order-3 bg-slate-900/60 rounded-2xl border border-slate-800 p-5 flex flex-col justify-between relative overflow-hidden">
+        <div class="flex justify-between items-start">
+          <span class="px-2.5 py-1 rounded bg-slate-800 text-amber-700/80 font-mono text-xs font-bold border border-slate-700">3° LUGAR</span>
+          <span class="text-3xl">🥉</span>
+        </div>
+        <div class="my-3">
+          <div id="podium3-name" class="text-base font-bold text-slate-200 truncate">Esperando llegada...</div>
+          <div id="podium3-promo" class="text-xs text-slate-400 truncate">-</div>
+        </div>
+        <div class="flex justify-between items-center pt-2 border-t border-slate-800/80">
+          <span id="podium3-dorsal" class="font-mono text-xs text-slate-500">DORSAL: ---</span>
+          <span id="podium3-time" class="font-mono text-lg font-bold text-amber-600">--:--.-</span>
         </div>
       </div>
     </div>
 
-    <!-- VISTA 1: ESPECTADORES / PROYECCIÓN EN VIVO (IPAD & CELULARES) -->
-    <section id="spectatorSection" class="flex flex-col gap-5 sm:gap-6">
-
-      <!-- Pestañas de Partida y Búsqueda -->
-      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5 bg-slate-900/80 border border-slate-800 p-2 sm:p-2.5 rounded-2xl">
-        <div class="flex items-center overflow-x-auto custom-scroll gap-1 p-0.5">
-          <button onclick="setFilter('ALL')" data-filter="ALL" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white shadow-sm">
-            Todas (63)
-          </button>
-          <button onclick="setFilter('1')" data-filter="1" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-            Partida 1 • 09:30
-          </button>
-          <button onclick="setFilter('2')" data-filter="2" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-            Partida 2 • 09:45 (Damas)
-          </button>
-          <button onclick="setFilter('3')" data-filter="3" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-            Partida 3 • 10:00
-          </button>
-          <button onclick="setFilter('4')" data-filter="4" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-            Partida 4 • 10:15
-          </button>
-          <button onclick="setFilter('5')" data-filter="5" class="filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-            Partida 5 • 10:30
-          </button>
+    <!-- TABLERO PRINCIPAL DE CLASIFICACIÓN -->
+    <div class="bg-slate-950 rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
+      <div class="p-4 sm:p-5 border-b border-slate-800 flex justify-between items-center bg-slate-900/40">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-white tracking-wide">Clasificación General y Llegadas Oficiales</h2>
+          <p class="text-xs text-slate-400">Actualización en tiempo real por milisegundos</p>
         </div>
-
-        <div class="relative min-w-[220px]">
-          <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5"></i>
-          <input type="text" id="spectatorSearchInput" oninput="renderSpectatorView()" placeholder="Buscar atleta, dorsal..." class="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition" />
+        <div id="countSummary" class="text-xs font-mono text-slate-400 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800">
+          Meta: 0 / 63
         </div>
       </div>
 
-      <!-- PODIO DE HONOR (Top 3 en Vivo) -->
-      <div>
-        <div class="flex items-center justify-between mb-3 px-1">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
-            <h2 id="currentViewTitle" class="text-sm sm:text-base font-extrabold text-white">Podio Oficial • Clasificación General</h2>
-          </div>
-          <span class="text-[11px] text-emerald-400 font-semibold flex items-center gap-1">
-            <i data-lucide="radio" class="w-3 h-3"></i> En Vivo Remoto
-          </span>
-        </div>
-
-        <div id="podiumContainer" class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <!-- Renderizado con JS -->
-        </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-900/90 text-slate-400 text-xs font-mono uppercase tracking-wider border-b border-slate-800">
+            <tr>
+              <th class="py-3.5 px-4 text-center">Puesto</th>
+              <th class="py-3.5 px-4 text-center">Dorsal</th>
+              <th class="py-3.5 px-4">Atleta</th>
+              <th class="py-3.5 px-4">Promoción / Serie</th>
+              <th class="py-3.5 px-4 text-center">Partida</th>
+              <th class="py-3.5 px-4 text-right">Tiempo</th>
+              <th id="thAccion" class="py-3.5 px-4 text-center hidden">Gestión</th>
+            </tr>
+          </thead>
+          <tbody id="runnersTableBody" class="divide-y divide-slate-800/60 font-medium">
+            <!-- Renderizado dinámico -->
+          </tbody>
+        </table>
       </div>
-
-      <!-- TABLA GENERAL DE LLEGADAS -->
-      <div class="rounded-2xl border border-slate-800 bg-slate-900/90 shadow-xl overflow-hidden">
-        <div class="px-4 py-3 border-b border-slate-800 bg-slate-900/95 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <i data-lucide="list-ordered" class="w-4 h-4 text-emerald-400"></i>
-            <h3 class="text-xs sm:text-sm font-bold text-white">Llegadas y Clasificación</h3>
-          </div>
-          <span class="text-[11px] font-mono font-medium text-slate-400 flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            Auto-sincronizado
-          </span>
-        </div>
-
-        <div class="overflow-x-auto custom-scroll">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="border-b border-slate-800 bg-slate-950/70 text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                <th class="py-3 px-3 text-center w-14">Lugar</th>
-                <th class="py-3 px-3 text-center w-20">Dorsal</th>
-                <th class="py-3 px-3 font-bold text-slate-200">Atleta / Oficial</th>
-                <th class="py-3 px-3 hidden md:table-cell text-slate-300">Promoción</th>
-                <th class="py-3 px-3 hidden sm:table-cell text-slate-400">Partida</th>
-                <th class="py-3 px-3 text-right w-32 font-bold text-slate-200">Tiempo</th>
-              </tr>
-            </thead>
-            <tbody id="spectatorTableBody" class="divide-y divide-slate-800/60 font-medium">
-              <!-- Filas dinámicas -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- VISTA 2: MESA DE CONTROL TÉCNICO (DESBLOQUEADA CON PIN 1095) -->
-    <section id="adminSection" class="hidden flex-col gap-5 sm:gap-6">
-
-      <!-- Panel Cronómetro + Registro Rápido -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        
-        <!-- Cronómetro de Salida -->
-        <div class="lg:col-span-5 p-4 sm:p-5 rounded-2xl border border-slate-800 bg-slate-900 shadow-md flex flex-col justify-between">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
-            <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
-              <i data-lucide="timer" class="w-4 h-4 text-emerald-400"></i>
-              Cronómetro Táctico
-            </span>
-            <span id="chronoStatusBadge" class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">
-              Detenido
-            </span>
-          </div>
-
-          <div class="text-center my-4 sm:my-6">
-            <div id="chronoDisplay" class="font-mono text-3xl sm:text-5xl font-black tracking-tight text-white drop-shadow">
-              00:00:00.0
-            </div>
-            <p class="text-[11px] text-slate-400 mt-1">Tiempo de partida oficial</p>
-          </div>
-
-          <div class="grid grid-cols-3 gap-2">
-            <button id="btnChronoToggle" onclick="toggleChronometer()" class="py-2.5 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white transition flex items-center justify-center gap-1.5 active:scale-95 shadow-md shadow-emerald-600/30">
-              <i data-lucide="play" class="w-3.5 h-3.5" id="chronoToggleIcon"></i>
-              <span id="chronoToggleLabel">Iniciar</span>
-            </button>
-            <button onclick="resetChronometer()" class="py-2.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition active:scale-95">
-              Reiniciar
-            </button>
-            <button onclick="pasteChronoToInput()" class="py-2.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 transition flex items-center justify-center gap-1 active:scale-95">
-              <i data-lucide="copy" class="w-3 h-3"></i>
-              Copiar
-            </button>
-          </div>
-        </div>
-
-        <!-- Entrada Ultra-Rápida de Arribos -->
-        <div class="lg:col-span-7 p-4 sm:p-5 rounded-2xl border border-slate-800 bg-slate-900 shadow-md flex flex-col justify-between">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
-            <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5 uppercase tracking-wider">
-              <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i>
-              Llegada Inmediata a Meta
-            </span>
-            <span class="text-[11px] text-emerald-400 font-semibold">Dorsal + Enter</span>
-          </div>
-
-          <form onsubmit="handleQuickFinish(event)" class="my-3 sm:my-4">
-            <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-end">
-              <div class="sm:col-span-5">
-                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Dorsal</label>
-                <div class="relative">
-                  <span class="absolute left-3 top-2.5 text-slate-500 font-mono font-bold">#</span>
-                  <input type="text" id="quickDorsalInput" placeholder="Ej. 8401" autofocus class="w-full bg-slate-950 border border-slate-700 focus:border-emerald-500 rounded-xl pl-7 pr-3 py-2 text-lg font-mono font-black text-white outline-none transition placeholder:text-slate-600" />
-                </div>
-              </div>
-
-              <div class="sm:col-span-4">
-                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Tiempo (Opcional)</label>
-                <input type="text" id="quickTimeManualInput" placeholder="Vacío = Cronómetro" class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-xl px-3 py-2.5 text-xs font-mono font-bold text-emerald-300 outline-none transition placeholder:text-slate-600" />
-              </div>
-
-              <div class="sm:col-span-3">
-                <button type="submit" class="w-full h-[42px] rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold uppercase tracking-wider transition shadow-md shadow-emerald-600/25 active:scale-95 flex items-center justify-center gap-1.5">
-                  <i data-lucide="check" class="w-4 h-4"></i>
-                  Registrar
-                </button>
-              </div>
-            </div>
-          </form>
-
-          <!-- Resumen de última llegada grabada -->
-          <div class="p-2.5 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs">
-            <div class="flex items-center gap-2 truncate">
-              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-              <span class="text-slate-400 text-[11px]">Último registrado:</span>
-              <span id="recentArrivalLabel" class="text-white font-bold truncate">Aún sin registros</span>
-            </div>
-            <span id="recentArrivalTime" class="font-mono text-emerald-400 font-extrabold ml-2 text-xs sm:text-sm">--:--:--</span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Barra de Filtros, Forzar Nube y Exportar -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-2xl border border-slate-800 bg-slate-900">
-        <div class="flex items-center gap-1 overflow-x-auto custom-scroll p-0.5">
-          <button onclick="setAdminFilter('ALL')" data-adminfilter="ALL" class="admin-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white">
-            Todas (63)
-          </button>
-          <button onclick="setAdminFilter('1')" data-adminfilter="1" class="admin-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-            P1
-          </button>
-          <button onclick="setAdminFilter('2')" data-adminfilter="2" class="admin-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-            P2 (Damas)
-          </button>
-          <button onclick="setAdminFilter('3')" data-adminfilter="3" class="admin-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-            P3
-          </button>
-          <button onclick="setAdminFilter('4')" data-adminfilter="4" class="admin-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-            P4
-          </button>
-          <button onclick="setAdminFilter('5')" data-adminfilter="5" class="admin-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700">
-            P5
-          </button>
-        </div>
-
-        <div class="flex items-center gap-2 flex-wrap">
-          <div class="relative w-36 sm:w-48">
-            <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2"></i>
-            <input type="text" id="adminSearchInput" oninput="renderAdminTable()" placeholder="Buscar atleta..." class="w-full bg-slate-950 border border-slate-700/80 rounded-lg pl-7 pr-2 py-1 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500" />
-          </div>
-
-          <!-- Botón de Sincronización Forzada -->
-          <button onclick="broadcastCurrentState(true)" title="Enviar todos los datos a iPads y teléfonos ahora" class="h-8 px-2.5 rounded-lg bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow-sm">
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-            <span class="hidden md:inline">Forzar Nube</span>
-          </button>
-
-          <!-- Exportar CSV -->
-          <button onclick="exportToCSV()" class="h-8 px-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition flex items-center gap-1 active:scale-95 shadow-sm">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i>
-            <span>CSV</span>
-          </button>
-
-          <!-- Reiniciar Todo -->
-          <button onclick="resetAllTimes()" title="Reiniciar todos los tiempos" class="h-8 px-2 rounded-lg bg-slate-800 hover:bg-rose-900/50 border border-slate-700 hover:border-rose-700 text-slate-400 hover:text-rose-300 transition flex items-center justify-center">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Tabla de Control Técnico con Edición -->
-      <div class="rounded-2xl border border-slate-800 bg-slate-900 shadow-xl overflow-hidden">
-        <div class="overflow-x-auto custom-scroll">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="border-b border-slate-800 bg-slate-950/70 text-[10px] sm:text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                <th class="py-3 px-3 text-center w-12">Lugar</th>
-                <th class="py-3 px-3 text-center w-20">Dorsal</th>
-                <th class="py-3 px-3 font-bold text-slate-200">Atleta</th>
-                <th class="py-3 px-3 text-slate-300">Promoción</th>
-                <th class="py-3 px-3 text-center w-16">P</th>
-                <th class="py-3 px-3 text-center w-32 font-bold text-slate-200">Tiempo</th>
-                <th class="py-3 px-3 text-center w-20">Estado</th>
-                <th class="py-3 px-3 text-center w-14">Acción</th>
-              </tr>
-            </thead>
-            <tbody id="adminTableBody" class="divide-y divide-slate-800/60 font-medium">
-              <!-- Registros -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </section>
-
+    </div>
   </main>
 
-  <!-- MODAL DE ACCESO SEGURO (PIN: 1095 - Sin sugerencias visibles) -->
-  <div id="pinModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="w-full max-w-sm rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl relative text-center">
-      <button onclick="closePinModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-3 shadow-inner">
-        <i data-lucide="lock" class="w-6 h-6"></i>
-      </div>
-      <h3 class="text-base font-bold text-white">Mesa Técnica de Control</h3>
-      <p class="text-xs text-slate-400 mt-1">Ingrese clave autorizada de control de cronometraje.</p>
-
-      <form onsubmit="handlePinSubmit(event)" class="mt-5 space-y-4">
-        <div>
-          <input type="password" id="inputPinCode" maxlength="8" placeholder="Ingrese clave de acceso" autofocus class="w-full text-center tracking-widest font-mono text-xl bg-slate-950 border border-slate-700 focus:border-emerald-500 rounded-xl py-2.5 text-white outline-none shadow-inner transition" />
-          <p id="pinErrorMessage" class="hidden text-xs text-rose-400 font-semibold mt-1.5 flex items-center justify-center gap-1">
-            <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> Clave incorrecta
-          </p>
+  <!-- MODAL DE PIN -->
+  <div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl max-w-sm w-full shadow-2xl space-y-4">
+      <div class="text-center">
+        <div class="h-12 w-12 rounded-full bg-emerald-500/10 text-emerald-400 mx-auto flex items-center justify-center mb-3 border border-emerald-500/20">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
         </div>
+        <h3 class="text-lg font-bold text-white">Acceso a Mesa Técnica</h3>
+        <p class="text-xs text-slate-400 mt-1">Uso exclusivo para el controlador de llegadas</p>
+      </div>
 
-        <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider transition shadow-md shadow-emerald-600/25 active:scale-95">
-          Verificar y Acceder
-        </button>
+      <form onsubmit="validarPIN(event)" class="space-y-4">
+        <input id="pinInput" type="password" maxlength="6" autofocus placeholder="Ingrese clave de acceso" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-center text-xl font-mono text-white tracking-widest focus:outline-none focus:border-emerald-500">
+        <div id="pinError" class="text-rose-400 text-xs text-center hidden">Clave incorrecta. Intente nuevamente.</div>
+        <div class="flex gap-2">
+          <button type="button" onclick="toggleAuthModal()" class="w-1/2 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold transition">Cancelar</button>
+          <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-sm font-bold transition">Ingresar</button>
+        </div>
       </form>
     </div>
   </div>
 
-  <!-- TOAST DE NOTIFICACIÓN FLOTANTE -->
-  <div id="notificationToast" class="fixed bottom-5 right-5 z-50 transform translate-y-16 opacity-0 transition-all duration-200 pointer-events-none flex items-center gap-2.5 px-4 py-3 rounded-xl bg-slate-850 border border-slate-700 text-slate-100 text-xs shadow-2xl">
-    <i data-lucide="info" class="w-4 h-4 text-emerald-400" id="toastIcon"></i>
-    <span id="toastMessage" class="font-semibold">Mensaje</span>
-  </div>
-
   <script>
-    // PLANTILLA COMPLETA DE LOS 63 CORREDORES OFICIALES
-    const OFFICIAL_ATHLETES = [
-      // PARTIDA 1 (09:30)
-      { dorsal: "5501", nombre: "Crl JORGE CARDENAS PEREZ PALMA", promo: "1955 GRAL BELISARIO SUAREZ VARGAS", serie: "Serie Especial Varones 1", partida: 1, horaPartida: "09:30" },
-      { dorsal: "5901", nombre: "Gral JUAN MANUEL PENDOLA ALANIA", promo: "1959 TTE CRL ROQUE SAENZ PEÑA", serie: "Serie Especial Varones 1", partida: 1, horaPartida: "09:30" },
-      { dorsal: "7101", nombre: "GRAL CAYO ELEN RAMOS NEYRA", promo: "1971 GRAL IGNACIO ALVAREZ THOMAS", serie: "Serie Especial Varones 2", partida: 1, horaPartida: "09:30" },
-      { dorsal: "7201", nombre: "MY WALTER COLINA NUNURA", promo: "1972 SESQUICENTENARIO", serie: "Serie Especial Varones 2", partida: 1, horaPartida: "09:30" },
-      { dorsal: "7202", nombre: "CRL JESUS ZAMUDIO ALIAGA", promo: "1972 SESQUICENTENARIO", serie: "Serie Especial Varones 2", partida: 1, horaPartida: "09:30" },
-      { dorsal: "7203", nombre: "GRAL B FRANCISCO DEL ALAMO SOTA", promo: "1972 SESQUICENTENARIO", serie: "Serie Especial Varones 2", partida: 1, horaPartida: "09:30" },
-      { dorsal: "7701-D", nombre: "Giovanna Rojas campos", promo: "1977 SESQUICENTENARIO", serie: "Serie Especial DAMAS 2", partida: 1, horaPartida: "09:30" },
-
-      // PARTIDA 2 (09:45)
-      { dorsal: "8401-D", nombre: "Miluska Velis Abadie", promo: "1984 HEROES DE PUCARA", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-      { dorsal: "8402-D", nombre: "Jesus Aguilar Cordova", promo: "1984 HEROES DE PUCARA", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-      { dorsal: "8601-D", nombre: "MARIA ELENA BERNA URBANO", promo: "1986 HÉROES DE SAN PABLO", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-      { dorsal: "8701-D", nombre: "Rosy Mari Ruiz Bosmediano", promo: "1987 MARISCAL CACERES", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-      { dorsal: "8702-D", nombre: "Nelly Matilde Jamjachi serrano", promo: "1987 MARISCAL CACERES", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-      { dorsal: "8703-D", nombre: "Ketty Yepez Esquivel", promo: "1987 MARISCAL CACERES", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-      { dorsal: "8801-D", nombre: "Maria Socorro Parra Santillan", promo: "1988 HEROES DE SAN JUAN", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-      { dorsal: "8802-D", nombre: "Maruja Baez Pareja", promo: "1988 HEROES DE SAN JUAN", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-      { dorsal: "8803-D", nombre: "Lucy Mendoza Soria", promo: "1988 HEROES DE SAN JUAN", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-      { dorsal: "8804-D", nombre: "Clara Vasquez Fernandez", promo: "1988 HEROES DE SAN JUAN", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-      { dorsal: "9001-D", nombre: "BERTHA ANITA PEREZ PEREZ", promo: "1990 HÉROES DE CHAVIN DE HUANTAR", serie: "Serie E DAMAS", partida: 2, horaPartida: "09:45" },
-
-      // PARTIDA 3 (10:00)
-      { dorsal: "7301", nombre: "CRL HUGO ROSADO BALDEON", promo: "1973 CHOCANO SOTO", serie: "Serie Especial Varones 3", partida: 3, horaPartida: "10:00" },
-      { dorsal: "7302", nombre: "TTE CRL LUIS GRADOS BAILETTI", promo: "1973 CHOCANO SOTO", serie: "Serie Especial Varones 3", partida: 3, horaPartida: "10:00" },
-      { dorsal: "7303", nombre: "TTE CRL AURELIO POZADA GONZALES", promo: "1973 CHOCANO SOTO", serie: "Serie Especial Varones 3", partida: 3, horaPartida: "10:00" },
-      { dorsal: "7401", nombre: "TTE OSCAR EDUARDO CAMPOS HOYOS", promo: "1974 FERMIN NACARINO", serie: "Serie Especial Varones 3", partida: 3, horaPartida: "10:00" },
-
-      // PARTIDA 4 (10:15)
-      { dorsal: "7601", nombre: "TTE CRL DANIEL MERA RODAS", promo: "1976 GREGORIO ALBARRACIN", serie: "Serie A", partida: 4, horaPartida: "10:15" },
-      { dorsal: "7602", nombre: "MY C. HERNADEZ APARCANA", promo: "1976 GREGORIO ALBARRACIN", serie: "Serie A", partida: 4, horaPartida: "10:15" },
-      { dorsal: "7603", nombre: "CAP J. FERNANDEZ ROBLES", promo: "1976 GREGORIO ALBARRACIN", serie: "Serie A", partida: 4, horaPartida: "10:15" },
-      { dorsal: "7701", nombre: "TTE CRL LUIS SOLIS ESCAJADILLO", promo: "1977 MARIANO ARAGONES", serie: "Serie A", partida: 4, horaPartida: "10:15" },
-      { dorsal: "7702", nombre: "MY TEODORO MAURY BROMLIEN", promo: "1977 MARIANO ARAGONES", serie: "Serie A", partida: 4, horaPartida: "10:15" },
-      { dorsal: "7703", nombre: "CRL ROBERTO FERNANDEZ MACEDO", promo: "1977 MARIANO ARAGONES", serie: "Serie A", partida: 4, horaPartida: "10:15" },
-      { dorsal: "7901", nombre: "CRL FEDERICO CARRASCO DIAZ", promo: "1979 TT CRL JOSE JOAQUIN", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "7902", nombre: "GRAL LUIS FLORES CORNEJO", promo: "1979 TT CRL JOSE JOAQUIN", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "7903", nombre: "MY FERNANDO NUÑEZ ESPINOZA", promo: "1979 TT CRL JOSE JOAQUIN", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "8101", nombre: "GRAL BRIG LUIS ERASMO LENGUA ORMEÑO", promo: "1981 HÉROES DE PANTOJA", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "8102", nombre: "CRL TADEO AGATON RODRIGUEZ SOTO", promo: "1981 HÉROES DE PANTOJA", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "8103", nombre: "CRL PEDRO PABLO CAIRAMPOMA MENDOZA", promo: "1981 HÉROES DE PANTOJA", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "8201", nombre: "CRL CARLOS ANTONIO ARIAS HUAPAYA", promo: "1982 CORONEL MANUEL C. DE LA TORRE", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "8202", nombre: "CRL MOISES ZAVALA CALDERON", promo: "1982 CORONEL MANUEL C. DE LA TORRE", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "8203", nombre: "CRL FERNANDO ANGULO LADRON DE GUEVARA", promo: "1982 CORONEL MANUEL C. DE LA TORRE", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "8301", nombre: "CRISOSTOMO ANDRADE OCHOA", promo: "1983 HÉROES DE MIRAFLORES", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "8302", nombre: "PEDRO ANTONIO ESPINOZA ROJAS", promo: "1983 HÉROES DE MIRAFLORES", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-      { dorsal: "8303", nombre: "CRL JOSE MANUEL QWISTGAARD SUAREZ", promo: "1983 HÉROES DE MIRAFLORES", serie: "Serie B", partida: 4, horaPartida: "10:15" },
-
-      // PARTIDA 5 (10:30)
-      { dorsal: "8401", nombre: "Crl Raul Masias Arispe", promo: "1984 HEROES DE PUCARA", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8402", nombre: "Crl Daniel Fernandez Viaña", promo: "1984 HEROES DE PUCARA", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8403", nombre: "Crl Marco Colome Eleno", promo: "1984 HEROES DE PUCARA", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8404", nombre: "Crl Pedro Meza Japay", promo: "1984 HEROES DE PUCARA", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8501", nombre: "CRL INF (R) Victor MOQUILLAZA CHIGUA", promo: "1985 HEROES DE CONCEPCION", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8502", nombre: "CRL INF (R) Cromwell Berlioz ESPINOZA SOTOMAYOR", promo: "1985 HEROES DE CONCEPCION", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8503", nombre: "CRL ART (R) Elmer Nicanor LA TORRE RAMOS", promo: "1985 HEROES DE CONCEPCION", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8504", nombre: "TTE CRL ING (R) Carlos Enrique CANELO MESIAS", promo: "1985 HEROES DE CONCEPCION", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8601", nombre: "GRAL JULIO CÉSAR GÁLVEZ CABALLERO", promo: "1986 HÉROES DE SAN PABLO", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8602", nombre: "CRL FERNANDO LÓPEZ EYZAGUIRRE", promo: "1986 HÉROES DE SAN PABLO", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8603", nombre: "MY LUIS VEGA TICSE", promo: "1986 HÉROES DE SAN PABLO", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8604", nombre: "CRL NICOLÁS ISLA RAMIREZ", promo: "1986 HÉROES DE SAN PABLO", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8701", nombre: "Gral Brig Gilberto Alvarerez Villalobos", promo: "1987 MARISCAL CACERES", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8702", nombre: "Crl Carlos Balladares Villar", promo: "1987 MARISCAL CACERES", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8703", nombre: "Crl Jose Tuesta Vela", promo: "1987 MARISCAL CACERES", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8704", nombre: "Tte Jose Olazabal Black", promo: "1987 MARISCAL CACERES", serie: "Serie C", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8801", nombre: "Crl Marco Antonio Mendoza Rodriguez", promo: "1988 HEROES DE SAN JUAN", serie: "Serie D", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8802", nombre: "Crl Samuel Rene Ontiveros Flores", promo: "1988 HEROES DE SAN JUAN", serie: "Serie D", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8803", nombre: "My Manuel Antonio Alfaro Juarez", promo: "1988 HEROES DE SAN JUAN", serie: "Serie D", partida: 5, horaPartida: "10:30" },
-      { dorsal: "8804", nombre: "Gral Jaime Reynaldo Llanos Baron", promo: "1988 HEROES DE SAN JUAN", serie: "Serie D", partida: 5, horaPartida: "10:30" },
-      { dorsal: "9001", nombre: "CRL GUILLERMO MIGUEL MENDOZA ANDRADE", promo: "1990 HÉROES DE CHAVIN DE HUANTAR", serie: "Serie D", partida: 5, horaPartida: "10:30" },
-      { dorsal: "9002", nombre: "CRL RAUL GUTIERREZ NEYRA", promo: "1990 HÉROES DE CHAVIN DE HUANTAR", serie: "Serie D", partida: 5, horaPartida: "10:30" },
-      { dorsal: "9003", nombre: "CRL RAUL VILLALTA SALAVERRY", promo: "1990 HÉROES DE CHAVIN DE HUANTAR", serie: "Serie D", partida: 5, horaPartida: "10:30" }
+    // LISTA MAESTRA OFICIAL DE LOS 63 ATLETAS
+    const INITIAL_RUNNERS = [
+      {dorsal:"5501", grado:"Crl", nombres:"JORGE CARDENAS PEREZ PALMA", promo:"1955 - GRAL BELISARIO SUAREZ VARGAS", serie:"Serie Especial Varones 1", partida:"PARTIDA 1"},
+      {dorsal:"5901", grado:"Gral", nombres:"JUAN MANUEL PENDOLA ALANIA", promo:"1959 - TTE CRL ROQUE SAENZ PEÑA", serie:"Serie Especial Varones 1", partida:"PARTIDA 1"},
+      {dorsal:"7101", grado:"GRAL", nombres:"CAYO ELEN RAMOS NEYRA", promo:"1971 - GRAL IGNACIO ALVAREZ THOMAS", serie:"Serie Especial Varones 2", partida:"PARTIDA 1"},
+      {dorsal:"7201", grado:"MY", nombres:"WALTER COLINA NUNURA", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", serie:"Serie Especial Varones 2", partida:"PARTIDA 1"},
+      {dorsal:"7202", grado:"CRL", nombres:"JESUS ZAMUDIO ALIAGA", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", serie:"Serie Especial Varones 2", partida:"PARTIDA 1"},
+      {dorsal:"7203", grado:"GRAL B", nombres:"FRANCISCO DEL ALAMO SOTA", promo:"1972 - SESQUICENTENARIO DE LA INDEPENDENCIA", serie:"Serie Especial Varones 2", partida:"PARTIDA 1"},
+      {dorsal:"7701", grado:"", nombres:"Giovanna Rojas campos", promo:"1977 - SESQUICENTENARIO DE LA INDEPENDENCIA", serie:"Serie Especial DAMAS 2", partida:"PARTIDA 1"},
+      {dorsal:"8401", grado:"", nombres:"Miluska Velis Abadie", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"8402", grado:"", nombres:"Jesus Aguilar Cordova", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"8601", grado:"", nombres:"MARIA ELENA BERNA URBANO", promo:"1986 - HÉROES DE SAN PABLO", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"8701", grado:"", nombres:"Rosy Mari Ruiz Bosmediano", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"8702", grado:"", nombres:"Nelly Matilde Jamjachi serrano", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"8703", grado:"", nombres:"Ketty Yepez Esquivel", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"8801", grado:"", nombres:"Maria Socorro Parra Santillan", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"8802", grado:"", nombres:"Maruja Baez Pareja", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"8803", grado:"", nombres:"Lucy Mendoza Soria", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"8804", grado:"", nombres:"Clara Vasquez Fernandez", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"9001", grado:"", nombres:"BERTHA ANITA PEREZ PEREZ", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", serie:"Serie E DAMAS", partida:"PARTIDA 2"},
+      {dorsal:"7301", grado:"CRL", nombres:"HUGO ROSADO BALDEON", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", serie:"Serie Especial Varones 3", partida:"PARTIDA 3"},
+      {dorsal:"7302", grado:"TTE CRL", nombres:"LUIS GRADOS BAILETTI", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", serie:"Serie Especial Varones 3", partida:"PARTIDA 3"},
+      {dorsal:"7303", grado:"TTE CRL", nombres:"AURELIO POZADA GONZALES", promo:"1973 - MANUEL FRANCISCO CHOCANO SOTO", serie:"Serie Especial Varones 3", partida:"PARTIDA 3"},
+      {dorsal:"7401", grado:"TTE", nombres:"OSCAR EDUARDO CAMPOS HOYOS", promo:"1974 - SGTO MAYOR FERMIN NACARINO", serie:"Serie Especial Varones 3", partida:"PARTIDA 3"},
+      {dorsal:"7601", grado:"TTE CRL", nombres:"DANIEL MERA RODAS", promo:"1976 - GREGORIO ALBARRACIN", serie:"Serie A", partida:"PARTIDA 4"},
+      {dorsal:"7602", grado:"MY", nombres:"C. HERNADEZ APARCANA", promo:"1976 - GREGORIO ALBARRACIN", serie:"Serie A", partida:"PARTIDA 4"},
+      {dorsal:"7603", grado:"CAP", nombres:"J. FERNANDEZ ROBLES", promo:"1976 - GREGORIO ALBARRACIN", serie:"Serie A", partida:"PARTIDA 4"},
+      {dorsal:"7701", grado:"TTE CRL", nombres:"LUIS SOLIS ESCAJADILLO", promo:"1977 - CRL MARIANO ARAGONES QUINTANILLA", serie:"Serie A", partida:"PARTIDA 4"},
+      {dorsal:"7702", grado:"MY", nombres:"TEODORO MAURY BROMLIEN", promo:"1977 - CRL MARIANO ARAGONES QUINTANILLA", serie:"Serie A", partida:"PARTIDA 4"},
+      {dorsal:"7703", grado:"CRL", nombres:"ROBERTO FERNANDEZ MACEDO", promo:"1977 - CRL MARIANO ARAGONES QUINTANILLA", serie:"Serie A", partida:"PARTIDA 4"},
+      {dorsal:"7901", grado:"CRL", nombres:"FEDERICO CARRASCO DIAZ", promo:"1979 - TTE LUIS GARCIA RUIZ", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"7902", grado:"GRAL", nombres:"LUIS FLORES CORNEJO", promo:"1979 - TTE LUIS GARCIA RUIZ", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"7903", grado:"MY", nombres:"FERNANDO NUÑEZ ESPINOZA", promo:"1979 - TTE LUIS GARCIA RUIZ", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"8101", grado:"GRAL BRIG", nombres:"LUIS ERASMO LENGUA ORMEÑO", promo:"1981 - HÉROES DE PUCARA", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"8102", grado:"CRL", nombres:"TADEO AGATON RODRIGUEZ SOTO", promo:"1981 - HÉROES DE PUCARA", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"8103", grado:"CRL", nombres:"PEDRO PABLO CAIRAMPOMA MENDOZA", promo:"1981 - HÉROES DE PUCARA", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"8201", grado:"CRL", nombres:"CARLOS ANTONIO ARIAS HUAPAYA", promo:"1982 - CORONEL LEONCIO PRADO", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"8202", grado:"CRL", nombres:"MOISES ZAVALA CALDERON", promo:"1982 - CORONEL LEONCIO PRADO", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"8203", grado:"CRL", nombres:"FERNANDO ANGULO LADRON DE GUEVARA", promo:"1982 - CORONEL LEONCIO PRADO", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"8301", grado:"", nombres:"CRISOSTOMO ANDRADE OCHOA", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"8302", grado:"", nombres:"PEDRO ANTONIO ESPINOZA ROJAS", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"8303", grado:"CRL", nombres:"JOSE MANUEL QWISTGAARD SUAREZ", promo:"1983 - CORONEL FRANCISCO BOLOGNESI", serie:"Serie B", partida:"PARTIDA 4"},
+      {dorsal:"8401", grado:"Crl", nombres:"Raul Masias Arispe", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8402", grado:"Crl", nombres:"Daniel Fernandez Viaña", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8403", grado:"Crl", nombres:"Marco Colome Eleno", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8404", grado:"Crl", nombres:"Pedro Meza Japay", promo:"1984 - HEROES DE PUCARA Y MARCAVALLE", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8501", grado:"CRL INF (R)", nombres:"Victor MOQUILLAZA CHIGUA", promo:"1985 - HEROES DE CONCEPCION", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8502", grado:"CRL INF (R)", nombres:"Cromwell Berlioz ESPINOZA SOTOMAYOR", promo:"1985 - HEROES DE CONCEPCION", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8503", grado:"CRL ART (R)", nombres:"Elmer Nicanor LA TORRE RAMOS", promo:"1985 - HEROES DE CONCEPCION", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8504", grado:"TTE CRL ING (R)", nombres:"Carlos Enrique CANELO MESIAS", promo:"1985 - HEROES DE CONCEPCION", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8601", grado:"GRAL", nombres:"JULIO CÉSAR GÁLVEZ CABALLERO", promo:"1986 - HÉROES DE SAN PABLO", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8602", grado:"CRL", nombres:"FERNANDO LÓPEZ EYZAGUIRRE", promo:"1986 - HÉROES DE SAN PABLO", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8603", grado:"MY", nombres:"LUIS VEGA TICSE", promo:"1986 - HÉROES DE SAN PABLO", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8604", grado:"CRL", nombres:"NICOLÁS ISLA RAMIREZ", promo:"1986 - HÉROES DE SAN PABLO", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8701", grado:"Gral Brig", nombres:"Gilberto Alvarerez Villalobos", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8702", grado:"Crl", nombres:"Carlos Balladares Villar", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8703", grado:"Crl", nombres:"Jose Tuesta Vela", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8704", grado:"Tte", nombres:"Jose Olazabal Black", promo:"1987 - MARISCAL ANDRES AVELINO CACERES", serie:"Serie C", partida:"PARTIDA 5"},
+      {dorsal:"8801", grado:"Crl", nombres:"Marco Antonio Mendoza Rodriguez", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie D", partida:"PARTIDA 5"},
+      {dorsal:"8802", grado:"Crl", nombres:"Samuel Rene Ontiveros Flores", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie D", partida:"PARTIDA 5"},
+      {dorsal:"8803", grado:"My", nombres:"Manuel Antonio Alfaro Juarez", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie D", partida:"PARTIDA 5"},
+      {dorsal:"8804", grado:"Gral", nombres:"Jaime Reynaldo Llanos Baron", promo:"1988 - MARISCAL AGUSTIN GAMARRA", serie:"Serie D", partida:"PARTIDA 5"},
+      {dorsal:"9001", grado:"CRL", nombres:"GUILLERMO MIGUEL MENDOZA ANDRADE", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", serie:"Serie D", partida:"PARTIDA 5"},
+      {dorsal:"9002", grado:"CRL", nombres:"RAUL GUTIERREZ NEYRA", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", serie:"Serie D", partida:"PARTIDA 5"},
+      {dorsal:"9003", grado:"CRL", nombres:"RAUL VILLALTA SALAVERRY", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", serie:"Serie D", partida:"PARTIDA 5"}
     ];
 
-    const STORAGE_KEY = "CARRERA_PEDESTRE_OFICIALES_DATA_V2";
-    const SESSION_AUTH_KEY = "CARRERA_ADMIN_AUTH_V2";
-    const ADMIN_PIN = "1095";
-
-    // CANAL DEDICADO DE SINCRONIZACIÓN EN TIEMPO REAL
-    const SYNC_TOPIC = "carrera_pedestre_2026_oficiales_ejercito";
-    const NTFY_BASE = `https://ntfy.sh/${SYNC_TOPIC}`;
-
-    let athletes = [];
-    let isAuthorized = false;
-    let spectatorFilter = 'ALL';
-    let adminFilter = 'ALL';
-    let currentView = 'spectator';
-
-    // Cronómetro
+    // ESTADO GLOBAL
+    let runners = JSON.parse(localStorage.getItem("carrera_data_2026")) || INITIAL_RUNNERS.map((r, i) => ({...r, id: i+1, tiempo: ""}));
+    let currentFilter = "ALL";
+    let isController = localStorage.getItem("carrera_is_admin") === "true";
     let chronoInterval = null;
-    let chronoRunning = false;
     let chronoStartTime = 0;
     let chronoElapsedTime = 0;
+    let isChronoRunning = false;
 
-    // Fallback de pestaña local
-    const localBroadcast = new BroadcastChannel('carrera_local_sync_bus');
-    localBroadcast.onmessage = (e) => {
-      if (e.data && e.data.type === 'DATA_UPDATED') {
-        loadDataFromStorage();
-        renderSpectatorView();
-        if (isAuthorized) renderAdminTable();
-      }
-    };
+    // SALA COMPARTIDA DE TIEMPO REAL
+    const ROOM_KEY = "carrera-pedestre-2026-oficial-peru";
+    let peer = null;
+    let connections = [];
 
-    function setCloudStatus(state, text) {
-      const dot = document.getElementById('cloudStatusDot');
-      const label = document.getElementById('cloudStatusText');
-      if (!dot || !label) return;
+    function initNetwork() {
+      const syncDot = document.getElementById("syncDot");
+      const syncText = document.getElementById("syncText");
 
-      if (state === 'connected') {
-        dot.className = "w-2 h-2 rounded-full bg-emerald-400";
-        label.textContent = text || "En vivo remoto";
-      } else if (state === 'syncing') {
-        dot.className = "w-2 h-2 rounded-full bg-teal-300 animate-spin";
-        label.textContent = text || "Enviando...";
-      } else {
-        dot.className = "w-2 h-2 rounded-full bg-amber-400 live-pulse";
-        label.textContent = text || "Conectando...";
-      }
-    }
-
-    // Publicar hacia la nube (Solo la Mesa de Control envía)
-    async function broadcastCurrentState(manual = false) {
-      const payload = {
-        type: 'SYNC_ALL',
-        timestamp: Date.now(),
-        runners: athletes
-      };
-
-      setCloudStatus('syncing', 'Transmitiendo...');
-      try {
-        const res = await fetch(NTFY_BASE, {
-          method: 'POST',
-          body: JSON.stringify(payload),
-          headers: { 'Title': 'Race Update' }
+      if (isController) {
+        // La laptop de control actúa como servidor principal del canal
+        peer = new Peer(ROOM_KEY);
+        peer.on('open', (id) => {
+          syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+          syncText.textContent = "🟢 Emitiendo en vivo";
         });
-
-        if (res.ok) {
-          setCloudStatus('connected', 'Sincronizado');
-          if (manual) showNotification("Datos transmitidos a todos los dispositivos");
-        } else {
-          setCloudStatus('connected', 'Conectado');
-        }
-      } catch (err) {
-        console.warn("Fallo transitorio al publicar a la nube:", err);
-        setCloudStatus('connected', 'Offline / Local');
-      }
-    }
-
-    // Suscribirse a la nube (Todos los dispositivos: iPads, teléfonos, etc.)
-    function initRealtimeCloudListener() {
-      setCloudStatus('connecting', 'Conectando...');
-
-      // 1. Obtener de inmediato el último mensaje publicado
-      fetch(`${NTFY_BASE}/json?poll=1&since=all`)
-        .then(r => r.text())
-        .then(rawText => {
-          if (!rawText) return;
-          const lines = rawText.trim().split('\n');
-          let latestMessage = null;
-
-          for (let i = lines.length - 1; i >= 0; i--) {
-            try {
-              const parsed = JSON.parse(lines[i]);
-              if (parsed.message) {
-                const inner = JSON.parse(parsed.message);
-                if (inner && inner.type === 'SYNC_ALL' && Array.isArray(inner.runners)) {
-                  latestMessage = inner;
-                  break;
-                }
-              }
-            } catch {}
-          }
-
-          if (latestMessage) {
-            applyRemoteState(latestMessage.runners);
-          }
-        })
-        .catch(err => console.log("Aviso de lectura inicial:", err));
-
-      // 2. Conexión de Flujo Constante Server-Sent Events (SSE)
-      try {
-        const eventSource = new EventSource(`${NTFY_BASE}/sse`);
-
-        eventSource.onopen = () => {
-          setCloudStatus('connected', 'En vivo remoto');
-        };
-
-        eventSource.onmessage = (event) => {
-          try {
-            const data = JSON.parse(event.data);
-            if (data.message) {
-              const msg = JSON.parse(data.message);
-              if (msg && msg.type === 'SYNC_ALL' && Array.isArray(msg.runners)) {
-                applyRemoteState(msg.runners);
-              }
+        peer.on('connection', (conn) => {
+          connections.push(conn);
+          conn.on('open', () => {
+            // Envía el estado actual inmediatamente al iPad o celular que se conecte
+            conn.send({ type: "SYNC", data: runners });
+          });
+        });
+        peer.on('error', (err) => {
+          // Si el ID ya existe en otra pestaña de la misma laptop
+          syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+          syncText.textContent = "🟢 Conectado";
+        });
+      } else {
+        // El iPad o los celulares de los espectadores se conectan a la laptop
+        peer = new Peer();
+        peer.on('open', () => {
+          const conn = peer.connect(ROOM_KEY);
+          conn.on('open', () => {
+            syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
+            syncText.textContent = "🟢 Sincronizado en vivo";
+          });
+          conn.on('data', (payload) => {
+            if (payload.type === "SYNC") {
+              runners = payload.data;
+              saveData(false);
+              renderTable();
             }
-          } catch (e) {
-            // Ignorar pings de control
-          }
-        };
-
-        eventSource.onerror = () => {
-          setCloudStatus('connecting', 'Reconectando...');
-        };
-      } catch (e) {
-        console.warn("SSE no disponible en este navegador", e);
-      }
-    }
-
-    function applyRemoteState(remoteRunners) {
-      if (!Array.isArray(remoteRunners) || remoteRunners.length === 0) return;
-
-      // Fusionar o actualizar
-      athletes = remoteRunners;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(athletes));
-      calculateRankings();
-      updateGlobalStats();
-      renderSpectatorView();
-      if (isAuthorized) renderAdminTable();
-
-      setCloudStatus('connected', 'En vivo remoto');
-    }
-
-    function parseTimeToMs(timeStr) {
-      if (!timeStr || typeof timeStr !== 'string') return Infinity;
-      const parts = timeStr.trim().replace(/,/g, '.').split(':');
-      let ms = 0;
-      if (parts.length === 3) {
-        ms = ((parseFloat(parts[0]) || 0) * 3600 + (parseFloat(parts[1]) || 0) * 60 + (parseFloat(parts[2]) || 0)) * 1000;
-      } else if (parts.length === 2) {
-        ms = ((parseFloat(parts[0]) || 0) * 60 + (parseFloat(parts[1]) || 0)) * 1000;
-      } else if (parts.length === 1 && !isNaN(parseFloat(parts[0]))) {
-        ms = (parseFloat(parts[0]) || 0) * 1000;
-      } else {
-        return Infinity;
-      }
-      return ms > 0 ? ms : Infinity;
-    }
-
-    function formatMsToTime(ms, includeDecimals = false) {
-      if (ms === Infinity || isNaN(ms) || ms < 0) return "--:--:--";
-      const totalSec = Math.floor(ms / 1000);
-      const h = Math.floor(totalSec / 3600);
-      const m = Math.floor((totalSec % 3600) / 60);
-      const s = totalSec % 60;
-      const tenths = Math.floor((ms % 1000) / 100);
-
-      const hh = h > 0 ? String(h).padStart(2, '0') + ':' : '';
-      const mm = String(m).padStart(2, '0');
-      const ss = String(s).padStart(2, '0');
-      return includeDecimals ? `${hh}${mm}:${ss}.${tenths}` : `${hh}${mm}:${ss}`;
-    }
-
-    function calculateRankings() {
-      [1, 2, 3, 4, 5].forEach(p => {
-        const group = athletes.filter(a => a.partida === p);
-        group.sort((a, b) => parseTimeToMs(a.tiempo) - parseTimeToMs(b.tiempo));
-        let rank = 1;
-        group.forEach(a => {
-          a.puestoPartida = (a.tiempo && parseTimeToMs(a.tiempo) !== Infinity) ? rank++ : null;
+          });
+          conn.on('close', () => {
+            syncDot.className = "w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse";
+            syncText.textContent = "Reconectando...";
+            setTimeout(initNetwork, 3000);
+          });
         });
-      });
-
-      const allSorted = [...athletes].sort((a, b) => parseTimeToMs(a.tiempo) - parseTimeToMs(b.tiempo));
-      let genRank = 1;
-      allSorted.forEach(a => {
-        a.puestoGeneral = (a.tiempo && parseTimeToMs(a.tiempo) !== Infinity) ? genRank++ : null;
-      });
+        peer.on('error', () => {
+          syncDot.className = "w-2.5 h-2.5 rounded-full bg-slate-500";
+          syncText.textContent = "Red local activa";
+        });
+      }
     }
 
-    function loadDataFromStorage() {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        try {
-          athletes = JSON.parse(saved);
-        } catch {
-          athletes = JSON.parse(JSON.stringify(OFFICIAL_ATHLETES));
-        }
+    function broadcastState() {
+      // 1. Emisión a todos los iPads / teléfonos conectados vía WebSockets/WebRTC
+      connections.forEach(conn => {
+        if (conn.open) conn.send({ type: "SYNC", data: runners });
+      });
+      // 2. Emisión a otras ventanas en la misma laptop
+      localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
+      window.dispatchEvent(new Event('storage'));
+    }
+
+    // SINCRONIZACIÓN ENTRE PESTAÑAS LOCALES
+    window.addEventListener('storage', () => {
+      const stored = localStorage.getItem("carrera_data_2026");
+      if (stored) {
+        runners = JSON.parse(stored);
+        renderTable();
+      }
+    });
+
+    function saveData(doBroadcast = true) {
+      localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
+      if (doBroadcast && isController) {
+        broadcastState();
+      }
+    }
+
+    // MODAL DE PIN Y CONTROL DE SESIÓN
+    function toggleAuthModal() {
+      if (isController) return;
+      const modal = document.getElementById("authModal");
+      modal.classList.toggle("hidden");
+      document.getElementById("pinInput").value = "";
+      document.getElementById("pinError").classList.add("hidden");
+    }
+
+    function validarPIN(e) {
+      e.preventDefault();
+      const val = document.getElementById("pinInput").value.trim();
+      if (val === "1095") {
+        isController = true;
+        localStorage.setItem("carrera_is_admin", "true");
+        document.getElementById("authModal").classList.add("hidden");
+        updateUIMode();
+        initNetwork();
       } else {
-        athletes = JSON.parse(JSON.stringify(OFFICIAL_ATHLETES));
+        document.getElementById("pinError").classList.remove("hidden");
       }
-
-      athletes.forEach(a => {
-        if (!a.tiempo) a.tiempo = "";
-      });
-      calculateRankings();
-      updateGlobalStats();
     }
 
-    function persistAndSyncData() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(athletes));
-      localBroadcast.postMessage({ type: 'DATA_UPDATED' });
-      calculateRankings();
-      updateGlobalStats();
-      broadcastCurrentState(); // Transmitir en vivo a todos los dispositivos por la nube
+    function cerrarSesion() {
+      isController = false;
+      localStorage.removeItem("carrera_is_admin");
+      location.reload();
     }
 
-    function updateGlobalStats() {
-      const finished = athletes.filter(a => a.tiempo && a.tiempo.trim() !== "");
-      document.getElementById('statArrived').textContent = finished.length;
-      document.getElementById('statPending').textContent = athletes.length - finished.length;
+    function updateUIMode() {
+      const controlPanel = document.getElementById("controlPanel");
+      const btnAuthText = document.getElementById("btnAuthText");
+      const thAccion = document.getElementById("thAccion");
 
-      if (finished.length > 0) {
-        const sorted = [...finished].sort((a, b) => parseTimeToMs(a.tiempo) - parseTimeToMs(b.tiempo));
-        document.getElementById('statBestTime').textContent = sorted[0].tiempo;
+      if (isController) {
+        controlPanel.classList.remove("hidden");
+        btnAuthText.textContent = "Control Activo";
+        thAccion.classList.remove("hidden");
       } else {
-        document.getElementById('statBestTime').textContent = "--:--:--";
+        controlPanel.classList.add("hidden");
+        btnAuthText.textContent = "Mesa Técnica";
+        thAccion.classList.add("hidden");
       }
+      renderTable();
     }
 
-    function renderSpectatorView() {
-      calculateRankings();
-      const search = document.getElementById('spectatorSearchInput')?.value.toLowerCase().trim() || "";
-
-      let list = athletes.filter(a => {
-        const matchesPartida = (spectatorFilter === 'ALL' || a.partida.toString() === spectatorFilter);
-        const matchesSearch = !search ||
-          a.dorsal.toLowerCase().includes(search) ||
-          a.nombre.toLowerCase().includes(search) ||
-          a.promo.toLowerCase().includes(search);
-        return matchesPartida && matchesSearch;
-      });
-
-      const finished = list.filter(a => a.tiempo && a.tiempo.trim() !== "");
-      finished.sort((a, b) => parseTimeToMs(a.tiempo) - parseTimeToMs(b.tiempo));
-
-      // PODIO DE HONOR (Top 3)
-      const podium = document.getElementById('podiumContainer');
-      const top1 = finished[0] || null;
-      const top2 = finished[1] || null;
-      const top3 = finished[2] || null;
-
-      if (!top1 && !top2 && !top3) {
-        podium.innerHTML = `
-          <div class="md:col-span-3 text-center py-8 rounded-2xl bg-slate-900/60 border border-slate-800 text-slate-400">
-            <i data-lucide="flag" class="w-7 h-7 mx-auto mb-2 text-slate-500 opacity-60"></i>
-            <p class="text-xs font-semibold text-slate-300">Esperando arribos en meta...</p>
-            <p class="text-[11px] text-slate-500 mt-0.5">El podio y las clasificaciones se actualizarán en tiempo real en esta pantalla.</p>
-          </div>
-        `;
-      } else {
-        podium.innerHTML = `
-          <!-- 2do Lugar (Plata) -->
-          <div class="rounded-2xl border border-slate-700/80 bg-gradient-to-b from-slate-900 to-slate-950 p-4 flex flex-col justify-between shadow-lg">
-            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-200 text-[11px] font-bold border border-slate-700">
-                🥈 2° Lugar • Plata
-              </span>
-              <span class="text-[11px] font-mono text-slate-400 font-bold">#2</span>
-            </div>
-            <div class="my-3">
-              ${top2 ? `
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="text-xs font-mono font-extrabold px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">#${top2.dorsal}</span>
-                  <span class="text-[10px] text-slate-400 font-semibold uppercase">P${top2.partida}</span>
-                </div>
-                <h4 class="text-sm font-extrabold text-white leading-snug truncate">${top2.nombre}</h4>
-                <p class="text-[11px] text-slate-400 truncate mt-0.5">${top2.promo}</p>
-                <div class="mt-2.5 font-mono text-2xl font-black text-slate-200">${top2.tiempo}</div>
-              ` : `
-                <div class="text-xs text-slate-500 py-6 italic text-center">Esperando arribo</div>
-              `}
-            </div>
-          </div>
-
-          <!-- 1er Lugar (Oro) -->
-          <div class="rounded-2xl border-2 border-amber-500/70 bg-gradient-to-b from-amber-950/20 via-slate-900 to-slate-950 p-4 flex flex-col justify-between shadow-xl shadow-amber-500/10 ring-1 ring-amber-400/20">
-            <div class="flex items-center justify-between pb-2 border-b border-amber-500/20">
-              <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[11px] font-black uppercase tracking-wider">
-                🥇 1° Lugar • Campeón
-              </span>
-              <span class="text-xs font-mono text-amber-400 font-extrabold">Oficial</span>
-            </div>
-            <div class="my-3">
-              ${top1 ? `
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="text-xs font-mono font-black px-2.5 py-0.5 rounded-md bg-amber-400 text-slate-950 font-bold">#${top1.dorsal}</span>
-                  <span class="text-[10px] text-amber-300 font-bold uppercase">P${top1.partida}</span>
-                </div>
-                <h4 class="text-base font-black text-white leading-tight truncate">${top1.nombre}</h4>
-                <p class="text-[11px] text-amber-200/80 truncate mt-0.5 font-medium">${top1.promo}</p>
-                <div class="mt-2.5 font-mono text-3xl font-black text-amber-300 tracking-tight">${top1.tiempo}</div>
-              ` : `
-                <div class="text-xs text-slate-500 py-6 italic text-center">Esperando arribo</div>
-              `}
-            </div>
-          </div>
-
-          <!-- 3er Lugar (Bronce) -->
-          <div class="rounded-2xl border border-slate-700/80 bg-gradient-to-b from-slate-900 to-slate-950 p-4 flex flex-col justify-between shadow-lg">
-            <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-800 text-amber-200/90 text-[11px] font-bold border border-slate-700">
-                🥉 3° Lugar • Bronce
-              </span>
-              <span class="text-[11px] font-mono text-slate-400 font-bold">#3</span>
-            </div>
-            <div class="my-3">
-              ${top3 ? `
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="text-xs font-mono font-extrabold px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">#${top3.dorsal}</span>
-                  <span class="text-[10px] text-slate-400 font-semibold uppercase">P${top3.partida}</span>
-                </div>
-                <h4 class="text-sm font-extrabold text-white leading-snug truncate">${top3.nombre}</h4>
-                <p class="text-[11px] text-slate-400 truncate mt-0.5">${top3.promo}</p>
-                <div class="mt-2.5 font-mono text-2xl font-black text-slate-200">${top3.tiempo}</div>
-              ` : `
-                <div class="text-xs text-slate-500 py-6 italic text-center">Esperando arribo</div>
-              `}
-            </div>
-          </div>
-        `;
-      }
-
-      // TABLA DE LLEGADAS
-      const tbody = document.getElementById('spectatorTableBody');
-      if (finished.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="py-10 text-center text-slate-400 text-xs font-medium">
-              Aún no hay arribos en esta tanda.
-            </td>
-          </tr>
-        `;
-      } else {
-        tbody.innerHTML = finished.map((a, index) => {
-          const pos = index + 1;
-          let posBadge = '';
-
-          if (pos === 1) {
-            posBadge = '<span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-amber-400 text-slate-950 font-black text-xs">1°</span>';
-          } else if (pos === 2) {
-            posBadge = '<span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-slate-300 text-slate-900 font-black text-xs">2°</span>';
-          } else if (pos === 3) {
-            posBadge = '<span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-amber-700/80 text-white font-black text-xs">3°</span>';
-          } else {
-            posBadge = `<span class="font-mono font-bold text-slate-400">${pos}°</span>`;
-          }
-
-          return `
-            <tr class="hover:bg-slate-800/40 transition">
-              <td class="py-2.5 px-3 text-center">${posBadge}</td>
-              <td class="py-2.5 px-3 text-center">
-                <span class="font-mono font-extrabold px-2 py-0.5 rounded-md bg-slate-800 text-emerald-400 border border-slate-700 text-xs">
-                  #${a.dorsal}
-                </span>
-              </td>
-              <td class="py-2.5 px-3">
-                <span class="text-white font-bold text-xs sm:text-sm block">${a.nombre}</span>
-              </td>
-              <td class="py-2.5 px-3 hidden md:table-cell text-slate-300 text-xs">
-                ${a.promo}
-              </td>
-              <td class="py-2.5 px-3 hidden sm:table-cell">
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300">
-                  P${a.partida} • ${a.horaPartida}
-                </span>
-              </td>
-              <td class="py-2.5 px-3 text-right">
-                <span class="font-mono font-extrabold text-emerald-400 text-sm sm:text-base">
-                  ${a.tiempo}
-                </span>
-              </td>
-            </tr>
-          `;
-        }).join('');
-      }
-
-      lucide.createIcons();
+    // CRONÓMETRO GENERAL
+    function formatTime(ms) {
+      const minutes = Math.floor(ms / 60000);
+      const seconds = Math.floor((ms % 60000) / 1000);
+      const tenths = Math.floor((ms % 1000) / 100);
+      return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${tenths}`;
     }
 
-    function renderAdminTable() {
-      if (!isAuthorized) return;
-      calculateRankings();
-
-      const search = document.getElementById('adminSearchInput')?.value.toLowerCase().trim() || "";
-      let list = athletes.filter(a => {
-        const matchesPartida = (adminFilter === 'ALL' || a.partida.toString() === adminFilter);
-        const matchesSearch = !search ||
-          a.dorsal.toLowerCase().includes(search) ||
-          a.nombre.toLowerCase().includes(search) ||
-          a.promo.toLowerCase().includes(search);
-        return matchesPartida && matchesSearch;
-      });
-
-      list.sort((a, b) => {
-        const ta = parseTimeToMs(a.tiempo);
-        const tb = parseTimeToMs(b.tiempo);
-        if (ta !== Infinity && tb !== Infinity) return ta - tb;
-        if (ta !== Infinity) return -1;
-        if (tb !== Infinity) return 1;
-        return a.partida - b.partida || a.dorsal.localeCompare(b.dorsal);
-      });
-
-      const tbody = document.getElementById('adminTableBody');
-      tbody.innerHTML = list.map(a => {
-        const hasTime = a.tiempo && a.tiempo.trim() !== "";
-        const pos = a.puestoPartida || a.puestoGeneral || "-";
-
-        return `
-          <tr class="hover:bg-slate-800/40 transition">
-            <td class="py-2 px-3 text-center font-mono font-bold text-slate-400">${pos !== '-' ? pos + '°' : '-'}</td>
-            <td class="py-2 px-3 text-center">
-              <span class="font-mono font-extrabold text-white">#${a.dorsal}</span>
-            </td>
-            <td class="py-2 px-3 text-white font-bold">${a.nombre}</td>
-            <td class="py-2 px-3 text-slate-300 text-xs truncate max-w-[180px]">${a.promo}</td>
-            <td class="py-2 px-3 text-center">
-              <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300">P${a.partida}</span>
-            </td>
-            <td class="py-2 px-3 text-center">
-              <input type="text"
-                value="${a.tiempo || ''}"
-                placeholder="--:--:--"
-                onchange="handleTimeChange('${a.dorsal}', this.value)"
-                class="w-24 sm:w-28 text-center bg-slate-950 border ${hasTime ? 'border-emerald-500 text-emerald-300 font-extrabold' : 'border-slate-800 text-slate-400 font-medium'} font-mono text-xs py-1 px-1.5 rounded outline-none focus:border-amber-400" />
-            </td>
-            <td class="py-2 px-3 text-center">
-              ${hasTime 
-                ? '<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold">Meta</span>'
-                : '<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[10px] font-bold">Ruta</span>'
-              }
-            </td>
-            <td class="py-2 px-3 text-center">
-              ${hasTime ? `
-                <button onclick="clearAthleteTime('${a.dorsal}')" class="text-slate-400 hover:text-rose-400 p-1 transition" title="Borrar tiempo">
-                  <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                </button>
-              ` : `
-                <button onclick="copyToQuickEntry('${a.dorsal}')" class="text-slate-400 hover:text-emerald-400 p-1 transition" title="Copiar a llegada">
-                  <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-                </button>
-              `}
-            </td>
-          </tr>
-        `;
-      }).join('');
-
-      lucide.createIcons();
-    }
-
-    function handleQuickFinish(event) {
-      event.preventDefault();
-      if (!isAuthorized) return;
-
-      const dorsalInput = document.getElementById('quickDorsalInput');
-      const manualTimeInput = document.getElementById('quickTimeManualInput');
-      const dorsalVal = dorsalInput.value.trim().toUpperCase();
-
-      if (!dorsalVal) {
-        showNotification("Ingrese el número de dorsal");
-        return;
-      }
-
-      const athlete = athletes.find(a => 
-        a.dorsal.toUpperCase() === dorsalVal ||
-        a.dorsal.replace('-D', '').toUpperCase() === dorsalVal
-      );
-
-      if (!athlete) {
-        showNotification(`Dorsal #${dorsalVal} no encontrado`);
-        return;
-      }
-
-      let finalTime = manualTimeInput.value.trim();
-      if (!finalTime) {
-        const curMs = chronoRunning ? (Date.now() - chronoStartTime) : chronoElapsedTime;
-        if (curMs <= 300) {
-          showNotification("Inicie el cronómetro o escriba el tiempo");
-          return;
-        }
-        finalTime = formatMsToTime(curMs, false);
-      }
-
-      athlete.tiempo = finalTime;
-      persistAndSyncData();
-      renderAdminTable();
-      renderSpectatorView();
-
-      document.getElementById('recentArrivalLabel').textContent = `#${athlete.dorsal} - ${athlete.nombre}`;
-      document.getElementById('recentArrivalTime').textContent = finalTime;
-
-      showNotification(`Llegada registrada y transmitida: #${athlete.dorsal} (${finalTime})`);
-
-      dorsalInput.value = "";
-      manualTimeInput.value = "";
-      dorsalInput.focus();
-    }
-
-    function handleTimeChange(dorsal, newTime) {
-      const a = athletes.find(x => x.dorsal === dorsal);
-      if (a) {
-        a.tiempo = newTime.trim();
-        persistAndSyncData();
-        renderAdminTable();
-        renderSpectatorView();
-      }
-    }
-
-    function clearAthleteTime(dorsal) {
-      const a = athletes.find(x => x.dorsal === dorsal);
-      if (a) {
-        a.tiempo = "";
-        persistAndSyncData();
-        renderAdminTable();
-        renderSpectatorView();
-        showNotification(`Tiempo borrado: #${dorsal}`);
-      }
-    }
-
-    function copyToQuickEntry(dorsal) {
-      const el = document.getElementById('quickDorsalInput');
-      if (el) {
-        el.value = dorsal;
-        el.focus();
-      }
-    }
-
-    // Cronómetro
-    function updateChronoDisplay() {
-      const current = chronoRunning ? (Date.now() - chronoStartTime) : chronoElapsedTime;
-      const display = document.getElementById('chronoDisplay');
-      if (display) display.textContent = formatMsToTime(current, true);
-    }
-
-    function toggleChronometer() {
-      const btn = document.getElementById('btnChronoToggle');
-      const icon = document.getElementById('chronoToggleIcon');
-      const label = document.getElementById('chronoToggleLabel');
-      const badge = document.getElementById('chronoStatusBadge');
-
-      if (!chronoRunning) {
+    function toggleChrono() {
+      const btn = document.getElementById("btnStartChrono");
+      if (!isChronoRunning) {
         chronoStartTime = Date.now() - chronoElapsedTime;
-        chronoInterval = setInterval(updateChronoDisplay, 60);
-        chronoRunning = true;
-        label.textContent = "Pausar";
-        btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
-        btn.classList.add('bg-amber-600', 'hover:bg-amber-500');
-        icon.setAttribute('data-lucide', 'pause');
-        badge.textContent = "En Curso";
-        badge.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
+        chronoInterval = setInterval(() => {
+          chronoElapsedTime = Date.now() - chronoStartTime;
+          document.getElementById("chronoDisplay").textContent = formatTime(chronoElapsedTime);
+        }, 100);
+        isChronoRunning = true;
+        btn.textContent = "Pausar";
+        btn.className = "px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wider";
       } else {
         clearInterval(chronoInterval);
-        chronoElapsedTime = Date.now() - chronoStartTime;
-        chronoRunning = false;
-        label.textContent = "Reanudar";
-        btn.classList.remove('bg-amber-600', 'hover:bg-amber-500');
-        btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
-        icon.setAttribute('data-lucide', 'play');
-        badge.textContent = "Pausado";
-        badge.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30";
+        isChronoRunning = false;
+        btn.textContent = "Continuar";
+        btn.className = "px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider";
       }
-      lucide.createIcons();
     }
 
-    function resetChronometer() {
+    function resetChrono() {
       clearInterval(chronoInterval);
-      chronoRunning = false;
+      isChronoRunning = false;
       chronoElapsedTime = 0;
-      updateChronoDisplay();
-
-      const btn = document.getElementById('btnChronoToggle');
-      const icon = document.getElementById('chronoToggleIcon');
-      const label = document.getElementById('chronoToggleLabel');
-      const badge = document.getElementById('chronoStatusBadge');
-
-      label.textContent = "Iniciar";
-      btn.classList.remove('bg-amber-600', 'hover:bg-amber-500');
-      btn.classList.add('bg-emerald-600', 'hover:bg-emerald-500');
-      icon.setAttribute('data-lucide', 'play');
-      badge.textContent = "Detenido";
-      badge.className = "text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700";
-      lucide.createIcons();
+      document.getElementById("chronoDisplay").textContent = "00:00.0";
+      const btn = document.getElementById("btnStartChrono");
+      btn.textContent = "Iniciar";
+      btn.className = "px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider";
     }
 
-    function pasteChronoToInput() {
-      const cur = chronoRunning ? (Date.now() - chronoStartTime) : chronoElapsedTime;
-      const formatted = formatMsToTime(cur, false);
-      const input = document.getElementById('quickTimeManualInput');
-      if (input) input.value = formatted;
-      showNotification(`Tiempo copiado: ${formatted}`);
-    }
-
-    // Filtros
-    function setFilter(partidaKey) {
-      spectatorFilter = partidaKey;
-      document.querySelectorAll('.filter-btn').forEach(btn => {
-        if (btn.getAttribute('data-filter') === partidaKey) {
-          btn.className = "filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white shadow-sm";
-        } else {
-          btn.className = "filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700";
-        }
-      });
-
-      const titles = {
-        'ALL': 'Podio Oficial • Clasificación General',
-        '1': 'Podio Oficial • Partida 1 (09:30)',
-        '2': 'Podio Oficial • Partida 2 (09:45 Damas)',
-        '3': 'Podio Oficial • Partida 3 (10:00)',
-        '4': 'Podio Oficial • Partida 4 (10:15)',
-        '5': 'Podio Oficial • Partida 5 (10:30)'
-      };
-      document.getElementById('currentViewTitle').textContent = titles[partidaKey] || 'Podio Oficial';
-      renderSpectatorView();
-    }
-
-    function setAdminFilter(partidaKey) {
-      adminFilter = partidaKey;
-      document.querySelectorAll('.admin-filter-btn').forEach(btn => {
-        if (btn.getAttribute('data-adminfilter') === partidaKey) {
-          btn.className = "admin-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-emerald-600 text-white";
-        } else {
-          btn.className = "admin-filter-btn px-2.5 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700";
-        }
-      });
-      renderAdminTable();
-    }
-
-    function openPinModal() {
-      const modal = document.getElementById('pinModal');
-      const err = document.getElementById('pinErrorMessage');
-      const input = document.getElementById('inputPinCode');
-      err.classList.add('hidden');
-      input.value = "";
-      modal.classList.remove('hidden');
-      setTimeout(() => input.focus(), 80);
-    }
-
-    function closePinModal() {
-      document.getElementById('pinModal').classList.add('hidden');
-    }
-
-    function handlePinSubmit(e) {
+    // REGISTRO DE META
+    function registrarMetaExpress(e) {
       e.preventDefault();
-      const enteredPin = document.getElementById('inputPinCode').value.trim();
-      const err = document.getElementById('pinErrorMessage');
+      const inputD = document.getElementById("inputDorsal");
+      const inputT = document.getElementById("inputTiempoManual");
+      const dorsalBuscado = inputD.value.trim();
 
-      if (enteredPin === ADMIN_PIN) {
-        isAuthorized = true;
-        sessionStorage.setItem(SESSION_AUTH_KEY, "true");
-        closePinModal();
-        updateAuthInterface();
-        switchViewMode('admin');
-        showNotification("Mesa técnica autorizada");
-      } else {
-        err.classList.remove('hidden');
+      const atleta = runners.find(r => String(r.dorsal) === dorsalBuscado && (currentFilter === "ALL" || r.partida === currentFilter));
+      if (!atleta) {
+        alert("Dorsal no encontrado en la serie seleccionada.");
+        return;
+      }
+
+      let tiempoRegistrado = inputT.value.trim();
+      if (!tiempoRegistrado) {
+        tiempoRegistrado = isChronoRunning ? formatTime(chronoElapsedTime) : (formatTime(Date.now() % 3600000));
+      }
+
+      atleta.tiempo = tiempoRegistrado;
+      saveData();
+      renderTable();
+
+      inputD.value = "";
+      inputT.value = "";
+      inputD.focus();
+    }
+
+    function borrarTiempo(dorsal) {
+      if (!confirm("¿Deseas restablecer el tiempo de este atleta?")) return;
+      const at = runners.find(r => r.dorsal === dorsal);
+      if (at) {
+        at.tiempo = "";
+        saveData();
+        renderTable();
       }
     }
 
-    function logoutAdmin() {
-      isAuthorized = false;
-      sessionStorage.removeItem(SESSION_AUTH_KEY);
-      updateAuthInterface();
-      switchViewMode('spectator');
-      showNotification("Modo espectador activo");
+    // RENDERIZADO Y TABLERO
+    function setFilter(partida) {
+      currentFilter = partida;
+      document.querySelectorAll(".filter-btn").forEach(b => {
+        b.className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-slate-900";
+      });
+      const activeBtn = partida === "ALL" ? "f-ALL" : `f-P${partida.replace("PARTIDA ", "")}`;
+      document.getElementById(activeBtn).className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-500 text-black";
+      renderTable();
     }
 
-    function updateAuthInterface() {
-      const btnOpen = document.getElementById('btnOpenPinModal');
-      const adminBar = document.getElementById('adminTopBar');
-      const roleBadge = document.getElementById('roleBadge');
-
-      if (isAuthorized) {
-        btnOpen.classList.add('hidden');
-        adminBar.classList.remove('hidden');
-        adminBar.classList.add('flex');
-        roleBadge.textContent = "Controlador Autorizado";
-        roleBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40";
-      } else {
-        btnOpen.classList.remove('hidden');
-        adminBar.classList.add('hidden');
-        adminBar.classList.remove('flex');
-        roleBadge.textContent = "Espectador";
-        roleBadge.className = "text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700/80";
-      }
-    }
-
-    function toggleActiveView() {
-      switchViewMode(currentView === 'admin' ? 'spectator' : 'admin');
-    }
-
-    function switchViewMode(mode) {
-      currentView = mode;
-      const specSec = document.getElementById('spectatorSection');
-      const adminSec = document.getElementById('adminSection');
-      const btnText = document.getElementById('viewModeText');
-
-      if (mode === 'admin' && isAuthorized) {
-        specSec.classList.add('hidden');
-        adminSec.classList.remove('hidden');
-        adminSec.classList.add('flex');
-        btnText.textContent = "Ver Proyector";
-        renderAdminTable();
-      } else {
-        specSec.classList.remove('hidden');
-        adminSec.classList.add('hidden');
-        adminSec.classList.remove('flex');
-        btnText.textContent = "Mesa de Control";
-        renderSpectatorView();
-      }
-    }
-
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
-    }
-
-    function exportToCSV() {
-      calculateRankings();
-      let csvContent = "\uFEFFPuesto General,Puesto Partida,Dorsal,Atleta,Promoción,Serie,Partida,Hora Partida,Tiempo Oficial\n";
-      athletes.forEach(a => {
-        csvContent += `${a.puestoGeneral || ""},${a.puestoPartida || ""},"${a.dorsal}","${a.nombre}","${a.promo}","${a.serie}",${a.partida},${a.horaPartida},"${a.tiempo || ""}"\n`;
+    function renderTable() {
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      
+      // Filtrar por partida y buscador
+      let filtered = runners.filter(r => {
+        const matchesPartida = currentFilter === "ALL" || r.partida === currentFilter;
+        const matchesSearch = r.nombres.toLowerCase().includes(search) || r.promo.toLowerCase().includes(search) || String(r.dorsal).includes(search);
+        return matchesPartida && matchesSearch;
       });
 
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      // Separar los que ya tienen tiempo de los que no
+      const finalizados = filtered.filter(r => r.tiempo && r.tiempo.trim() !== "").sort((a,b) => a.tiempo.localeCompare(b.tiempo));
+      const enRuta = filtered.filter(r => !r.tiempo || r.tiempo.trim() === "");
+
+      // Podio (Top 3 de los finalizados)
+      actualizarPodio(finalizados);
+
+      // Resumen
+      const totalMeta = runners.filter(r => r.tiempo && r.tiempo.trim() !== "").length;
+      document.getElementById("countSummary").textContent = `Meta: ${totalMeta} / ${runners.length}`;
+
+      const tbody = document.getElementById("runnersTableBody");
+      tbody.innerHTML = "";
+
+      const listaCompleta = [...finalizados, ...enRuta];
+
+      if (listaCompleta.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-500 font-mono text-xs">No se encontraron atletas.</td></tr>`;
+        return;
+      }
+
+      listaCompleta.forEach((r, idx) => {
+        const esMeta = r.tiempo && r.tiempo.trim() !== "";
+        const puesto = esMeta ? `${idx + 1}°` : "-";
+
+        let badgePuesto = `<span class="text-slate-500 font-mono text-xs">-</span>`;
+        if (esMeta) {
+          if (idx === 0) badgePuesto = `<span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-mono text-xs font-bold">1° 🥇</span>`;
+          else if (idx === 1) badgePuesto = `<span class="px-2 py-0.5 rounded bg-slate-300/20 text-slate-200 border border-slate-400/40 font-mono text-xs font-bold">2° 🥈</span>`;
+          else if (idx === 2) badgePuesto = `<span class="px-2 py-0.5 rounded bg-amber-800/20 text-amber-500 border border-amber-700/40 font-mono text-xs font-bold">3° 🥉</span>`;
+          else badgePuesto = `<span class="text-slate-300 font-mono text-xs font-bold">${puesto}</span>`;
+        }
+
+        const tr = document.createElement("tr");
+        tr.className = esMeta ? "bg-slate-900/40 hover:bg-slate-900/70 transition" : "hover:bg-slate-900/30 text-slate-400 transition";
+
+        tr.innerHTML = `
+          <td class="py-3 px-4 text-center">${badgePuesto}</td>
+          <td class="py-3 px-4 text-center font-mono font-bold text-white">${r.dorsal}</td>
+          <td class="py-3 px-4">
+            <div class="text-white font-semibold flex items-center gap-1.5">
+              ${r.grado ? `<span class="text-xs text-emerald-400 font-mono font-normal">[${r.grado}]</span>` : ''}
+              <span>${r.nombres}</span>
+            </div>
+          </td>
+          <td class="py-3 px-4 text-xs text-slate-400">${r.promo}</td>
+          <td class="py-3 px-4 text-center text-xs font-mono text-slate-400">${r.partida}</td>
+          <td class="py-3 px-4 text-right font-mono font-bold ${esMeta ? 'text-emerald-400 text-base' : 'text-slate-600'}">
+            ${esMeta ? r.tiempo : 'En ruta'}
+          </td>
+          ${isController ? `
+            <td class="py-3 px-4 text-center">
+              ${esMeta ? `<button onclick="borrarTiempo('${r.dorsal}')" class="text-rose-400 hover:text-rose-300 text-xs hover:underline">Borrar</button>` : '-'}
+            </td>
+          ` : ''}
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function actualizarPodio(finalizados) {
+      const p1 = finalizados[0];
+      const p2 = finalizados[1];
+      const p3 = finalizados[2];
+
+      document.getElementById("podium1-name").textContent = p1 ? (p1.grado ? `[${p1.grado}] ` : '') + p1.nombres : "Esperando llegada...";
+      document.getElementById("podium1-promo").textContent = p1 ? p1.promo : "-";
+      document.getElementById("podium1-dorsal").textContent = p1 ? `DORSAL: ${p1.dorsal}` : "DORSAL: ---";
+      document.getElementById("podium1-time").textContent = p1 ? p1.tiempo : "--:--.-";
+
+      document.getElementById("podium2-name").textContent = p2 ? (p2.grado ? `[${p2.grado}] ` : '') + p2.nombres : "Esperando llegada...";
+      document.getElementById("podium2-promo").textContent = p2 ? p2.promo : "-";
+      document.getElementById("podium2-dorsal").textContent = p2 ? `DORSAL: ${p2.dorsal}` : "DORSAL: ---";
+      document.getElementById("podium2-time").textContent = p2 ? p2.tiempo : "--:--.-";
+
+      document.getElementById("podium3-name").textContent = p3 ? (p3.grado ? `[${p3.grado}] ` : '') + p3.nombres : "Esperando llegada...";
+      document.getElementById("podium3-promo").textContent = p3 ? p3.promo : "-";
+      document.getElementById("podium3-dorsal").textContent = p3 ? `DORSAL: ${p3.dorsal}` : "DORSAL: ---";
+      document.getElementById("podium3-time").textContent = p3 ? p3.tiempo : "--:--.-";
+    }
+
+    function exportarCSV() {
+      let csv = "PUESTO,DORSAL,GRADO,ATLETA,PROMOCION,PARTIDA,SERIE,TIEMPO\n";
+      const ordenados = [...runners].sort((a,b) => {
+        if (!a.tiempo) return 1;
+        if (!b.tiempo) return -1;
+        return a.tiempo.localeCompare(b.tiempo);
+      });
+
+      ordenados.forEach((r, idx) => {
+        const puesto = r.tiempo ? idx + 1 : "";
+        csv += `"${puesto}","${r.dorsal}","${r.grado}","${r.nombres}","${r.promo}","${r.partida}","${r.serie}","${r.tiempo}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
-      link.href = url;
-      link.download = `carrera_pedestre_oficiales_resultados_${new Date().toISOString().slice(0, 10)}.csv`;
+      link.setAttribute("href", url);
+      link.setAttribute("download", `RESULTADOS_CARRERA_PEDESTRE_2026.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      showNotification("Resultados descargados en formato CSV");
     }
 
-    function resetAllTimes() {
-      const ok = window.confirm("¿Está seguro de reiniciar los tiempos de todos los atletas?");
-      if (ok) {
-        athletes.forEach(a => a.tiempo = "");
-        persistAndSyncData();
-        renderAdminTable();
-        renderSpectatorView();
-        showNotification("Se han reiniciado los tiempos de llegada");
-      }
-    }
-
-    function showNotification(msg) {
-      const toast = document.getElementById('notificationToast');
-      const label = document.getElementById('toastMessage');
-      label.textContent = msg;
-      toast.classList.remove('translate-y-16', 'opacity-0');
-      toast.classList.add('translate-y-0', 'opacity-100');
-      setTimeout(() => {
-        toast.classList.remove('translate-y-0', 'opacity-100');
-        toast.classList.add('translate-y-16', 'opacity-0');
-      }, 2500);
-    }
-
-    // Inicialización
-    window.addEventListener('DOMContentLoaded', () => {
-      if (sessionStorage.getItem(SESSION_AUTH_KEY) === "true") {
-        isAuthorized = true;
-      }
-      loadDataFromStorage();
-      updateAuthInterface();
-      renderSpectatorView();
-      if (isAuthorized) renderAdminTable();
-      initRealtimeCloudListener(); // Iniciar conexión en vivo por internet
-      lucide.createIcons();
+    // INICIALIZACIÓN
+    window.addEventListener("DOMContentLoaded", () => {
+      updateUIMode();
+      renderTable();
+      initNetwork();
     });
   </script>
 </body>
