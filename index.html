@@ -88,26 +88,26 @@
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             PANEL DE CONTROL ACTIVO
           </span>
-          <span class="text-xs text-slate-400">Control maestro: tus cambios y registros se transmiten en vivo a todos los dispositivos.</span>
+          <span class="text-xs text-slate-400">Cada partida cuenta con su propio cronómetro independiente.</span>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="restablecerTiempos()" class="px-3 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-200 text-xs border border-rose-700/50 transition font-semibold flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-            Limpiar Tiempos de Prueba
+            Limpiar Tiempos
           </button>
           <button onclick="exportarCSV()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-slate-700 transition">Descargar Excel/CSV</button>
           <button onclick="cerrarSesion()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs border border-slate-700 transition">Cerrar Sesión</button>
         </div>
       </div>
 
-      <!-- TRANSMISIÓN DE PARTIDA ACTIVA (CONTROL REMOTO DE PANTALLAS) -->
+      <!-- TRANSMISIÓN DE PARTIDA ACTIVA (CONTROL REMOTO) -->
       <div class="bg-slate-950 p-4 rounded-xl border-2 border-emerald-500/40 flex flex-wrap items-center justify-between gap-3 shadow-inner">
         <div class="flex items-center gap-2">
           <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
             <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
-            CONTROL REMOTO DE PANTALLAS:
+            PARTIDA EN CURSO:
           </span>
-          <span class="text-xs text-slate-300 font-medium">Pulsa la partida para cambiarla en el proyector y dispositivos:</span>
+          <span class="text-xs text-slate-300 font-medium">Selecciona la partida para gestionar su cronómetro y proyecciones:</span>
         </div>
         <div class="flex flex-wrap gap-2">
           <button onclick="fijarYTransmitirPartida('PARTIDA 1')" id="btnP1" class="px-4 py-2 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 transition">Partida 1</button>
@@ -119,23 +119,26 @@
         </div>
       </div>
 
-      <!-- CRONÓMETRO Y REGISTRO RÁPIDO CON AUTO-STOP -->
+      <!-- CRONÓMETRO INDEPENDIENTE POR PARTIDA Y REGISTRO -->
       <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
         <div class="md:col-span-6 bg-slate-950 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
           <div>
-            <div class="text-xs text-slate-400 uppercase font-bold tracking-wider">Cronómetro de Partida</div>
+            <div class="text-xs text-slate-400 uppercase font-bold tracking-wider flex items-center gap-1.5">
+              <span>Cronómetro de:</span>
+              <span id="chronoPartidaLabel" class="text-emerald-400 font-mono">PARTIDA 1</span>
+            </div>
             <div id="chronoDisplay" class="text-3xl sm:text-4xl font-mono font-black text-emerald-400">00:00.0</div>
             <div id="chronoStatusNotice" class="text-[11px] font-mono text-emerald-400/80 mt-0.5 hidden">Partida finalizada</div>
           </div>
           <div class="flex flex-wrap gap-2 items-center">
             <button id="btnStartChrono" onclick="toggleChrono()" class="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider">Iniciar</button>
-            <button onclick="forzarCerrarPartida()" title="Detiene el cronómetro y cierra la partida actual" class="px-3.5 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider">Cerrar Partida</button>
+            <button onclick="forzarCerrarPartida()" title="Detiene el cronómetro de la partida actual" class="px-3.5 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider">Cerrar Partida</button>
             <button onclick="resetChrono()" class="px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs uppercase font-bold">Reset</button>
           </div>
         </div>
 
         <div class="md:col-span-6 bg-slate-950 p-4 rounded-xl border border-slate-800">
-          <div class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1.5">Registro Directo por Dorsal</div>
+          <div class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1.5">Registro Directo de Llegada</div>
           <form onsubmit="registrarMetaExpress(event)" class="flex gap-2">
             <input id="inputDorsal" type="text" placeholder="Dorsal (ej: 8401, 75B01, 89A02)" required class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-4 py-2 text-white font-mono text-base uppercase focus:outline-none focus:border-emerald-500">
             <input id="inputTiempoManual" type="text" placeholder="Tiempo opcional (ej: 24:15.2)" class="w-44 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-white font-mono text-xs focus:outline-none focus:border-emerald-500 hidden sm:block">
@@ -149,7 +152,7 @@
     </div>
   </section>
 
-  <!-- CONTENIDO PRINCIPAL: VISTA DE ESPECTADORES / PROYECCIÓN -->
+  <!-- VISTA DE ESPECTADORES / PROYECCIÓN -->
   <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-8 space-y-6">
     <div class="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 flex flex-wrap items-center justify-between gap-4 shadow-lg">
       <div class="flex flex-wrap gap-1.5 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
@@ -198,15 +201,22 @@
       </div>
     </div>
 
-    <div class="flex items-center justify-between px-1">
+    <!-- TITULAR Y CRONÓMETRO DE VISTA PÚBLICA -->
+    <div class="flex flex-wrap items-center justify-between gap-4 px-1 bg-slate-950/60 p-4 rounded-xl border border-slate-800">
       <div>
         <h2 id="viewTitle" class="text-lg sm:text-xl font-chakra font-black tracking-wide text-white uppercase flex items-center gap-2">
           TODAS LAS PARTIDAS • CLASIFICACIÓN GENERAL
         </h2>
         <p id="viewSubtitle" class="text-xs text-slate-400 mt-0.5">VIENDO LOS 76 OFICIALES EN COMPETENCIA</p>
       </div>
-      <div id="countSummary" class="text-xs font-mono text-emerald-400 bg-slate-950 px-3 py-1.5 rounded-lg border border-slate-800 uppercase">
-        EN META: 0 / 76
+      <div class="flex items-center gap-4">
+        <div class="text-right">
+          <div class="text-[10px] text-slate-400 font-mono uppercase">Tiempo Partida</div>
+          <div id="publicChronoDisplay" class="text-2xl sm:text-3xl font-mono font-black text-emerald-400">00:00.0</div>
+        </div>
+        <div id="countSummary" class="text-xs font-mono text-emerald-400 bg-slate-900 px-3 py-2 rounded-lg border border-slate-800 uppercase">
+          EN META: 0 / 76
+        </div>
       </div>
     </div>
 
@@ -387,9 +397,9 @@
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8803", grado:"MY", nombres:"MANUEL ANTONIO ALFARO JUAREZ"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1988", promo:"1988 - MARISCAL AGUSTIN GAMARRA", dorsal:"8804", grado:"GRAL", nombres:"JAIME REYNALDO LLANOS BARON"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A01", grado:"GRAL BRIG", nombres:"MOISES CHAVEZ FARFAN"},
-      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A02", grado:"GRAL BRIG", nombres:"FERNANDO PORTILLO ROMERO"},
-      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A03", grado:"CRL INF", nombres:"RAFAEL PINEDO CANEPA"},
-      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 A", promo:"1989 A - INKA PACHACUTEC", dorsal:"89A04", grado:"TTE INF", nombres:"VICTOR AUZA MONTALVO"},
+      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1990 A", promo:"1990 A - INKA PACHACUTEC", dorsal:"89A02", grado:"GRAL BRIG", nombres:"FERNANDO PORTILLO ROMERO"},
+      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1991 A", promo:"1991 A - INKA PACHACUTEC", dorsal:"89A03", grado:"CRL INF", nombres:"RAFAEL PINEDO CANEPA"},
+      {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1992 A", promo:"1992 A - INKA PACHACUTEC", dorsal:"89A04", grado:"TTE INF", nombres:"VICTOR AUZA MONTALVO"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B01", grado:"CRL", nombres:"LUIS GOMEZ BAUTISTA"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B02", grado:"CRL", nombres:"OSCAR PALOMINO CHUCHON"},
       {partida:"PARTIDA 5", serie:"SERIE \"D\"", promoAnio:"1989 B", promo:"1989 B - GRAL BRIG JUSTINIANO BORGOÑO CASTAÑEDA", dorsal:"89B03", grado:"TTE", nombres:"IVAN DANTE BACIGALUPO LARREA"},
@@ -416,16 +426,23 @@
     }
 
     let runners = cargarPadrónCompleto();
-    let currentFilter = localStorage.getItem("carrera_active_partida") || "ALL";
+    let currentFilter = localStorage.getItem("carrera_active_partida") || "PARTIDA 1";
     let selectedSerie = "ALL";
     let selectedPromo = "ALL";
     let isController = localStorage.getItem("carrera_is_admin") === "true";
-    let chronoInterval = null;
-    let chronoStartTime = 0;
-    let chronoElapsedTime = 0;
-    let isChronoRunning = false;
 
-    // CONFIGURACIÓN DE TU BASE DE DATOS REAL DE FIREBASE
+    // ESTADO DE CRONÓMETROS INDEPENDIENTES POR PARTIDA
+    let defaultPartidasState = {
+      "PARTIDA 1": { isRunning: false, startTime: 0, elapsed: 0 },
+      "PARTIDA 2": { isRunning: false, startTime: 0, elapsed: 0 },
+      "PARTIDA 3": { isRunning: false, startTime: 0, elapsed: 0 },
+      "PARTIDA 4": { isRunning: false, startTime: 0, elapsed: 0 },
+      "PARTIDA 5": { isRunning: false, startTime: 0, elapsed: 0 }
+    };
+
+    let chronos = JSON.parse(localStorage.getItem("carrera_chronos_2026")) || defaultPartidasState;
+
+    // CONFIGURACIÓN DE TU BASE DE DATOS DE FIREBASE
     const firebaseConfig = {
       databaseURL: "https://carrera2026-b4fb4-default-rtdb.firebaseio.com"
     };
@@ -443,20 +460,22 @@
         const db = firebase.database();
         dbRef = db.ref("carrera_estado");
 
-        // Escucha en tiempo real de Firebase
         dbRef.on('value', (snapshot) => {
           const val = snapshot.val();
           syncDot.className = "w-2.5 h-2.5 rounded-full bg-emerald-400";
           syncText.textContent = isController ? "🟢 Firebase Control Activo" : "🟢 Sincronizado Firebase";
 
           if (val) {
-            // Sincronizar datos de meta
             if (val.data && Array.isArray(val.data)) {
               runners = val.data;
               localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
             }
 
-            // Forzado de pantalla enviado por el controlador
+            if (val.chronos) {
+              chronos = val.chronos;
+              localStorage.setItem("carrera_chronos_2026", JSON.stringify(chronos));
+            }
+
             if (val.forcePartida && (!isController || currentFilter !== val.forcePartida)) {
               aplicarFiltroVisual(val.forcePartida);
             }
@@ -474,7 +493,6 @@
       }
     }
 
-    // RESPALDO DIRECTO POR REST
     const REST_URL = "https://carrera2026-b4fb4-default-rtdb.firebaseio.com/carrera_estado.json";
 
     function iniciarPollingDeRespaldo() {
@@ -490,6 +508,10 @@
                 runners = val.data;
                 localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
               }
+              if (val.chronos) {
+                chronos = val.chronos;
+                localStorage.setItem("carrera_chronos_2026", JSON.stringify(chronos));
+              }
               if (val.forcePartida && (!isController || currentFilter !== val.forcePartida)) {
                 aplicarFiltroVisual(val.forcePartida);
               }
@@ -500,16 +522,17 @@
       }, 1500);
     }
 
-    // EMISIÓN A FIREBASE
     function broadcastState() {
       localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
       localStorage.setItem("carrera_active_partida", currentFilter);
+      localStorage.setItem("carrera_chronos_2026", JSON.stringify(chronos));
       window.dispatchEvent(new Event('storage'));
 
       const payload = {
         timestamp: Date.now(),
         data: runners,
-        forcePartida: currentFilter
+        forcePartida: currentFilter,
+        chronos: chronos
       };
 
       if (dbRef) {
@@ -526,6 +549,9 @@
       if (stored) {
         runners = JSON.parse(stored);
         const storedPartida = localStorage.getItem("carrera_active_partida");
+        const storedChronos = localStorage.getItem("carrera_chronos_2026");
+        if (storedChronos) chronos = JSON.parse(storedChronos);
+
         if (storedPartida && storedPartida !== currentFilter) {
           aplicarFiltroVisual(storedPartida);
         } else {
@@ -536,21 +562,23 @@
 
     function saveData(doBroadcast = true) {
       localStorage.setItem("carrera_data_2026", JSON.stringify(runners));
+      localStorage.setItem("carrera_chronos_2026", JSON.stringify(chronos));
       if (doBroadcast && isController) {
         broadcastState();
       }
     }
 
     function restablecerTiempos() {
-      if (!confirm("¿Seguro que deseas limpiar todos los tiempos de prueba? Los 76 oficiales volverán a 'EN RUTA'.")) return;
+      if (!confirm("¿Seguro que deseas limpiar todos los tiempos? Todos los oficiales volverán a 'EN RUTA'.")) return;
       runners = FULL_ROSTER.map((r, i) => ({...r, id: i+1, tiempo: ""}));
+      chronos = JSON.parse(JSON.stringify(defaultPartidasState));
       saveData();
       renderTable();
-      resetChrono();
-      alert("Padrón restablecido con éxito (76 atletas listos).");
+      actualizarBotonCronometro();
+      alert("Padrón y cronómetros restablecidos con éxito.");
     }
 
-    // CONTROL REMOTO: CAMBIA LA PANTALLA EN TODOS LOS DISPOSITIVOS
+    // CONTROL REMOTO DE PANTALLA
     function fijarYTransmitirPartida(partida) {
       currentFilter = partida;
       aplicarFiltroVisual(partida);
@@ -579,6 +607,7 @@
       updateControlButtons(partida);
       actualizarSelectorSeries();
       actualizarTitulos();
+      actualizarBotonCronometro();
       renderTable();
     }
 
@@ -627,7 +656,10 @@
     function actualizarTitulos() {
       const title = document.getElementById("viewTitle");
       const sub = document.getElementById("viewSubtitle");
+      const label = document.getElementById("chronoPartidaLabel");
       const horarios = {"PARTIDA 1":"09:30 AM", "PARTIDA 2":"09:45 AM", "PARTIDA 3":"10:00 AM", "PARTIDA 4":"10:15 AM", "PARTIDA 5":"10:30 AM"};
+
+      if (label) label.textContent = currentFilter;
 
       if (currentFilter === "ALL") {
         title.textContent = selectedSerie === "ALL" 
@@ -716,6 +748,7 @@
       renderTable();
     }
 
+    // GESTIÓN DE CRONÓMETROS INDEPENDIENTES (CALCULADOS EN TIEMPO REAL)
     function formatTime(ms) {
       const minutes = Math.floor(ms / 60000);
       const seconds = Math.floor((ms % 60000) / 1000);
@@ -723,59 +756,94 @@
       return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${tenths}`;
     }
 
-    function toggleChrono() {
-      const btn = document.getElementById("btnStartChrono");
-      const notice = document.getElementById("chronoStatusNotice");
-      notice.classList.add("hidden");
-
-      if (!isChronoRunning) {
-        chronoStartTime = Date.now() - chronoElapsedTime;
-        chronoInterval = setInterval(() => {
-          chronoElapsedTime = Date.now() - chronoStartTime;
-          document.getElementById("chronoDisplay").textContent = formatTime(chronoElapsedTime);
-        }, 100);
-        isChronoRunning = true;
-        btn.textContent = "Pausar";
-        btn.className = "px-3.5 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wider";
-      } else {
-        clearInterval(chronoInterval);
-        isChronoRunning = false;
-        btn.textContent = "Continuar";
-        btn.className = "px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider";
+    function getTiempoPartida(partidaKey) {
+      if (!chronos[partidaKey]) return 0;
+      const c = chronos[partidaKey];
+      if (c.isRunning) {
+        return (Date.now() - c.startTime) + c.elapsed;
       }
+      return c.elapsed || 0;
     }
 
-    function detenerCronometroPorFinDePartida(motivo = "¡Todos los atletas de la partida han llegado a la meta!") {
-      if (isChronoRunning) {
-        clearInterval(chronoInterval);
-        isChronoRunning = false;
-        const btn = document.getElementById("btnStartChrono");
-        btn.textContent = "Reanudar";
-        btn.className = "px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider";
-      }
+    // Actualización visual periódica a 10 fps (100ms) sin desincronizar
+    setInterval(() => {
+      const pKey = currentFilter === "ALL" ? "PARTIDA 1" : currentFilter;
+      const ms = getTiempoPartida(pKey);
+      const displayStr = formatTime(ms);
+
+      const cd = document.getElementById("chronoDisplay");
+      const pcd = document.getElementById("publicChronoDisplay");
+      if (cd) cd.textContent = displayStr;
+      if (pcd) pcd.textContent = displayStr;
+    }, 100);
+
+    function actualizarBotonCronometro() {
+      const pKey = currentFilter === "ALL" ? "PARTIDA 1" : currentFilter;
+      const c = chronos[pKey] || { isRunning: false };
+      const btn = document.getElementById("btnStartChrono");
       const notice = document.getElementById("chronoStatusNotice");
-      notice.textContent = "✓ PARTIDA FINALIZADA (CRONÓMETRO DETENIDO)";
-      notice.classList.remove("hidden");
-      alert(motivo);
+
+      if (btn) {
+        if (c.isRunning) {
+          btn.textContent = "Pausar";
+          btn.className = "px-3.5 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wider";
+        } else {
+          btn.textContent = (c.elapsed > 0) ? "Continuar" : "Iniciar";
+          btn.className = "px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider";
+        }
+      }
+      if (notice) notice.classList.add("hidden");
+    }
+
+    function toggleChrono() {
+      const pKey = currentFilter === "ALL" ? "PARTIDA 1" : currentFilter;
+      if (!chronos[pKey]) chronos[pKey] = { isRunning: false, startTime: 0, elapsed: 0 };
+      const c = chronos[pKey];
+
+      if (!c.isRunning) {
+        c.startTime = Date.now();
+        c.isRunning = true;
+      } else {
+        c.elapsed = (Date.now() - c.startTime) + c.elapsed;
+        c.isRunning = false;
+      }
+
+      saveData();
+      actualizarBotonCronometro();
     }
 
     function forzarCerrarPartida() {
-      if (confirm(`¿Deseas cerrar la ${currentFilter} y detener el cronómetro oficial?`)) {
-        detenerCronometroPorFinDePartida(`Se ha cerrado la ${currentFilter} oficialmente.`);
+      const pKey = currentFilter === "ALL" ? "PARTIDA 1" : currentFilter;
+      if (confirm(`¿Deseas cerrar la ${pKey} y detener su cronómetro?`)) {
+        detenerCronometroPorFinDePartida(pKey, `Se ha cerrado la ${pKey} oficialmente.`);
       }
     }
 
-    function resetChrono() {
-      clearInterval(chronoInterval);
-      isChronoRunning = false;
-      chronoElapsedTime = 0;
-      document.getElementById("chronoDisplay").textContent = "00:00.0";
-      document.getElementById("chronoStatusNotice").classList.add("hidden");
-      const btn = document.getElementById("btnStartChrono");
-      btn.textContent = "Iniciar";
-      btn.className = "px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider";
+    function detenerCronometroPorFinDePartida(partidaKey, motivo) {
+      if (chronos[partidaKey] && chronos[partidaKey].isRunning) {
+        chronos[partidaKey].elapsed = (Date.now() - chronos[partidaKey].startTime) + chronos[partidaKey].elapsed;
+        chronos[partidaKey].isRunning = false;
+        saveData();
+        actualizarBotonCronometro();
+      }
+      const notice = document.getElementById("chronoStatusNotice");
+      if (notice) {
+        notice.textContent = `✓ ${partidaKey} FINALIZADA (CRONÓMETRO DETENIDO)`;
+        notice.classList.remove("hidden");
+      }
+      alert(motivo);
     }
 
+    function resetChrono() {
+      const pKey = currentFilter === "ALL" ? "PARTIDA 1" : currentFilter;
+      if (confirm(`¿Reiniciar a 00:00.0 el cronómetro de ${pKey}?`)) {
+        chronos[pKey] = { isRunning: false, startTime: 0, elapsed: 0 };
+        saveData();
+        actualizarBotonCronometro();
+      }
+    }
+
+    // REGISTRO DE META: ASIGNA AUTOMÁTICAMENTE EL TIEMPO DEL CRONÓMETRO DE SU RESPECTIVA PARTIDA
     function registrarMetaExpress(e) {
       e.preventDefault();
       const inputD = document.getElementById("inputDorsal");
@@ -790,7 +858,9 @@
 
       let tiempoRegistrado = inputT.value.trim();
       if (!tiempoRegistrado) {
-        tiempoRegistrado = isChronoRunning ? formatTime(chronoElapsedTime) : formatTime(Date.now() % 3600000);
+        // Toma el cronómetro EXACTO de la partida de este atleta
+        const msAtleta = getTiempoPartida(atleta.partida);
+        tiempoRegistrado = formatTime(msAtleta);
       }
 
       atleta.tiempo = tiempoRegistrado;
@@ -801,12 +871,11 @@
       inputT.value = "";
       inputD.focus();
 
-      if (currentFilter !== "ALL") {
-        const corredoresDePartida = runners.filter(r => r.partida === currentFilter);
-        const restantes = corredoresDePartida.filter(r => !r.tiempo || r.tiempo.trim() === "");
-        if (restantes.length === 0) {
-          detenerCronometroPorFinDePartida(`¡Último atleta registrado! La ${currentFilter} ha finalizado y el cronómetro se detuvo automáticamente.`);
-        }
+      // AUTO-STOP si era el último de su partida
+      const corredoresDePartida = runners.filter(r => r.partida === atleta.partida);
+      const restantes = corredoresDePartida.filter(r => !r.tiempo || r.tiempo.trim() === "");
+      if (restantes.length === 0) {
+        detenerCronometroPorFinDePartida(atleta.partida, `¡Último atleta registrado! La ${atleta.partida} ha finalizado y su cronómetro se detuvo.`);
       }
     }
 
