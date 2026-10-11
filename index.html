@@ -6,7 +6,7 @@
   <title>Gran Carrera Pedestre 2026 - Control y Proyección Oficial</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- PeerJS para sincronización nativa en tiempo real (Safari/iPad, iOS, Android, PC) -->
+  <!-- PeerJS -->
   <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -65,11 +65,16 @@
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
             PANEL DE CONTROL ACTIVO
           </span>
-          <span class="text-xs text-slate-400">Todo lo que ingreses aquí se transmite en vivo al proyector y dispositivos de espectadores.</span>
+          <span class="text-xs text-slate-400">Transmisión centralizada de tiempos y estado de atletas.</span>
         </div>
         <div class="flex items-center gap-2">
+          <!-- BOTÓN RESTABLECER PRUEBAS -->
+          <button onclick="restablecerTiempos()" class="px-3 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-200 text-xs border border-rose-700/50 transition font-semibold flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Limpiar Datos de Prueba
+          </button>
           <button onclick="exportarCSV()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs border border-slate-700 transition">Descargar Excel/CSV</button>
-          <button onclick="cerrarSesion()" class="px-3 py-1.5 rounded-lg bg-rose-950 hover:bg-rose-900 text-rose-300 text-xs border border-rose-800 transition">Cerrar Sesión</button>
+          <button onclick="cerrarSesion()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs border border-slate-700 transition">Cerrar Sesión</button>
         </div>
       </div>
 
@@ -80,7 +85,7 @@
             <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
             Transmitir Partida en Curso:
           </span>
-          <span class="text-xs text-slate-400">(Fija cuál partida se proyecta automáticamente a los invitados)</span>
+          <span class="text-xs text-slate-400">(Fija la pantalla del proyector e invitados automáticamente)</span>
         </div>
         <div class="flex flex-wrap gap-2">
           <button onclick="fijarPartidaOficial('PARTIDA 1')" id="btnP1" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700">Partida 1</button>
@@ -140,7 +145,6 @@
 
       <!-- Filtro de Promoción + Buscador -->
       <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-        <!-- Selector desplegable de Promociones -->
         <select id="promoSelect" onchange="handlePromoChange()" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-emerald-400 font-semibold focus:outline-none focus:border-emerald-500 cursor-pointer">
           <option value="ALL">🏛️ Todas las Promociones</option>
           <option value="1955">Promoción 1955</option>
@@ -163,7 +167,6 @@
           <option value="1990">Promoción 1990</option>
         </select>
 
-        <!-- Buscador libre -->
         <div class="relative flex-1 sm:w-56">
           <input id="searchInput" oninput="renderTable()" type="text" placeholder="Buscar oficial o dorsal..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
           <svg class="w-4 h-4 absolute left-3 top-2.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
@@ -248,11 +251,11 @@
               <th class="py-3.5 px-4">Serie Competitiva</th>
               <th class="py-3.5 px-4 text-center">Partida</th>
               <th class="py-3.5 px-4 text-right">Tiempo</th>
-              <th id="thAccion" class="py-3.5 px-4 text-center hidden">Gestión</th>
+              <th class="py-3.5 px-4 text-center">Estado</th>
             </tr>
           </thead>
           <tbody id="runnersTableBody" class="divide-y divide-slate-800/60 font-medium">
-            <!-- Renderizado dinámico -->
+            <!-- Render dinámico -->
           </tbody>
         </table>
       </div>
@@ -282,7 +285,7 @@
   </div>
 
   <script>
-    // LISTA MAESTRA OFICIAL DE LOS 63 ATLETAS
+    // LISTA MAESTRA OFICIAL DE LOS 63 ATLETAS CON PROMOCIONES RESUELTAS
     const INITIAL_RUNNERS = [
       {dorsal:"5501", grado:"Crl", nombres:"JORGE CARDENAS PEREZ PALMA", promoAnio:"1955", promo:"1955 - GRAL BELISARIO SUAREZ VARGAS", serie:"Serie Especial Varones 1", partida:"PARTIDA 1"},
       {dorsal:"5901", grado:"Gral", nombres:"JUAN MANUEL PENDOLA ALANIA", promoAnio:"1959", promo:"1959 - TTE CRL ROQUE SAENZ PEÑA", serie:"Serie Especial Varones 1", partida:"PARTIDA 1"},
@@ -349,8 +352,29 @@
       {dorsal:"9003", grado:"CRL", nombres:"RAUL VILLALTA SALAVERRY", promoAnio:"1990", promo:"1990 - CORONEL JOSE JOAQUIN INCLAN", serie:"Serie D", partida:"PARTIDA 5"}
     ];
 
-    // ESTADO
-    let runners = JSON.parse(localStorage.getItem("carrera_data_2026")) || INITIAL_RUNNERS.map((r, i) => ({...r, id: i+1, tiempo: ""}));
+    // CARGAR Y SANITIZAR DATOS (EVITA "UNDEFINED")
+    function cargarYCorregirDatos() {
+      let guardados = localStorage.getItem("carrera_data_2026");
+      if (!guardados) {
+        return INITIAL_RUNNERS.map((r, i) => ({...r, id: i+1, tiempo: ""}));
+      }
+
+      let parsed = JSON.parse(guardados);
+      // Cruzamos con INITIAL_RUNNERS para asegurar promoAnio real
+      return parsed.map((item, idx) => {
+        let original = INITIAL_RUNNERS.find(o => String(o.dorsal) === String(item.dorsal) && o.partida === item.partida) || INITIAL_RUNNERS[idx] || {};
+        return {
+          ...item,
+          promoAnio: original.promoAnio || (item.dorsal ? '19' + String(item.dorsal).slice(0, 2) : ''),
+          promo: original.promo || item.promo || '',
+          serie: original.serie || item.serie || '',
+          grado: original.grado !== undefined ? original.grado : item.grado,
+          nombres: original.nombres || item.nombres
+        };
+      });
+    }
+
+    let runners = cargarYCorregirDatos();
     let currentFilter = localStorage.getItem("carrera_active_partida") || "ALL";
     let selectedPromo = "ALL";
     let isController = localStorage.getItem("carrera_is_admin") === "true";
@@ -439,7 +463,17 @@
       }
     }
 
-    // FIJAR PARTIDA OFICIAL DESDE EL PANEL DE CONTROL
+    // LIMPIEZA DE DATOS DE PRUEBA
+    function restablecerTiempos() {
+      if (!confirm("¿Seguro que deseas limpiar todos los tiempos registrados de prueba? Esta acción dejará a todos los oficiales 'En Ruta' para empezar desde cero.")) return;
+      runners = INITIAL_RUNNERS.map((r, i) => ({...r, id: i+1, tiempo: ""}));
+      saveData();
+      renderTable();
+      resetChrono();
+      alert("Se restablecieron todos los datos correctamente. La carrera está lista para iniciar.");
+    }
+
+    // FIJAR PARTIDA OFICIAL
     function fijarPartidaOficial(partida) {
       setFilter(partida, true);
     }
@@ -447,18 +481,13 @@
     function updateControlButtons(partida) {
       ['P1', 'P2', 'P3', 'P4', 'P5', 'ALL'].forEach(p => {
         const btn = document.getElementById(`btn${p}`);
-        if (btn) {
-          btn.className = "px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700";
-        }
+        if (btn) btn.className = "px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:bg-slate-700";
       });
       const activeId = partida === "ALL" ? "btnALL" : `btnP${partida.replace("PARTIDA ", "")}`;
       const activeBtn = document.getElementById(activeId);
-      if (activeBtn) {
-        activeBtn.className = "px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20";
-      }
+      if (activeBtn) activeBtn.className = "px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20";
     }
 
-    // FILTROS
     function setFilter(partida, doBroadcast = false) {
       currentFilter = partida;
       document.querySelectorAll(".filter-btn").forEach(b => {
@@ -470,16 +499,15 @@
 
       updateControlButtons(partida);
 
-      // Actualizar titulares informativos
       const title = document.getElementById("viewTitle");
       const sub = document.getElementById("viewSubtitle");
       if (partida === "ALL") {
         title.textContent = "TODAS LAS PARTIDAS • CLASIFICACIÓN GENERAL";
-        sub.textContent = "Viendo el total de los 63 oficiales en competencia";
+        sub.textContent = "Viendo el total de los 63 oficiales inscritos";
       } else {
         const horarios = {"PARTIDA 1":"09:30 AM", "PARTIDA 2":"09:45 AM", "PARTIDA 3":"10:00 AM", "PARTIDA 4":"10:15 AM", "PARTIDA 5":"10:30 AM"};
         title.textContent = `${partida} • HORA DE SALIDA: ${horarios[partida] || ''}`;
-        sub.textContent = "Mostrando únicamente oficiales y series correspondientes a esta partida";
+        sub.textContent = "Mostrando únicamente oficiales correspondientes a esta partida";
       }
 
       if (doBroadcast && isController) {
@@ -493,7 +521,7 @@
       renderTable();
     }
 
-    // ACCESO TÉCNICO
+    // AUTENTICACIÓN
     function handleAuthButtonClick() {
       if (isController) {
         const panel = document.getElementById("controlPanel");
@@ -548,17 +576,14 @@
     function updateUIMode() {
       const controlPanel = document.getElementById("controlPanel");
       const btnAuthText = document.getElementById("btnAuthText");
-      const thAccion = document.getElementById("thAccion");
 
       if (isController) {
         controlPanel.classList.remove("hidden");
         btnAuthText.textContent = "Ocultar / Ver Panel";
-        thAccion.classList.remove("hidden");
         updateControlButtons(currentFilter);
       } else {
         controlPanel.classList.add("hidden");
         btnAuthText.textContent = "Mesa Técnica";
-        thAccion.classList.add("hidden");
       }
       renderTable();
     }
@@ -627,24 +652,14 @@
       inputD.focus();
     }
 
-    function borrarTiempo(dorsal) {
-      if (!confirm("¿Deseas restablecer el tiempo de este atleta?")) return;
-      const at = runners.find(r => r.dorsal === dorsal);
-      if (at) {
-        at.tiempo = "";
-        saveData();
-        renderTable();
-      }
-    }
-
-    // RENDERIZADO Y FILTRADO AVANZADO
+    // RENDERIZADO Y TABLERO
     function renderTable() {
       const search = document.getElementById("searchInput").value.toLowerCase();
       
       let filtered = runners.filter(r => {
         const matchesPartida = currentFilter === "ALL" || r.partida === currentFilter;
-        const matchesPromo = selectedPromo === "ALL" || r.promoAnio === selectedPromo;
-        const matchesSearch = r.nombres.toLowerCase().includes(search) || r.promo.toLowerCase().includes(search) || String(r.dorsal).includes(search);
+        const matchesPromo = selectedPromo === "ALL" || String(r.promoAnio) === String(selectedPromo);
+        const matchesSearch = r.nombres.toLowerCase().includes(search) || (r.promo && r.promo.toLowerCase().includes(search)) || String(r.dorsal).includes(search);
         return matchesPartida && matchesPromo && matchesSearch;
       });
 
@@ -681,6 +696,14 @@
         const tr = document.createElement("tr");
         tr.className = esMeta ? "bg-slate-900/40 hover:bg-slate-900/70 transition" : "hover:bg-slate-900/30 text-slate-400 transition";
 
+        // Año limpio
+        const anioPromo = r.promoAnio || (r.dorsal ? '19' + String(r.dorsal).slice(0, 2) : '-');
+
+        // Badge de Estado limpio
+        const badgeEstado = esMeta 
+          ? `<span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold">En Meta</span>` 
+          : `<span class="px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 text-xs">En Ruta</span>`;
+
         tr.innerHTML = `
           <td class="py-3 px-4 text-center">${badgePuesto}</td>
           <td class="py-3 px-4 text-center font-mono font-bold text-white">${r.dorsal}</td>
@@ -690,17 +713,13 @@
               <span>${r.nombres}</span>
             </div>
           </td>
-          <td class="py-3 px-4 text-xs font-semibold text-amber-300/90">${r.promoAnio}</td>
+          <td class="py-3 px-4 text-xs font-semibold text-amber-300/90">${anioPromo}</td>
           <td class="py-3 px-4 text-xs text-slate-400">${r.serie}</td>
           <td class="py-3 px-4 text-center text-xs font-mono text-slate-400">${r.partida}</td>
           <td class="py-3 px-4 text-right font-mono font-bold ${esMeta ? 'text-emerald-400 text-base' : 'text-slate-600'}">
-            ${esMeta ? r.tiempo : 'En ruta'}
+            ${esMeta ? r.tiempo : '--:--.-'}
           </td>
-          ${isController ? `
-            <td class="py-3 px-4 text-center">
-              ${esMeta ? `<button onclick="borrarTiempo('${r.dorsal}')" class="text-rose-400 hover:text-rose-300 text-xs hover:underline">Borrar</button>` : '-'}
-            </td>
-          ` : ''}
+          <td class="py-3 px-4 text-center">${badgeEstado}</td>
         `;
         tbody.appendChild(tr);
       });
@@ -712,23 +731,23 @@
       const p3 = finalizados[2];
 
       document.getElementById("podium1-name").textContent = p1 ? (p1.grado ? `[${p1.grado}] ` : '') + p1.nombres : "Esperando llegada...";
-      document.getElementById("podium1-promo").textContent = p1 ? `${p1.promoAnio} • ${p1.serie}` : "-";
+      document.getElementById("podium1-promo").textContent = p1 ? `${p1.promoAnio || ''} • ${p1.serie}` : "-";
       document.getElementById("podium1-dorsal").textContent = p1 ? `DORSAL: ${p1.dorsal}` : "DORSAL: ---";
       document.getElementById("podium1-time").textContent = p1 ? p1.tiempo : "--:--.-";
 
       document.getElementById("podium2-name").textContent = p2 ? (p2.grado ? `[${p2.grado}] ` : '') + p2.nombres : "Esperando llegada...";
-      document.getElementById("podium2-promo").textContent = p2 ? `${p2.promoAnio} • ${p2.serie}` : "-";
+      document.getElementById("podium2-promo").textContent = p2 ? `${p2.promoAnio || ''} • ${p2.serie}` : "-";
       document.getElementById("podium2-dorsal").textContent = p2 ? `DORSAL: ${p2.dorsal}` : "DORSAL: ---";
       document.getElementById("podium2-time").textContent = p2 ? p2.tiempo : "--:--.-";
 
       document.getElementById("podium3-name").textContent = p3 ? (p3.grado ? `[${p3.grado}] ` : '') + p3.nombres : "Esperando llegada...";
-      document.getElementById("podium3-promo").textContent = p3 ? `${p3.promoAnio} • ${p3.serie}` : "-";
+      document.getElementById("podium3-promo").textContent = p3 ? `${p3.promoAnio || ''} • ${p3.serie}` : "-";
       document.getElementById("podium3-dorsal").textContent = p3 ? `DORSAL: ${p3.dorsal}` : "DORSAL: ---";
       document.getElementById("podium3-time").textContent = p3 ? p3.tiempo : "--:--.-";
     }
 
     function exportarCSV() {
-      let csv = "PUESTO,DORSAL,GRADO,OFICIAL,ANIO_PROMOCION,PROMOCION_COMPLETA,PARTIDA,SERIE,TIEMPO\n";
+      let csv = "PUESTO,DORSAL,GRADO,OFICIAL,PROMOCION,PARTIDA,SERIE,TIEMPO,ESTADO\n";
       const ordenados = [...runners].sort((a,b) => {
         if (!a.tiempo) return 1;
         if (!b.tiempo) return -1;
@@ -737,14 +756,15 @@
 
       ordenados.forEach((r, idx) => {
         const puesto = r.tiempo ? idx + 1 : "";
-        csv += `"${puesto}","${r.dorsal}","${r.grado}","${r.nombres}","${r.promoAnio}","${r.promo}","${r.partida}","${r.serie}","${r.tiempo}"\n`;
+        const estado = r.tiempo ? "En Meta" : "En Ruta";
+        csv += `"${puesto}","${r.dorsal}","${r.grado}","${r.nombres}","${r.promoAnio}","${r.partida}","${r.serie}","${r.tiempo}","${estado}"\n`;
       });
 
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.setAttribute("href", url);
-      link.setAttribute("download", `RESULTADOS_CARRERA_PEDESTRE_2026.csv`);
+      link.setAttribute("download", `RESULTADOS_OFICIALES_CARRERA_2026.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
